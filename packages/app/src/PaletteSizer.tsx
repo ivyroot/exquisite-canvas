@@ -1,11 +1,33 @@
-import { Button } from "./Button";
-import { NumberInput } from "./NumberInput";
+import React, { useState } from "react";
 
-export const PaletteSizer = () => {
+export const PaletteSizer = (props) => {
+  const [width, setWidth] = useState(8);
+  const [height, setHeight] = useState(8);
+
   return (
     <div>
-      <NumberInput name="Width" value="16"></NumberInput>
-      <NumberInput name="Height" value="16"></NumberInput>
+      <fieldset>
+        <label>
+          WIDTH
+          <input
+            type="number"
+            name="WIDTH"
+            value={width}
+            onChange={(event) => setWidth(event.target.value)}
+          />
+        </label>
+      </fieldset>
+      <fieldset>
+        <label>
+          HEIGHT
+          <input
+            type="number"
+            name="HEIGHT"
+            value={height}
+            onChange={(event) => setHeight(event.target.value)}
+          />
+        </label>
+      </fieldset>
     </div>
   );
 };

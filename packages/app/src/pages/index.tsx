@@ -17,9 +17,6 @@ const HomePage: NextPage = () => {
       <div className="p-2">
         <PaletteSizer />
       </div>
-      <div>
-        <Widget name="yes"></Widget>
-      </div>
       <div className="flex-grow flex flex-col gap-4 items-center justify-center p-8 pb-[50vh]">
         <h1 className="text-4xl">px grid</h1>
         <p>text goes here</p>
