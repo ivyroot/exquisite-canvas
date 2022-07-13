@@ -11,21 +11,25 @@ export const PaletteSizer = (props) => {
 
   const didClickPix = (x, y) => {
     const keyName = pixelKey(x, y);
-    console.log(`HEY YEAH E CLICKED ${keyName}`);
     const ChangeSet = {};
     ChangeSet[keyName] = pixels[keyName] == "ON" ? "" : "ON";
     setPixels({ ...pixels, ...ChangeSet });
+  };
+
+  const displayPix = (x, y) => {
+    const keyName = pixelKey(x, y);
+    return pixels[keyName] == "ON" ? "X" : "0";
   };
 
   const MyRows = [];
   for (let i = 0; i < height; i++) {
     const myCols = [];
     for (let i2 = 0; i2 < width; i2++) {
-      const displayVal = `--0--${
-        pixels[pixelKey(i, i2)] ? pixels[pixelKey(i, i2)] : ""
-      }`;
       myCols.push(
-        <div onClick={(event) => didClickPix(i, i2)}> {displayVal} </div>
+        <span onClick={(event) => didClickPix(i, i2)}>
+          {" "}
+          {displayPix(i, i2)}{" "}
+        </span>
       );
     }
     MyRows.push(<li key={i}>{myCols}</li>);
