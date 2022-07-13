@@ -21,18 +21,28 @@ export const PaletteSizer = (props) => {
     return pixels[keyName] == "ON" ? "X" : "0";
   };
 
+  const pixClasses = (x, y) => {
+    const keyName = pixelKey(x, y);
+    return pixels[keyName] == "ON" ? "bg-sky-500" : "bg-white";
+  };
+
   const MyRows = [];
   for (let i = 0; i < height; i++) {
     const myCols = [];
     for (let i2 = 0; i2 < width; i2++) {
+      const ClassNameList = `text-center w-8 h-8 p-1 ${pixClasses(i, i2)}`;
       myCols.push(
-        <span onClick={(event) => didClickPix(i, i2)}>
-          {" "}
-          {displayPix(i, i2)}{" "}
-        </span>
+        <div
+          className={ClassNameList}
+          onClick={(event) => didClickPix(i, i2)}
+        ></div>
       );
     }
-    MyRows.push(<li key={i}>{myCols}</li>);
+    MyRows.push(
+      <div className="flex" key={i}>
+        {myCols}
+      </div>
+    );
   }
 
   return (
@@ -61,7 +71,9 @@ export const PaletteSizer = (props) => {
         </label>
       </fieldset>
       <div>
-        <ul>{MyRows}</ul>
+        <div className="flex flex-col border-solid border-2 border-indigo-60">
+          {MyRows}
+        </div>
       </div>
     </div>
   );
