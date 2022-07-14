@@ -23,7 +23,7 @@ export const PaletteSizer = (props) => {
 
   const pixClasses = (x, y) => {
     const keyName = pixelKey(x, y);
-    return pixels[keyName] == "ON" ? "bg-sky-500" : "bg-white";
+    return pixels[keyName] == "ON" ? "bg-sky-500" : "bg-slate-50";
   };
 
   const MyRows = [];
@@ -39,41 +39,36 @@ export const PaletteSizer = (props) => {
       );
     }
     MyRows.push(
-      <div className="flex" key={i}>
+      <div className="flex flex-auto justify-center" key={i}>
         {myCols}
       </div>
     );
   }
 
   return (
-    <div>
-      <p>INSPECT:</p>
-      <fieldset>
-        <label>
-          WIDTH
+    <div className="container">
+      <div className="flex justify-center">
+        <fieldset>
+          <label className="mr-2">WIDTH</label>
           <input
             type="number"
             name="WIDTH"
             value={width}
             onChange={(event) => setWidth(event.target.value)}
           />
-        </label>
-      </fieldset>
-      <fieldset>
-        <label>
-          HEIGHT
+        </fieldset>
+        <fieldset>
+          <label className="mr-2">HEIGHT</label>
           <input
             type="number"
             name="HEIGHT"
             value={height}
             onChange={(event) => setHeight(event.target.value)}
           />
-        </label>
-      </fieldset>
-      <div>
-        <div className="flex flex-col border-solid border-2 border-indigo-60">
-          {MyRows}
-        </div>
+        </fieldset>
+      </div>
+      <div className="mt-6">
+        <div className="flex flex-col flex-auto">{MyRows}</div>
       </div>
     </div>
   );
