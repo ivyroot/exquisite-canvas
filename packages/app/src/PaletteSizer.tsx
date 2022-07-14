@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const pixelKey = (x, y) => {
   return `${x}||${y}`;
 };
 
 export const PaletteSizer = (props) => {
-  const [width, setWidth] = useState(8);
-  const [height, setHeight] = useState(8);
+  const [bg, setBackgroundColor] = useState("#F8FAFC");
+  const [fg, setForegroundColor] = useState("#0EA5E9");
+  const [width, setWidth] = useState(16);
+  const [height, setHeight] = useState(16);
   const [pixels, setPixels] = useState({});
 
   const didClickPix = (x, y) => {
@@ -26,14 +28,24 @@ export const PaletteSizer = (props) => {
     return pixels[keyName] == "ON" ? "bg-sky-500" : "bg-slate-50";
   };
 
+  const pixStyles = (x, y) => {
+    const keyName = pixelKey(x, y);
+    if (pixels[keyName] == "ON") {
+      return { backgroundColor: fg };
+    } else {
+      return { backgroundColor: bg };
+    }
+  };
+
   const MyRows = [];
   for (let i = 0; i < height; i++) {
     const myCols = [];
     for (let i2 = 0; i2 < width; i2++) {
-      const ClassNameList = `text-center w-8 h-8 p-1 ${pixClasses(i, i2)}`;
+      const ClassNameList = `text-center w-8 h-8 p-1`;
       myCols.push(
         <div
           className={ClassNameList}
+          style={pixStyles(i, i2)}
           onClick={(event) => didClickPix(i, i2)}
         ></div>
       );
@@ -45,8 +57,37 @@ export const PaletteSizer = (props) => {
     );
   }
 
+  const PaletteChooser = (
+    <div className="my-12 flex justify-center">
+      <div className="mx-8 p-4" style={{ backgroundColor: bg }}>
+        <input
+          className="p-2 w-24"
+          style={{ backgroundColor: bg }}
+          type="text"
+          name="BACKGROUND_COLOR"
+          value={bg}
+          onChange={(event) => setBackgroundColor(event.target.value)}
+        />
+      </div>
+
+      <div className="mx-8 p-4" style={{ backgroundColor: fg }}>
+        <input
+          className="p-2 w-24"
+          style={{ backgroundColor: fg }}
+          type="text"
+          name="COLOR_1"
+          value={fg}
+          onChange={(event) => setForegroundColor(event.target.value)}
+        />
+      </div>
+      <div className="bg-slate-500 mx-8 p-4">
+        <div className="p-2">ADD COLOR</div>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="container">
+    <div className="containe mt-12">
       <div className="flex justify-center">
         <fieldset className="bg-slate-200 mx-2">
           <label className="mx-2">WIDTH:</label>
@@ -72,6 +113,7 @@ export const PaletteSizer = (props) => {
       <div className="mt-6">
         <div className="flex flex-col flex-auto">{MyRows}</div>
       </div>
+      {PaletteChooser}
     </div>
   );
 };

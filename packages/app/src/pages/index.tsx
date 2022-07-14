@@ -14,11 +14,9 @@ const HomePage: NextPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800">
-      <h1 className="text-4xl">
+      <h1 className="text-4xl py-2">
         <span className="bg-slate-200 p-2">px grid</span>
       </h1>
-
-      <div className="p-2"></div>
       <PaletteSizer />
     </div>
   );
