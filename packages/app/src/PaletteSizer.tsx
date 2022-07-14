@@ -48,18 +48,20 @@ export const PaletteSizer = (props) => {
   return (
     <div className="container">
       <div className="flex justify-center">
-        <fieldset>
-          <label className="mr-2">WIDTH</label>
+        <fieldset className="bg-slate-200 mx-2">
+          <label className="mx-2">WIDTH:</label>
           <input
+            className="px-2"
             type="number"
             name="WIDTH"
             value={width}
             onChange={(event) => setWidth(event.target.value)}
           />
         </fieldset>
-        <fieldset>
-          <label className="mr-2">HEIGHT</label>
+        <fieldset className="bg-slate-200 mx-2">
+          <label className="mx-2">HEIGHT:</label>
           <input
+            className="px-2"
             type="number"
             name="HEIGHT"
             value={height}
