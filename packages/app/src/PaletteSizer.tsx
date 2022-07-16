@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { Button } from "./Button";
+import { useDownload } from "./useDownload";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 
@@ -13,12 +15,44 @@ export const PaletteSizer = (props) => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [pixels, setPixels] = useState({});
+  const palette = [bg, fg];
+  const header = {
+    version: 1,
+    width: width,
+    height: height,
+    numColors: 2,
+    scaleFactor: 1,
+    alpha: 1,
+    backgroundIncluded: true,
+    backgroundIndex: 0,
+  };
 
   const didClickPix = (x, y) => {
     const keyName = pixelKey(x, y);
     const ChangeSet = {};
     ChangeSet[keyName] = pixels[keyName] == "ON" ? "" : "ON";
     setPixels({ ...pixels, ...ChangeSet });
+  };
+
+  const generatePixels = () => {
+    const pixelList = [];
+    for (let i1 = 0; i1 < width; i1++) {
+      for (let i2 = 0; i2 < height; i2++) {
+        const keyName = pixelKey(i1, i2);
+        const colorPos = pixels[keyName] == "ON" ? 1 : 0;
+        pixelList.push({
+          x: i1,
+          y: i2,
+          color: colorPos,
+        });
+      }
+    }
+    return pixelList;
+  };
+
+  const didClickSave = (e) => {
+    e.preventDefault();
+    useDownload(header, palette, generatePixels());
   };
 
   const displayPix = (x, y) => {
@@ -84,7 +118,9 @@ export const PaletteSizer = (props) => {
         />
       </div>
       <div className="bg-slate-500 mx-8 p-4">
-        <div className="p-2">ADD COLOR</div>
+        <button className="p-2" onClick={(event) => didClickSave(event)}>
+          SAVE
+        </button>
       </div>
     </div>
   );
