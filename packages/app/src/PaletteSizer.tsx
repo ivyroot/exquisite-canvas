@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
-import {
-  ExquisiteBitmapHeader,
-  PixelBuffer,
-  PixelDataInfo,
-} from "./xgfx/ll_api";
+import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 
 const pixelKey = (x, y) => {
   return `${x}||${y}`;
