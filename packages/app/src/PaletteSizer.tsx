@@ -97,7 +97,7 @@ export const PaletteSizer = (props) => {
 
   const paletteItemColor = (position) => {
     const itemKey = paletteKey(position);
-    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : `#22E9AAA2`;
+    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : `#22E9AA`;
   };
 
   const PaletteItems = [];
@@ -107,7 +107,7 @@ export const PaletteSizer = (props) => {
     PaletteItems.push(
       <div
         key={itemKey}
-        className="mx-8 p-4"
+        className="mx-8 my-4 p-4"
         style={{ backgroundColor: itemColor }}
       >
         <input
@@ -145,7 +145,7 @@ export const PaletteSizer = (props) => {
   };
 
   const PaletteChooser = (
-    <div className="my-12 flex justify-center">
+    <div className="my-12 flex justify-left flex-wrap">
       <div className="mx-8 p-0 flex flex-col justify-center">
         <button
           className="bg-slate-200  p-1"
