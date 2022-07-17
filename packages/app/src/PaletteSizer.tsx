@@ -105,6 +105,21 @@ export const PaletteSizer = (props) => {
 
   const PaletteChooser = (
     <div className="my-12 flex justify-center">
+      <div className="mx-8 p-0 flex flex-col justify-center">
+        <button
+          className="bg-slate-200  p-1"
+          onClick={(event) => didClickSave(event)}
+        >
+          +
+        </button>
+        <button
+          className="bg-slate-200  p-1 mt-2"
+          onClick={(event) => didClickSave(event)}
+        >
+          -
+        </button>
+      </div>
+
       <div className="mx-8 p-4" style={{ backgroundColor: bg }}>
         <input
           className="p-2 w-24"
@@ -125,11 +140,6 @@ export const PaletteSizer = (props) => {
           value={fg}
           onChange={(event) => handleSetPaletteColor(1, event.target.value)}
         />
-      </div>
-      <div className="bg-slate-500 mx-8 p-4">
-        <button className="p-2" onClick={(event) => didClickSave(event)}>
-          CHANGE PALETTE
-        </button>
       </div>
     </div>
   );
