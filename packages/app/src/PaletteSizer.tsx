@@ -95,21 +95,27 @@ export const PaletteSizer = (props) => {
     );
   }
 
+  const paletteItemColor = (position) => {
+    const itemKey = paletteKey(position);
+    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : `#22E9AAA2`;
+  };
+
   const PaletteItems = [];
   for (let pi = 0; pi < paletteSize; pi++) {
     const itemKey = paletteKey(pi);
+    const itemColor = paletteItemColor(pi);
     PaletteItems.push(
       <div
         key={itemKey}
         className="mx-8 p-4"
-        style={{ backgroundColor: palette[itemKey] }}
+        style={{ backgroundColor: itemColor }}
       >
         <input
           className="p-2 w-24"
-          style={{ backgroundColor: palette[itemKey] }}
+          style={{ backgroundColor: itemColor }}
           type="text"
           name="BACKGROUND_COLOR"
-          value={palette[itemKey]}
+          value={itemColor}
           onChange={(event) =>
             handleSetPaletteColor(itemKey, event.target.value)
           }
@@ -121,10 +127,6 @@ export const PaletteSizer = (props) => {
   const didClickAddPaletteItem = (e) => {
     e.preventDefault();
     console.log(`adding item ${paletteKey(paletteSize)} -- ${paletteSize}`);
-    if (palette.length < paletteSize + 1) {
-      console.log(`setting the palettoec oecod`);
-      handleSetPaletteColor(paletteKey(paletteSize), "#EF7512");
-    }
     setPaletteSize(paletteSize + 1);
   };
 
