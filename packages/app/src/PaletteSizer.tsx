@@ -15,7 +15,7 @@ export const PaletteSizer = (props) => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [pixels, setPixels] = useState({});
-  const palette = [bg, fg];
+  const [palette, setPalette] = useState(["#F8FAFC", "#0EA5E9"]);
   const header = {
     version: 1,
     width: width,
@@ -55,6 +55,14 @@ export const PaletteSizer = (props) => {
     useDownload(header, palette, generatePixels());
   };
 
+  const didClickAddPaletteItem = (e) => {
+    e.preventDefault();
+  };
+
+  const didClickRemovePaletteItem = (e) => {
+    e.preventDefault();
+  };
+
   const displayPix = (x, y) => {
     const keyName = pixelKey(x, y);
     return pixels[keyName] == "ON" ? "X" : "0";
@@ -81,6 +89,7 @@ export const PaletteSizer = (props) => {
       const ClassNameList = `text-center w-8 h-8 p-1`;
       myCols.push(
         <div
+          key={pixelKey(i, i2)}
           className={ClassNameList}
           style={pixStyles(i, i2)}
           onClick={(event) => didClickPix(i, i2)}
@@ -94,13 +103,18 @@ export const PaletteSizer = (props) => {
     );
   }
 
+  const didChangePalette = (pos, color) => {
+    const ChangeSet = palette;
+    palette[pos] = color;
+    setPalette(palette);
+  };
+
   const handleSetPaletteColor = (pos, val) => {
     const fmtVal = Array.from(val)[0] == "#" ? val : `#${val}`;
-    if (pos == 0) {
-      setBackgroundColor(fmtVal);
-    } else {
-      setForegroundColor(fmtVal);
-    }
+    const ChangeSet = Array.from(palette, function mapFn(element, index) {
+      return pos == index ? fmtVal : element;
+    });
+    setPalette(ChangeSet);
   };
 
   const PaletteChooser = (
@@ -108,36 +122,36 @@ export const PaletteSizer = (props) => {
       <div className="mx-8 p-0 flex flex-col justify-center">
         <button
           className="bg-slate-200  p-1"
-          onClick={(event) => didClickSave(event)}
+          onClick={(event) => didClickAddPaletteItem(event)}
         >
           +
         </button>
         <button
           className="bg-slate-200  p-1 mt-2"
-          onClick={(event) => didClickSave(event)}
+          onClick={(event) => didClickRemovePaletteItem(event)}
         >
           -
         </button>
       </div>
 
-      <div className="mx-8 p-4" style={{ backgroundColor: bg }}>
+      <div className="mx-8 p-4" style={{ backgroundColor: palette[0] }}>
         <input
           className="p-2 w-24"
-          style={{ backgroundColor: bg }}
+          style={{ backgroundColor: palette[0] }}
           type="text"
           name="BACKGROUND_COLOR"
-          value={bg}
+          value={palette[0]}
           onChange={(event) => handleSetPaletteColor(0, event.target.value)}
         />
       </div>
 
-      <div className="mx-8 p-4" style={{ backgroundColor: fg }}>
+      <div className="mx-8 p-4" style={{ backgroundColor: palette[1] }}>
         <input
           className="p-2 w-24"
-          style={{ backgroundColor: fg }}
+          style={{ backgroundColor: palette[1] }}
           type="text"
           name="COLOR_1"
-          value={fg}
+          value={palette[1]}
           onChange={(event) => handleSetPaletteColor(1, event.target.value)}
         />
       </div>
