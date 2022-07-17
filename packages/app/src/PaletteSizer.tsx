@@ -94,6 +94,15 @@ export const PaletteSizer = (props) => {
     );
   }
 
+  const handleSetPaletteColor = (pos, val) => {
+    const fmtVal = Array.from(val)[0] == "#" ? val : `#${val}`;
+    if (pos == 0) {
+      setBackgroundColor(fmtVal);
+    } else {
+      setForegroundColor(fmtVal);
+    }
+  };
+
   const PaletteChooser = (
     <div className="my-12 flex justify-center">
       <div className="mx-8 p-4" style={{ backgroundColor: bg }}>
@@ -103,7 +112,7 @@ export const PaletteSizer = (props) => {
           type="text"
           name="BACKGROUND_COLOR"
           value={bg}
-          onChange={(event) => setBackgroundColor(event.target.value)}
+          onChange={(event) => handleSetPaletteColor(0, event.target.value)}
         />
       </div>
 
@@ -114,7 +123,7 @@ export const PaletteSizer = (props) => {
           type="text"
           name="COLOR_1"
           value={fg}
-          onChange={(event) => setForegroundColor(event.target.value)}
+          onChange={(event) => handleSetPaletteColor(1, event.target.value)}
         />
       </div>
       <div className="bg-slate-500 mx-8 p-4">
