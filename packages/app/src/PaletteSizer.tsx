@@ -119,40 +119,59 @@ export const PaletteSizer = (props) => {
       </div>
       <div className="bg-slate-500 mx-8 p-4">
         <button className="p-2" onClick={(event) => didClickSave(event)}>
-          SAVE
+          CHANGE PALETTE
         </button>
       </div>
     </div>
   );
 
   return (
-    <div className="containe mt-12">
-      <div className="flex justify-center">
-        <fieldset className="bg-slate-200 mx-2">
-          <label className="mx-2">WIDTH:</label>
-          <input
-            className="px-2"
-            type="number"
-            name="WIDTH"
-            value={width}
-            onChange={(event) => setWidth(event.target.value)}
-          />
-        </fieldset>
-        <fieldset className="bg-slate-200 mx-2">
-          <label className="mx-2">HEIGHT:</label>
-          <input
-            className="px-2"
-            type="number"
-            name="HEIGHT"
-            value={height}
-            onChange={(event) => setHeight(event.target.value)}
-          />
-        </fieldset>
+    <div className="min-h-screen flex flex-col bg-slate-800">
+      <div className="flex justify-left">
+        <h1 className="text-4xl py-2">
+          <span className="bg-slate-200 p-2">px grid</span>
+        </h1>
+        <button
+          className="bg-slate-200  p-2 m-2"
+          onClick={(event) => didClickSave(event)}
+        >
+          LOAD
+        </button>
+        <button
+          className="bg-slate-200  p-2 m-2"
+          onClick={(event) => didClickSave(event)}
+        >
+          SAVE
+        </button>
       </div>
-      <div className="mt-6">
-        <div className="flex flex-col flex-auto">{MyRows}</div>
+      <div className="containe mt-12">
+        <div className="flex justify-center">
+          <fieldset className="bg-slate-200 mx-2">
+            <label className="mx-2">WIDTH:</label>
+            <input
+              className="px-2"
+              type="number"
+              name="WIDTH"
+              value={width}
+              onChange={(event) => setWidth(event.target.value)}
+            />
+          </fieldset>
+          <fieldset className="bg-slate-200 mx-2">
+            <label className="mx-2">HEIGHT:</label>
+            <input
+              className="px-2"
+              type="number"
+              name="HEIGHT"
+              value={height}
+              onChange={(event) => setHeight(event.target.value)}
+            />
+          </fieldset>
+        </div>
+        <div className="mt-6">
+          <div className="flex flex-col flex-auto">{MyRows}</div>
+        </div>
+        {PaletteChooser}
       </div>
-      {PaletteChooser}
     </div>
   );
 };
