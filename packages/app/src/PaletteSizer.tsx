@@ -9,13 +9,19 @@ const pixelKey = (x, y) => {
   return `${x}||${y}`;
 };
 
+const paletteKey = (i) => {
+  return `pal_${i}`;
+};
+
 export const PaletteSizer = (props) => {
-  const [bg, setBackgroundColor] = useState("#F8FAFC");
-  const [fg, setForegroundColor] = useState("#0EA5E9");
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [pixels, setPixels] = useState({});
-  const [palette, setPalette] = useState(["#F8FAFC", "#0EA5E9"]);
+  const [palette, setPalette] = useState({
+    pal_0: "#F8FAFC",
+    pal_1: "#0EA5E9",
+  });
+  const [paletteSize, setPaletteSize] = useState(2);
   const header = {
     version: 1,
     width: width,
@@ -55,30 +61,17 @@ export const PaletteSizer = (props) => {
     useDownload(header, palette, generatePixels());
   };
 
-  const didClickAddPaletteItem = (e) => {
-    e.preventDefault();
-  };
-
-  const didClickRemovePaletteItem = (e) => {
-    e.preventDefault();
-  };
-
   const displayPix = (x, y) => {
     const keyName = pixelKey(x, y);
     return pixels[keyName] == "ON" ? "X" : "0";
   };
 
-  const pixClasses = (x, y) => {
-    const keyName = pixelKey(x, y);
-    return pixels[keyName] == "ON" ? "bg-sky-500" : "bg-slate-50";
-  };
-
   const pixStyles = (x, y) => {
     const keyName = pixelKey(x, y);
     if (pixels[keyName] == "ON") {
-      return { backgroundColor: fg };
+      return { backgroundColor: palette[paletteKey(1)] };
     } else {
-      return { backgroundColor: bg };
+      return { backgroundColor: palette[paletteKey(0)] };
     }
   };
 
@@ -86,11 +79,10 @@ export const PaletteSizer = (props) => {
   for (let i = 0; i < height; i++) {
     const myCols = [];
     for (let i2 = 0; i2 < width; i2++) {
-      const ClassNameList = `text-center w-8 h-8 p-1`;
       myCols.push(
         <div
           key={pixelKey(i, i2)}
-          className={ClassNameList}
+          className="text-center w-8 h-8 p-1"
           style={pixStyles(i, i2)}
           onClick={(event) => didClickPix(i, i2)}
         ></div>
@@ -103,18 +95,51 @@ export const PaletteSizer = (props) => {
     );
   }
 
-  const didChangePalette = (pos, color) => {
-    const ChangeSet = palette;
-    palette[pos] = color;
-    setPalette(palette);
+  const PaletteItems = [];
+  for (let pi = 0; pi < paletteSize; pi++) {
+    const itemKey = paletteKey(pi);
+    PaletteItems.push(
+      <div
+        key={itemKey}
+        className="mx-8 p-4"
+        style={{ backgroundColor: palette[itemKey] }}
+      >
+        <input
+          className="p-2 w-24"
+          style={{ backgroundColor: palette[itemKey] }}
+          type="text"
+          name="BACKGROUND_COLOR"
+          value={palette[itemKey]}
+          onChange={(event) =>
+            handleSetPaletteColor(itemKey, event.target.value)
+          }
+        />
+      </div>
+    );
+  }
+
+  const didClickAddPaletteItem = (e) => {
+    e.preventDefault();
+    console.log(`adding item ${paletteKey(paletteSize)} -- ${paletteSize}`);
+    if (palette.length < paletteSize + 1) {
+      console.log(`setting the palettoec oecod`);
+      handleSetPaletteColor(paletteKey(paletteSize), "#EF7512");
+    }
+    setPaletteSize(paletteSize + 1);
   };
 
-  const handleSetPaletteColor = (pos, val) => {
+  const didClickRemovePaletteItem = (e) => {
+    e.preventDefault();
+    if (paletteSize > 2) {
+      setPaletteSize(paletteSize - 1);
+    }
+  };
+
+  const handleSetPaletteColor = (itemKey, val) => {
     const fmtVal = Array.from(val)[0] == "#" ? val : `#${val}`;
-    const ChangeSet = Array.from(palette, function mapFn(element, index) {
-      return pos == index ? fmtVal : element;
-    });
-    setPalette(ChangeSet);
+    const ChangeSet = {};
+    ChangeSet[itemKey] = fmtVal;
+    setPalette({ ...palette, ...ChangeSet });
   };
 
   const PaletteChooser = (
@@ -133,28 +158,7 @@ export const PaletteSizer = (props) => {
           -
         </button>
       </div>
-
-      <div className="mx-8 p-4" style={{ backgroundColor: palette[0] }}>
-        <input
-          className="p-2 w-24"
-          style={{ backgroundColor: palette[0] }}
-          type="text"
-          name="BACKGROUND_COLOR"
-          value={palette[0]}
-          onChange={(event) => handleSetPaletteColor(0, event.target.value)}
-        />
-      </div>
-
-      <div className="mx-8 p-4" style={{ backgroundColor: palette[1] }}>
-        <input
-          className="p-2 w-24"
-          style={{ backgroundColor: palette[1] }}
-          type="text"
-          name="COLOR_1"
-          value={palette[1]}
-          onChange={(event) => handleSetPaletteColor(1, event.target.value)}
-        />
-      </div>
+      {PaletteItems}
     </div>
   );
 
