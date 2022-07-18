@@ -63,6 +63,20 @@ export const PaletteSizer = (props) => {
     useDownload(header, palette, generatePixels());
   };
 
+  const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
+    String.fromCharCode("A".charCodeAt(0) + i)
+  );
+
+  const paletteItemColor = (position) => {
+    const itemKey = paletteKey(position);
+    const generativeColor = `#${colorCodeElements[position % 6]}${
+      colorCodeElements[position % 5]
+    }${colorCodeElements[position % 5]}${colorCodeElements[position % 4]}${
+      colorCodeElements[position % 5]
+    }${colorCodeElements[position % 3]}`;
+    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : generativeColor;
+  };
+
   const palettePosForPixel = (x, y) => {
     const keyName = pixelKey(x, y);
     const pixelPos = pixels[keyName];
@@ -75,7 +89,7 @@ export const PaletteSizer = (props) => {
   };
 
   const colorForPixel = (x, y) => {
-    return palette[paletteKey(palettePosForPixel(x, y))];
+    return paletteItemColor(palettePosForPixel(x, y));
   };
 
   const pixStyles = (x, y) => {
@@ -101,20 +115,6 @@ export const PaletteSizer = (props) => {
       </div>
     );
   }
-
-  const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
-    String.fromCharCode("A".charCodeAt(0) + i)
-  );
-
-  const paletteItemColor = (position) => {
-    const itemKey = paletteKey(position);
-    const generativeColor = `#${colorCodeElements[position % 6]}${
-      colorCodeElements[position % 5]
-    }${colorCodeElements[position % 5]}${colorCodeElements[position % 4]}${
-      colorCodeElements[position % 5]
-    }${colorCodeElements[position % 3]}`;
-    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : generativeColor;
-  };
 
   const PaletteItems = [];
   for (let pi = 0; pi < paletteSize; pi++) {
