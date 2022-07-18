@@ -95,9 +95,18 @@ export const PaletteSizer = (props) => {
     );
   }
 
+  const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
+    String.fromCharCode("A".charCodeAt(0) + i)
+  );
+
   const paletteItemColor = (position) => {
     const itemKey = paletteKey(position);
-    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : `#22E9AA`;
+    const generativeColor = `#${colorCodeElements[position % 6]}${
+      colorCodeElements[position % 5]
+    }${colorCodeElements[position % 5]}${colorCodeElements[position % 4]}${
+      colorCodeElements[position % 5]
+    }${colorCodeElements[position % 3]}`;
+    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : generativeColor;
   };
 
   const PaletteItems = [];
