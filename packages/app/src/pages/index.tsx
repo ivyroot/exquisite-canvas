@@ -12,7 +12,12 @@ import { Widget } from "../Widget";
 const HomePage: NextPage = () => {
   const isMounted = useIsMounted();
 
-  return <PaletteSizer />;
+  return (
+    <div>
+      <PaletteSizer />
+      <div className="h-36 bg-white"></div>
+    </div>
+  );
 };
 
 export default HomePage;
