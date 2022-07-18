@@ -187,13 +187,13 @@ export const PaletteSizer = (props) => {
           <span className="bg-slate-200 p-2">px grid</span>
         </h1>
         <button
-          className="bg-slate-200  p-2 m-2"
+          className="bg-slate-200  py-1 px-4 ml-12 mt-2 text-2xl"
           onClick={(event) => didClickSave(event)}
         >
           LOAD
         </button>
         <button
-          className="bg-slate-200  p-2 m-2"
+          className="bg-slate-200  py-1 px-4 ml-12 mt-2 text-2xl"
           onClick={(event) => didClickSave(event)}
         >
           SAVE
