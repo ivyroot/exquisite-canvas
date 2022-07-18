@@ -54,7 +54,6 @@ export const PaletteSizer = (props) => {
         });
       }
     }
-    console.log(`SENDING PIXEL LIST ${pixelList}`);
     return pixelList;
   };
 
@@ -142,7 +141,6 @@ export const PaletteSizer = (props) => {
 
   const didClickAddPaletteItem = (e) => {
     e.preventDefault();
-    console.log(`adding item ${paletteKey(paletteSize)} -- ${paletteSize}`);
     setPaletteSize(paletteSize + 1);
   };
 
