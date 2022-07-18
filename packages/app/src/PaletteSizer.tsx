@@ -42,6 +42,12 @@ export const PaletteSizer = (props) => {
     setPixels({ ...pixels, ...ChangeSet });
   };
 
+  const paletteArray = () => {
+    return Array.from({ length: paletteSize }, (v, i) => {
+      return paletteItemColor(i);
+    });
+  };
+
   const generatePixels = () => {
     const pixelList = [];
     for (let i1 = 0; i1 < width; i1++) {
@@ -59,7 +65,7 @@ export const PaletteSizer = (props) => {
 
   const didClickSave = (e) => {
     e.preventDefault();
-    useDownload(header, palette, generatePixels());
+    useDownload(header, paletteArray(), generatePixels());
   };
 
   const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
