@@ -35,8 +35,10 @@ export const PaletteSizer = (props) => {
 
   const didClickPix = (x, y) => {
     const keyName = pixelKey(x, y);
+    const nextPos = pixels[keyName] ? pixels[keyName] + 1 : 1;
+    const wrappedPos = nextPos >= paletteSize ? 0 : nextPos;
     const ChangeSet = {};
-    ChangeSet[keyName] = pixels[keyName] == "ON" ? "" : "ON";
+    ChangeSet[keyName] = wrappedPos;
     setPixels({ ...pixels, ...ChangeSet });
   };
 
@@ -44,15 +46,15 @@ export const PaletteSizer = (props) => {
     const pixelList = [];
     for (let i1 = 0; i1 < width; i1++) {
       for (let i2 = 0; i2 < height; i2++) {
-        const keyName = pixelKey(i1, i2);
-        const colorPos = pixels[keyName] == "ON" ? 1 : 0;
+        const palettePos = palettePosForPixel(i1, i2);
         pixelList.push({
           x: i1,
           y: i2,
-          color: colorPos,
+          color: palettePos,
         });
       }
     }
+    console.log(`SENDING PIXEL LIST ${pixelList}`);
     return pixelList;
   };
 
@@ -61,18 +63,23 @@ export const PaletteSizer = (props) => {
     useDownload(header, palette, generatePixels());
   };
 
-  const displayPix = (x, y) => {
+  const palettePosForPixel = (x, y) => {
     const keyName = pixelKey(x, y);
-    return pixels[keyName] == "ON" ? "X" : "0";
+    const pixelPos = pixels[keyName];
+    if (pixelPos && pixelPos > 0) {
+      const cappedPixelPos =
+        pixelPos < paletteSize ? pixelPos : paletteSize - 1;
+      return cappedPixelPos;
+    }
+    return 0;
+  };
+
+  const colorForPixel = (x, y) => {
+    return palette[paletteKey(palettePosForPixel(x, y))];
   };
 
   const pixStyles = (x, y) => {
-    const keyName = pixelKey(x, y);
-    if (pixels[keyName] == "ON") {
-      return { backgroundColor: palette[paletteKey(1)] };
-    } else {
-      return { backgroundColor: palette[paletteKey(0)] };
-    }
+    return { backgroundColor: colorForPixel(x, y) };
   };
 
   const MyRows = [];
@@ -147,7 +154,7 @@ export const PaletteSizer = (props) => {
   };
 
   const handleSetPaletteColor = (itemKey, val) => {
-    const fmtVal = Array.from(val)[0] == "#" ? val : `#${val}`;
+    const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
     const ChangeSet = {};
     ChangeSet[itemKey] = fmtVal;
     setPalette({ ...palette, ...ChangeSet });
