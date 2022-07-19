@@ -68,6 +68,11 @@ export const PaletteSizer = (props) => {
     useDownload(header, paletteArray(), generatePixels());
   };
 
+  const didClickLoad = (e) => {
+    e.preventDefault();
+    console.log(`TODO load a file into the canvas`);
+  };
+
   const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
     String.fromCharCode("A".charCodeAt(0) + i)
   );
@@ -192,7 +197,7 @@ export const PaletteSizer = (props) => {
         </h1>
         <button
           className="bg-slate-200  py-1 px-4 ml-12 mt-2 text-2xl"
-          onClick={(event) => didClickSave(event)}
+          onClick={(event) => didClickLoad(event)}
         >
           LOAD
         </button>
