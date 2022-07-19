@@ -79,11 +79,6 @@ export const PaletteSizer = (props) => {
     useDownload(header, paletteArray(), generatePixels());
   };
 
-  const didClickLoad = (e) => {
-    e.preventDefault();
-    console.log(`TODO load a file into the canvas`);
-  };
-
   const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
     String.fromCharCode("A".charCodeAt(0) + i)
   );
