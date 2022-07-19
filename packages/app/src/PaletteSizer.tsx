@@ -1,9 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Button } from "./Button";
 import { useDownload } from "./useDownload";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
+
+// Convert a byte array to a hex string
+function bytesToHex(bytes: number[]) {
+  for (var hex: string[] = [], i = 0; i < bytes.length; i++) {
+    const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+    hex.push((current >>> 4).toString(16));
+    hex.push((current & 0xf).toString(16));
+  }
+  return hex.join("");
+}
 
 const pixelKey = (x, y) => {
   return `${x}||${y}`;
@@ -32,6 +42,7 @@ export const PaletteSizer = (props) => {
     backgroundIncluded: true,
     backgroundIndex: 0,
   };
+  const inputRef = useRef();
 
   const didClickPix = (x, y) => {
     const keyName = pixelKey(x, y);
@@ -162,6 +173,43 @@ export const PaletteSizer = (props) => {
     }
   };
 
+  const loadFile = (e) => {
+    const files = Array.from(e.target.files);
+    console.log("files:", files);
+    const file = files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsArrayBuffer(file, "UTF-8");
+      reader.onload = () => {
+        console.log(`loading file contents`);
+        const fileDataStr = [...new Uint8Array(reader.result)]
+          .map((x) => x.toString(16).padStart(2, "0"))
+          .join("");
+        const fullFileDataStr = `0x${fileDataStr}`;
+        console.log(`RESULTS ARE ${fullFileDataStr}`);
+        const startHeader = {
+          version: 1,
+          width: 16,
+          height: 17,
+          numColors: 2,
+          scaleFactor: 1,
+          alpha: false,
+          backgroundIncluded: true,
+          backgroundIndex: 0,
+        };
+        const exquisiteBuffer = new PixelBuffer(startHeader, [
+          "#EEEEEE",
+          "#ACACAC",
+        ]);
+        exquisiteBuffer.from(fullFileDataStr);
+        console.log(`Created PixBuffer! ${exquisiteBuffer}`);
+      };
+      reader.onerror = (e) => {
+        console.log(`ERROR LOADING FILE CONTENTS`);
+      };
+    }
+  };
+
   const handleSetPaletteColor = (itemKey, val) => {
     const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
     const ChangeSet = {};
@@ -195,9 +243,19 @@ export const PaletteSizer = (props) => {
         <h1 className="text-4xl py-2">
           <span className="bg-slate-200 p-2">px grid</span>
         </h1>
+
+        <input
+          ref={inputRef}
+          type="file"
+          style={{ display: "none" }}
+          onChange={(e) => {
+            loadFile(e);
+            inputRef.current.value = null;
+          }}
+        />
         <button
           className="bg-slate-200  py-1 px-4 ml-12 mt-2 text-2xl"
-          onClick={(event) => didClickLoad(event)}
+          onClick={() => inputRef.current.click()}
         >
           LOAD
         </button>
