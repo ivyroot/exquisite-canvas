@@ -186,21 +186,8 @@ export const PaletteSizer = (props) => {
           .map((x) => x.toString(16).padStart(2, "0"))
           .join("");
         const fullFileDataStr = `0x${fileDataStr}`;
-        console.log(`RESULTS ARE ${fullFileDataStr}`);
-        const startHeader = {
-          version: 1,
-          width: 16,
-          height: 17,
-          numColors: 2,
-          scaleFactor: 1,
-          alpha: false,
-          backgroundIncluded: true,
-          backgroundIndex: 0,
-        };
-        const exquisiteBuffer = new PixelBuffer(startHeader, [
-          "#EEEEEE",
-          "#ACACAC",
-        ]);
+        console.log(`Loaded file hex: ${fullFileDataStr}`);
+        const exquisiteBuffer = new PixelBuffer();
         exquisiteBuffer.from(fullFileDataStr);
         console.log(`Created PixBuffer! ${exquisiteBuffer}`);
       };
