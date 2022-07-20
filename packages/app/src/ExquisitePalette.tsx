@@ -65,7 +65,6 @@ export const ExquisitePalette = (props) => {
     for (let iy = 0; iy < height; iy++) {
       for (let ix = 0; ix < width; ix++) {
         const palettePos = palettePosForPixel(ix, iy);
-        console.log(`PIX SET: ${ix}, ${iy} ==> ${palettePos}`);
         pixelList.push({
           x: ix,
           y: iy,
@@ -171,10 +170,8 @@ export const ExquisitePalette = (props) => {
   };
 
   const loadFromPixBuffer = (pixBuffer) => {
-    console.log(`LOADING FROM EXQUISITE GRAPHICS FILE`);
     setWidth(pixBuffer.header.width);
     setHeight(pixBuffer.header.height);
-    console.log(`WxH: ${pixBuffer.header.width}x${pixBuffer.header.height}`);
     const htmlPalette = {};
     for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
       const palKey = paletteKey(pi);
@@ -195,13 +192,11 @@ export const ExquisitePalette = (props) => {
 
   const loadFile = (e) => {
     const files = Array.from(e.target.files);
-    console.log("files:", files);
     const file = files[0];
     if (file) {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file, "UTF-8");
       reader.onload = () => {
-        console.log(`loading file contents`);
         const fileDataStr = [...new Uint8Array(reader.result)]
           .map((x) => x.toString(16).padStart(2, "0"))
           .join("");
@@ -210,7 +205,7 @@ export const ExquisitePalette = (props) => {
         const exquisiteBuffer = new PixelBuffer();
         exquisiteBuffer.from(fullFileDataStr);
         console.log(
-          `Loading from Exquisite Graphics file with palette size: ${exquisiteBuffer.palette.length}`
+          `Loaded from Exquisite Graphics file with palette size: ${exquisiteBuffer.palette.length}`
         );
         loadFromPixBuffer(exquisiteBuffer);
       };
