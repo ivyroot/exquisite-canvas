@@ -35,9 +35,9 @@ export const ExquisitePalette = (props) => {
   const [pixels, setPixels] = useState({});
   const header = {
     version: 1,
-    width: width,
-    height: height,
-    numColors: paletteSize,
+    width: parseInt(width),
+    height: parseInt(height),
+    numColors: parseInt(paletteSize),
     scaleFactor: 1,
     alpha: false,
     backgroundIncluded: false,
