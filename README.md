@@ -1,3 +1,14 @@
+# Exquisite Canvas
+
+Proof Of Concept of a canvas app to work with Exquisite Graphics files. Provides control of canvas size, palette, and pixels.
+
+The canvas app is in the packages/app directory. To run it cd to that directory, install the node dependencies using npm (or pnpm or yarn), then run `npm run dev`. 
+
+
+This app was bootstrapped from [web3-scaffold](https://github.com/holic/web3-scaffold), the rest of this README is from the scaffold.
+
+---
+
 # web3 scaffold
 
 _Quickly get up and running on web3_
