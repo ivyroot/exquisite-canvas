@@ -38,7 +38,7 @@ export const PaletteSizer = (props) => {
     height: height,
     numColors: paletteSize,
     scaleFactor: 1,
-    alpha: 1,
+    alpha: false,
     backgroundIncluded: false,
     backgroundIndex: 0,
   };
@@ -176,13 +176,10 @@ export const PaletteSizer = (props) => {
     const htmlPalette = {};
     for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
       const palKey = paletteKey(pi);
-      const palColor = `#${pixBuffer.palette[pi].substring(0, 6)}`;
-      htmlPalette[palKey] = palColor;
+      htmlPalette[palKey] = pixBuffer.palette[pi];
     }
     setPalette(htmlPalette);
-    console.log(`PALETTE: ${htmlPalette}`);
     setPaletteSize(pixBuffer.palette.length);
-    console.log(`PALETTE SIZE: ${pixBuffer.palette.length}`);
     const pixelMap = {};
     for (let y = 0; y < pixBuffer.header.height; y++) {
       for (let x = 0; x < pixBuffer.header.width; x++) {
