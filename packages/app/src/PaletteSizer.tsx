@@ -26,20 +26,20 @@ const paletteKey = (i) => {
 export const PaletteSizer = (props) => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
-  const [pixels, setPixels] = useState({});
   const [palette, setPalette] = useState({
     pal_0: "#F8FAFC",
     pal_1: "#0EA5E9",
   });
   const [paletteSize, setPaletteSize] = useState(2);
+  const [pixels, setPixels] = useState({});
   const header = {
     version: 1,
     width: width,
     height: height,
-    numColors: 2,
+    numColors: paletteSize,
     scaleFactor: 1,
     alpha: 1,
-    backgroundIncluded: true,
+    backgroundIncluded: false,
     backgroundIndex: 0,
   };
   const inputRef = useRef();
@@ -168,6 +168,8 @@ export const PaletteSizer = (props) => {
     }
   };
 
+  const loadFromPixBuffer = (pixBuffer) => {};
+
   const loadFile = (e) => {
     const files = Array.from(e.target.files);
     console.log("files:", files);
@@ -184,7 +186,9 @@ export const PaletteSizer = (props) => {
         console.log(`Loaded file hex: ${fullFileDataStr}`);
         const exquisiteBuffer = new PixelBuffer();
         exquisiteBuffer.from(fullFileDataStr);
-        console.log(`Created PixBuffer! ${exquisiteBuffer}`);
+        console.log(
+          `Created PixBuffer! ${exquisiteBuffer.palette[0]}, ${exquisiteBuffer.palette[1]}`
+        );
       };
       reader.onerror = (e) => {
         console.log(`ERROR LOADING FILE CONTENTS`);
