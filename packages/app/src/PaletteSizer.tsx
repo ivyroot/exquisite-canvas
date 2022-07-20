@@ -168,7 +168,31 @@ export const PaletteSizer = (props) => {
     }
   };
 
-  const loadFromPixBuffer = (pixBuffer) => {};
+  const loadFromPixBuffer = (pixBuffer) => {
+    console.log(`LOADING FROM EXQUISITE GRAPHICS FILE`);
+    setWidth(pixBuffer.header.width);
+    setHeight(pixBuffer.header.height);
+    console.log(`WxH: ${pixBuffer.header.width}x${pixBuffer.header.height}`);
+    const htmlPalette = {};
+    for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
+      const palKey = paletteKey(pi);
+      const palColor = `#${pixBuffer.palette[pi].substring(0, 6)}`;
+      htmlPalette[palKey] = palColor;
+    }
+    setPalette(htmlPalette);
+    console.log(`PALETTE: ${htmlPalette}`);
+    setPaletteSize(pixBuffer.palette.length);
+    console.log(`PALETTE SIZE: ${pixBuffer.palette.length}`);
+    const pixelMap = {};
+    for (let y = 0; y < pixBuffer.header.height; y++) {
+      for (let x = 0; x < pixBuffer.header.width; x++) {
+        const keyName = pixelKey(x, y);
+        const pixelPos = pixBuffer.getPixel(x, y);
+        pixelMap[keyName] = pixelPos;
+      }
+    }
+    setPixels(pixelMap);
+  };
 
   const loadFile = (e) => {
     const files = Array.from(e.target.files);
@@ -187,8 +211,9 @@ export const PaletteSizer = (props) => {
         const exquisiteBuffer = new PixelBuffer();
         exquisiteBuffer.from(fullFileDataStr);
         console.log(
-          `Created PixBuffer! ${exquisiteBuffer.palette[0]}, ${exquisiteBuffer.palette[1]}`
+          `Loading from Exquisite Graphics file with palette size: ${exquisiteBuffer.palette.length}`
         );
+        loadFromPixBuffer(exquisiteBuffer);
       };
       reader.onerror = (e) => {
         console.log(`ERROR LOADING FILE CONTENTS`);
@@ -226,8 +251,8 @@ export const PaletteSizer = (props) => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-800">
       <div className="flex justify-left">
-        <h1 className="text-4xl py-2">
-          <span className="bg-slate-200 p-2">px grid</span>
+        <h1 className="text-2xl py-2 mt-2">
+          <span className="bg-slate-200 p-2">Exquisite Canvas</span>
         </h1>
 
         <input
