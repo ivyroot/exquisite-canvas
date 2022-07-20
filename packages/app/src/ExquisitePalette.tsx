@@ -100,7 +100,7 @@ export const ExquisitePalette = (props) => {
     if (pixelPos && pixelPos > 0) {
       const cappedPixelPos =
         pixelPos < paletteSize ? pixelPos : paletteSize - 1;
-      return cappedPixelPos;
+      return parseInt(cappedPixelPos);
     }
     return 0;
   };
