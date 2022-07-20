@@ -17,7 +17,7 @@ function bytesToHex(bytes: number[]) {
 }
 
 const pixelKey = (x, y) => {
-  return `${x}||${y}`;
+  return `px_${x}X${y}`;
 };
 
 const paletteKey = (i) => {
@@ -62,12 +62,13 @@ export const ExquisitePalette = (props) => {
 
   const generatePixels = () => {
     const pixelList = [];
-    for (let i1 = 0; i1 < width; i1++) {
-      for (let i2 = 0; i2 < height; i2++) {
-        const palettePos = palettePosForPixel(i1, i2);
+    for (let iy = 0; iy < height; iy++) {
+      for (let ix = 0; ix < width; ix++) {
+        const palettePos = palettePosForPixel(ix, iy);
+        console.log(`PIX SET: ${ix}, ${iy} ==> ${palettePos}`);
         pixelList.push({
-          x: i1,
-          y: i2,
+          x: ix,
+          y: iy,
           color: palettePos,
         });
       }
@@ -114,20 +115,20 @@ export const ExquisitePalette = (props) => {
   };
 
   const MyRows = [];
-  for (let i = 0; i < height; i++) {
+  for (let rowY = 0; rowY < height; rowY++) {
     const myCols = [];
-    for (let i2 = 0; i2 < width; i2++) {
+    for (let rowX = 0; rowX < width; rowX++) {
       myCols.push(
         <div
-          key={pixelKey(i, i2)}
+          key={pixelKey(rowX, rowY)}
           className="text-center w-8 h-8 p-1"
-          style={pixStyles(i, i2)}
-          onClick={(event) => didClickPix(i, i2)}
+          style={pixStyles(rowX, rowY)}
+          onClick={(event) => didClickPix(rowX, rowY)}
         ></div>
       );
     }
     MyRows.push(
-      <div className="flex flex-auto justify-center" key={i}>
+      <div className="flex flex-auto justify-center" key={rowY}>
         {myCols}
       </div>
     );
