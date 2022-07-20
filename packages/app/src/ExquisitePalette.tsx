@@ -23,7 +23,7 @@ const paletteKey = (i) => {
   return `pal_${i}`;
 };
 
-export const PaletteSizer = (props) => {
+export const ExquisitePalette = (props) => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [palette, setPalette] = useState({

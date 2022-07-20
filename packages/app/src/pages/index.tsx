@@ -3,9 +3,9 @@ import type { NextPage } from "next";
 
 import { Clock } from "../Clock";
 import { useExampleNFTContractRead } from "../contracts";
+import { ExquisitePalette } from "../ExquisitePalette";
 import { Inventory } from "../Inventory";
 import { MintButton } from "../MintButton";
-import { PaletteSizer } from "../PaletteSizer";
 import { useIsMounted } from "../useIsMounted";
 import { Widget } from "../Widget";
 
@@ -14,7 +14,7 @@ const HomePage: NextPage = () => {
 
   return (
     <div>
-      <PaletteSizer />
+      <ExquisitePalette />
       <div className="h-36 bg-white"></div>
     </div>
   );
