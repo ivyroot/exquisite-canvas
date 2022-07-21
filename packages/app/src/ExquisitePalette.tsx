@@ -197,10 +197,28 @@ export const ExquisitePalette = (props) => {
       const reader = new FileReader();
       reader.readAsArrayBuffer(file, "UTF-8");
       reader.onload = () => {
-        const fileDataStr = [...new Uint8Array(reader.result)]
-          .map((x) => x.toString(16).padStart(2, "0"))
-          .join("");
-        const fullFileDataStr = `0x${fileDataStr}`;
+        const fileBytes = [...new Uint8Array(reader.result)];
+        console.log(
+          `Loaded file contents, bytes count: ${fileBytes.byteLength}`
+        );
+        const head = new Uint8Array(fileBytes.slice(0, 2));
+        console.log(`first 2 bytes: ${head[0]}, ${head[1]}`);
+        const isHexString = head[0] == 48 && head[1] == 120;
+        const fileHexString = "";
+        if (isHexString) {
+          console.log(`Loading file as string of hex chars`);
+          fileHexString = fileBytes
+            .slice(2)
+            .map((x) => x)
+            .join("");
+        } else {
+          console.log(`Loading file binary data`);
+          fileHexString = fileBytes
+            .map((x) => x.toString(16).padStart(2, "0"))
+            .join("");
+        }
+
+        const fullFileDataStr = `0x${fileHexString}`;
         console.log(`Loaded file hex: ${fullFileDataStr}`);
         const exquisiteBuffer = new PixelBuffer();
         exquisiteBuffer.from(fullFileDataStr);
