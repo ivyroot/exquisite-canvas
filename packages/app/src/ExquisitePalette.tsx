@@ -269,7 +269,7 @@ export const ExquisitePalette = (props) => {
   return (
     <div className="min-h-screen flex flex-col bg-black">
       <div className="flex justify-left">
-        <h1 className="text-2xl py-2 mt-2">
+        <h1 className="text-2xl py-2 ml-8 mt-2">
           <img className="h-16" src="/ec-logo-1.png" />
         </h1>
 
