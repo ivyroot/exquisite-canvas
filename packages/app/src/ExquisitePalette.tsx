@@ -174,8 +174,12 @@ export const ExquisitePalette = (props) => {
     setHeight(pixBuffer.header.height);
     const htmlPalette = {};
     for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
+      const palColor = pixBuffer.palette[pi];
       const palKey = paletteKey(pi);
-      htmlPalette[palKey] = pixBuffer.palette[pi];
+      const fmtColor = (
+        Array.from(palColor)[0] == "#" ? palColor : `#${palColor}`
+      ).slice(0, 7);
+      htmlPalette[palKey] = fmtColor;
     }
     setPalette(htmlPalette);
     setPaletteSize(pixBuffer.palette.length);
