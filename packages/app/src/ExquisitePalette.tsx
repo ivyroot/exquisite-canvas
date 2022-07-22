@@ -261,10 +261,10 @@ export const ExquisitePalette = (props) => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-800">
+    <div className="min-h-screen flex flex-col bg-black">
       <div className="flex justify-left">
         <h1 className="text-2xl py-2 mt-2">
-          <span className="bg-slate-200 p-2">Exquisite Canvas</span>
+          <img className="h-16" src="/ec-logo-1.png" />
         </h1>
 
         <input
@@ -276,17 +276,15 @@ export const ExquisitePalette = (props) => {
             inputRef.current.value = null;
           }}
         />
-        <button
-          className="bg-slate-200  py-1 px-4 ml-12 mt-2 text-2xl"
-          onClick={() => inputRef.current.click()}
-        >
-          LOAD
+        <button className="" onClick={() => inputRef.current.click()}>
+          <span className="bg-slate-200 py-4 px-4 ml-12 mt-2 text-2xl">
+            LOAD
+          </span>
         </button>
-        <button
-          className="bg-slate-200  py-1 px-4 ml-12 mt-2 text-2xl"
-          onClick={(event) => didClickSave(event)}
-        >
-          SAVE
+        <button className="" onClick={(event) => didClickSave(event)}>
+          <span className="bg-slate-200 py-4 px-4 ml-12 mt-2 text-2xl">
+            SAVE
+          </span>
         </button>
       </div>
       <div className="containe mt-12">
