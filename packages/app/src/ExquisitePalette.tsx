@@ -209,7 +209,9 @@ export const ExquisitePalette = (props) => {
           console.log(`Loading file as string of hex chars`);
           fileHexString = fileBytes
             .slice(2)
-            .map((x) => x)
+            .map((x) => {
+              return String.fromCharCode(x);
+            })
             .join("");
         } else {
           console.log(`Loading file binary data`);
