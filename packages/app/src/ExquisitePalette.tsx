@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 import { Button } from "./Button";
+import { CanvasLogo } from "./CanvasLogo";
 import { useDownload } from "./useDownload";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
@@ -269,9 +270,9 @@ export const ExquisitePalette = (props) => {
   return (
     <div className="min-h-screen flex flex-col bg-black">
       <div className="flex justify-left">
-        <h1 className="text-2xl py-2 ml-8 mt-2">
-          <img className="h-16" src="/ec-logo-1.png" />
-        </h1>
+        <div className="ml-6 mt-2">
+          <CanvasLogo></CanvasLogo>
+        </div>
 
         <input
           ref={inputRef}
@@ -282,15 +283,11 @@ export const ExquisitePalette = (props) => {
             inputRef.current.value = null;
           }}
         />
-        <button className="" onClick={() => inputRef.current.click()}>
-          <span className="bg-slate-200 py-4 px-4 ml-12 mt-2 text-2xl">
-            LOAD
-          </span>
+        <button className="mt-2 " onClick={() => inputRef.current.click()}>
+          <span className="bg-slate-200 py-4 px-4 ml-12 text-2xl">LOAD</span>
         </button>
-        <button className="" onClick={(event) => didClickSave(event)}>
-          <span className="bg-slate-200 py-4 px-4 ml-12 mt-2 text-2xl">
-            SAVE
-          </span>
+        <button className="mt-2" onClick={(event) => didClickSave(event)}>
+          <span className="bg-slate-200 py-4 px-4 ml-12  text-2xl">SAVE</span>
         </button>
       </div>
       <div className="containe mt-12">
