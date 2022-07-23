@@ -76,9 +76,9 @@ export const ExquisitePalette = (props) => {
     return pixelList;
   };
 
-  const didClickSave = (e) => {
+  const didClickSave = (e, format) => {
     e.preventDefault();
-    useDownload(header, paletteArray(), generatePixels());
+    useDownload(header, paletteArray(), generatePixels(), format);
   };
 
   const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
@@ -284,16 +284,31 @@ export const ExquisitePalette = (props) => {
           }}
         />
         <button className="mt-2 " onClick={() => inputRef.current.click()}>
-          <span className="bg-slate-200 py-4 px-4 ml-12 text-2xl">LOAD</span>
+          <span className="bg-slate-600 py-2 px-4 ml-12">Load</span>
         </button>
-        <button className="mt-2" onClick={(event) => didClickSave(event)}>
-          <span className="bg-slate-200 py-4 px-4 ml-12  text-2xl">SAVE</span>
+        <button
+          className="mt-2"
+          onClick={(event) => didClickSave(event, "binary")}
+        >
+          <span className="bg-slate-600 py-2 px-4 ml-12">Save</span>
+        </button>
+        <button
+          className="mt-2"
+          onClick={(event) => didClickSave(event, "hex")}
+        >
+          <span className="bg-slate-600 py-2 px-4 ml-12 ">Export Hex</span>
+        </button>
+        <button
+          className="mt-2"
+          onClick={(event) => didClickSave(event, "svg")}
+        >
+          <span className="bg-slate-600 py-2 px-4 ml-12 ">Export SVG</span>
         </button>
       </div>
       <div className="containe mt-12">
         <div className="flex justify-center">
           <fieldset className="bg-slate-200 mx-2">
-            <label className="mx-2">WIDTH:</label>
+            <label className="mx-2">Width:</label>
             <input
               className="px-2"
               type="number"
@@ -303,7 +318,7 @@ export const ExquisitePalette = (props) => {
             />
           </fieldset>
           <fieldset className="bg-slate-200 mx-2">
-            <label className="mx-2">HEIGHT:</label>
+            <label className="mx-2">Height:</label>
             <input
               className="px-2"
               type="number"
