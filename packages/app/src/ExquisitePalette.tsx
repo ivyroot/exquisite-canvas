@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
-import { useDownload } from "./useDownload";
+import { useDownload } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 
@@ -195,6 +195,7 @@ export const ExquisitePalette = (props) => {
     setPixels(pixelMap);
   };
 
+  // TODO move to useDownload
   const loadFile = (e) => {
     const files = Array.from(e.target.files);
     const file = files[0];

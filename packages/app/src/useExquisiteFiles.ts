@@ -36,7 +36,7 @@ export function useDownload(header, palette, pixels, format) {
     fileExtension = `txt`;
     blob = new Blob([data]);
   }
-  if ((format = "svg")) {
+  if (format == "svg") {
     console.log(`EXPORT AS SVG`);
     fileExtension = "svg";
     const svgString = getSVGPixelBuffer(pb);
