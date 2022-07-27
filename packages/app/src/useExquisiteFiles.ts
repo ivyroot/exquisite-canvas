@@ -14,14 +14,13 @@ function hexStringToByte(str) {
   return new Uint8Array(a);
 }
 
-export function useDownload(header, palette, pixels, format) {
-  const pb = new PixelBuffer(header, palette);
-  pixels.forEach((el) => {
-    pb.setPixel(el.x, el.y, el.color);
-  });
-  const data = pb.getPixelBuffer();
-  console.log(`GENERATED FILE HEX STRING: ${data}`);
-
+// trigger download of Exquisite Graphics js lib pixelBuffer
+// format options:
+// 'binary' => .xqst native file format
+// 'hex' => text string of hex code for native file format (useful to paste into source code)
+// 'svg' => rendered svg image file
+export function useDownload(pixelBuffer, format, filename) {
+  const data = pixelBuffer.getPixelBuffer();
   let blob = "";
   let fileExtension = "";
   if (format == "binary") {
@@ -39,18 +38,18 @@ export function useDownload(header, palette, pixels, format) {
   if (format == "svg") {
     console.log(`EXPORT AS SVG`);
     fileExtension = "svg";
-    const svgString = getSVGPixelBuffer(pb);
+    const svgString = getSVGPixelBuffer(pixelBuffer);
     blob = new Blob([svgString]);
   }
 
   const link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
-  const timestamp = new Date().getTime();
-  const filename = `exquisite-graphics-image-${timestamp}.${fileExtension}`;
-  link.download = filename;
+  link.download = `${filename}.${fileExtension}`;
   link.click();
 }
 
+// load a file containing an Exquisite Graphics image
+// file must be an HTML File object https://developer.mozilla.org/en-US/docs/Web/API/File
 export function useLoadPixelBuffer(file, didLoad) {
   if (!file) {
     return false;

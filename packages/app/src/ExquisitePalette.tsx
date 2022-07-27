@@ -78,7 +78,14 @@ export const ExquisitePalette = (props) => {
 
   const didClickSave = (e, format) => {
     e.preventDefault();
-    useDownload(header, paletteArray(), generatePixels(), format);
+    const pb = new PixelBuffer(header, paletteArray());
+    const pixels = generatePixels();
+    pixels.forEach((el) => {
+      pb.setPixel(el.x, el.y, el.color);
+    });
+    const timestamp = new Date().getTime();
+    const filename = `exquisite-graphics-image-${timestamp}`;
+    useDownload(pb, format, filename);
   };
 
   const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
