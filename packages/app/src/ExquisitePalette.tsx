@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
-import { useDownload } from "./useExquisiteFiles";
+import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 
@@ -195,49 +195,11 @@ export const ExquisitePalette = (props) => {
     setPixels(pixelMap);
   };
 
-  // TODO move to useDownload
   const loadFile = (e) => {
     const files = Array.from(e.target.files);
     const file = files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.readAsArrayBuffer(file, "UTF-8");
-      reader.onload = () => {
-        const fileBytes = [...new Uint8Array(reader.result)];
-        console.log(
-          `Loaded file contents, bytes count: ${fileBytes.byteLength}`
-        );
-        const head = new Uint8Array(fileBytes.slice(0, 2));
-        console.log(`first 2 bytes: ${head[0]}, ${head[1]}`);
-        const isHexString = head[0] == 48 && head[1] == 120;
-        const fileHexString = "";
-        if (isHexString) {
-          console.log(`Loading file as string of hex chars`);
-          fileHexString = fileBytes
-            .slice(2)
-            .map((x) => {
-              return String.fromCharCode(x);
-            })
-            .join("");
-        } else {
-          console.log(`Loading file binary data`);
-          fileHexString = fileBytes
-            .map((x) => x.toString(16).padStart(2, "0"))
-            .join("");
-        }
-
-        const fullFileDataStr = `0x${fileHexString}`;
-        console.log(`Loaded file hex: ${fullFileDataStr}`);
-        const exquisiteBuffer = new PixelBuffer();
-        exquisiteBuffer.from(fullFileDataStr);
-        console.log(
-          `Loaded from Exquisite Graphics file with palette size: ${exquisiteBuffer.palette.length}`
-        );
-        loadFromPixBuffer(exquisiteBuffer);
-      };
-      reader.onerror = (e) => {
-        console.log(`ERROR LOADING FILE CONTENTS`);
-      };
+      useLoadPixelBuffer(file, loadFromPixBuffer);
     }
   };
 

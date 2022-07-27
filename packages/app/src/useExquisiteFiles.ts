@@ -50,3 +50,40 @@ export function useDownload(header, palette, pixels, format) {
   link.download = filename;
   link.click();
 }
+
+export function useLoadPixelBuffer(file, didLoad) {
+  if (!file) {
+    return false;
+  }
+  const reader = new FileReader();
+  reader.readAsArrayBuffer(file, "UTF-8");
+  reader.onload = () => {
+    const fileBytes = [...new Uint8Array(reader.result)];
+    console.log(`Loaded file contents, bytes count: ${fileBytes.byteLength}`);
+    const head = new Uint8Array(fileBytes.slice(0, 2));
+    console.log(`first 2 bytes: ${head[0]}, ${head[1]}`);
+    const isHexString = head[0] == 48 && head[1] == 120;
+
+    const sliceOffset = isHexString ? 2 : 0;
+    const fileHexString = fileBytes
+      .slice(sliceOffset)
+      .map((x) => {
+        return isHexString
+          ? String.fromCharCode(x)
+          : x.toString(16).padStart(2, "0");
+      })
+      .join("");
+
+    const fullFileDataStr = `0x${fileHexString}`;
+    console.log(`Loaded file hex: ${fullFileDataStr}`);
+    const exquisiteBuffer = new PixelBuffer();
+    exquisiteBuffer.from(fullFileDataStr);
+    console.log(
+      `Loaded from Exquisite Graphics file with palette size: ${exquisiteBuffer.palette.length}`
+    );
+    didLoad(exquisiteBuffer);
+  };
+  reader.onerror = (e) => {
+    console.log(`ERROR LOADING FILE CONTENTS`);
+  };
+}
