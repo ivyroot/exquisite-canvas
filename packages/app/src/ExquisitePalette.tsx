@@ -121,25 +121,35 @@ export const ExquisitePalette = (props) => {
     return { backgroundColor: colorForPixel(x, y) };
   };
 
-  const MyRows = [];
+  const pixelRects = [];
   for (let rowY = 0; rowY < height; rowY++) {
-    const myCols = [];
     for (let rowX = 0; rowX < width; rowX++) {
-      myCols.push(
-        <div
+      const pxColor = colorForPixel(rowX, rowY);
+      pixelRects.push(
+        <rect
           key={pixelKey(rowX, rowY)}
-          className="text-center w-8 h-8 p-1"
-          style={pixStyles(rowX, rowY)}
+          width="1"
+          height="1"
+          x={rowX}
+          y={rowY}
+          fill={pxColor}
           onClick={(event) => didClickPix(rowX, rowY)}
-        ></div>
+        />
       );
     }
-    MyRows.push(
-      <div className="flex flex-auto justify-center" key={rowY}>
-        {myCols}
-      </div>
-    );
   }
+
+  const canvasSvg = (
+    <div className="flex justify-center">
+      <svg
+        width={`${width}em`}
+        viewBox={`0 0 ${width} ${height}`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {pixelRects}
+      </svg>
+    </div>
+  );
 
   const PaletteItems = [];
   for (let pi = 0; pi < paletteSize; pi++) {
@@ -238,7 +248,7 @@ export const ExquisitePalette = (props) => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-black">
+    <div className="min-h-screen flex flex-col bg-slate-800">
       <div className="flex justify-left">
         <div className="ml-6 mt-2">
           <CanvasLogo></CanvasLogo>
@@ -298,9 +308,7 @@ export const ExquisitePalette = (props) => {
             />
           </fieldset>
         </div>
-        <div className="mt-6">
-          <div className="flex flex-col flex-auto">{MyRows}</div>
-        </div>
+        <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
       </div>
     </div>
