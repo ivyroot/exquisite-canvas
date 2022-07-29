@@ -21,6 +21,11 @@ const pixelKey = (x, y) => {
   return `px_${x}X${y}`;
 };
 
+const pixelKeyVals = (pxKey) => {
+  if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
+  return pxKey.replace("px_", "").split("X");
+};
+
 const paletteKey = (i) => {
   return `pal_${i}`;
 };
@@ -45,11 +50,21 @@ export const ExquisitePalette = (props) => {
     backgroundIndex: 0,
   };
   const inputRef = useRef();
+  const svgCanvasRef = useRef();
+  const lastPixelDownRef = useRef<boolean>(null);
 
   const didClickPix = (x, y) => {
     const keyName = pixelKey(x, y);
     const nextPos = pixels[keyName] ? pixels[keyName] + 1 : 1;
     const wrappedPos = nextPos >= paletteSize ? 0 : nextPos;
+    const ChangeSet = {};
+    ChangeSet[keyName] = wrappedPos;
+    setPixels({ ...pixels, ...ChangeSet });
+  };
+
+  const didSetPixel = (x, y, palettePos) => {
+    const keyName = pixelKey(x, y);
+    const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
     const ChangeSet = {};
     ChangeSet[keyName] = wrappedPos;
     setPixels({ ...pixels, ...ChangeSet });
@@ -128,12 +143,12 @@ export const ExquisitePalette = (props) => {
       pixelRects.push(
         <rect
           key={pixelKey(rowX, rowY)}
+          id={pixelKey(rowX, rowY)}
           width="1"
           height="1"
           x={rowX}
           y={rowY}
           fill={pxColor}
-          onClick={(event) => didClickPix(rowX, rowY)}
         />
       );
     }
@@ -142,6 +157,7 @@ export const ExquisitePalette = (props) => {
   const canvasSvg = (
     <div className="flex justify-center">
       <svg
+        ref={svgCanvasRef}
         width={`${width}em`}
         viewBox={`0 0 ${width} ${height}`}
         xmlns="http://www.w3.org/2000/svg"
@@ -246,6 +262,54 @@ export const ExquisitePalette = (props) => {
       {PaletteItems}
     </div>
   );
+
+  useEffect(() => {
+    const svg = svgCanvasRef.current;
+    if (!svg) return;
+    console.log(`Connecting mouse handlers`);
+
+    const getRectUnderCursor = (event: PointerEvent) => {
+      const element = document.elementFromPoint(event.clientX, event.clientY);
+      if (!(element instanceof SVGRectElement)) return;
+      const [x, y] = pixelKeyVals(element.id);
+      return {
+        element,
+        x: parseInt(x),
+        y: parseInt(y),
+      };
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (lastPixelDownRef.current == null) return;
+      const rect = getRectUnderCursor(event);
+      if (!rect) return;
+      event.preventDefault();
+      didSetPixel(rect.x, rect.y, 1);
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      const rect = getRectUnderCursor(event);
+      if (!rect) return;
+      const pixelIsOn = palettePosForPixel(rect.x, rect.y) != 0;
+      const on = !pixelIsOn;
+      const setPalettePos = pixelIsOn ? 0 : 1;
+      didSetPixel(rect.x, rect.y, setPalettePos);
+      lastPixelDownRef.current = on;
+    };
+    const onPointerUp = () => {
+      lastPixelDownRef.current = null;
+    };
+
+    svg.addEventListener("pointermove", onPointerMove);
+    svg.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerup", onPointerUp);
+
+    return () => {
+      svg.removeEventListener("pointermove", onPointerMove);
+      svg.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+    };
+  }, [width, height, palette, paletteSize, pixels]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800">
