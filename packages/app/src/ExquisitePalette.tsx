@@ -21,6 +21,11 @@ const pixelKey = (x, y) => {
   return `px_${x}X${y}`;
 };
 
+const pixelKeyVals = (pxKey) => {
+  if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
+  return pxKey.replace("px_", "").split("X");
+};
+
 const paletteKey = (i) => {
   return `pal_${i}`;
 };
@@ -33,6 +38,7 @@ export const ExquisitePalette = (props) => {
     pal_1: "#0EA5E9",
   });
   const [paletteSize, setPaletteSize] = useState(2);
+  const [currPaletteItem, setCurrPaletteItem] = useState(1);
   const [pixels, setPixels] = useState({});
   const header = {
     version: 1,
@@ -45,11 +51,21 @@ export const ExquisitePalette = (props) => {
     backgroundIndex: 0,
   };
   const inputRef = useRef();
+  const svgCanvasRef = useRef();
+  const lastPixelDownRef = useRef<boolean>(null);
 
   const didClickPix = (x, y) => {
     const keyName = pixelKey(x, y);
     const nextPos = pixels[keyName] ? pixels[keyName] + 1 : 1;
     const wrappedPos = nextPos >= paletteSize ? 0 : nextPos;
+    const ChangeSet = {};
+    ChangeSet[keyName] = wrappedPos;
+    setPixels({ ...pixels, ...ChangeSet });
+  };
+
+  const didSetPixel = (x, y, palettePos) => {
+    const keyName = pixelKey(x, y);
+    const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
     const ChangeSet = {};
     ChangeSet[keyName] = wrappedPos;
     setPixels({ ...pixels, ...ChangeSet });
@@ -121,35 +137,50 @@ export const ExquisitePalette = (props) => {
     return { backgroundColor: colorForPixel(x, y) };
   };
 
-  const MyRows = [];
+  const pixelRects = [];
   for (let rowY = 0; rowY < height; rowY++) {
-    const myCols = [];
     for (let rowX = 0; rowX < width; rowX++) {
-      myCols.push(
-        <div
+      const pxColor = colorForPixel(rowX, rowY);
+      pixelRects.push(
+        <rect
           key={pixelKey(rowX, rowY)}
-          className="text-center w-8 h-8 p-1"
-          style={pixStyles(rowX, rowY)}
-          onClick={(event) => didClickPix(rowX, rowY)}
-        ></div>
+          id={pixelKey(rowX, rowY)}
+          width="1"
+          height="1"
+          x={rowX}
+          y={rowY}
+          fill={pxColor}
+        />
       );
     }
-    MyRows.push(
-      <div className="flex flex-auto justify-center" key={rowY}>
-        {myCols}
-      </div>
-    );
   }
+
+  const canvasSvg = (
+    <div className="flex justify-center">
+      <svg
+        ref={svgCanvasRef}
+        width={`${width}em`}
+        viewBox={`0 0 ${width} ${height}`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {pixelRects}
+      </svg>
+    </div>
+  );
 
   const PaletteItems = [];
   for (let pi = 0; pi < paletteSize; pi++) {
     const itemKey = paletteKey(pi);
     const itemColor = paletteItemColor(pi);
+    const borderText =
+      currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
+    const itemClasses = `mx-8 my-4 p-4 border-8 ${borderText}`;
     PaletteItems.push(
       <div
         key={itemKey}
-        className="mx-8 my-4 p-4"
+        className={itemClasses}
         style={{ backgroundColor: itemColor }}
+        onClick={(event) => setCurrPaletteItem(pi)}
       >
         <input
           className="p-2 w-24"
@@ -237,8 +268,53 @@ export const ExquisitePalette = (props) => {
     </div>
   );
 
+  useEffect(() => {
+    const svg = svgCanvasRef.current;
+    if (!svg) return;
+    console.log(`Connecting mouse handlers`);
+
+    const getRectUnderCursor = (event: PointerEvent) => {
+      const element = document.elementFromPoint(event.clientX, event.clientY);
+      if (!(element instanceof SVGRectElement)) return;
+      const [x, y] = pixelKeyVals(element.id);
+      return {
+        element,
+        x: parseInt(x),
+        y: parseInt(y),
+      };
+    };
+
+    const onPointerMove = (event: PointerEvent) => {
+      if (lastPixelDownRef.current == null) return;
+      const rect = getRectUnderCursor(event);
+      if (!rect) return;
+      event.preventDefault();
+      didSetPixel(rect.x, rect.y, currPaletteItem);
+    };
+
+    const onPointerDown = (event: PointerEvent) => {
+      const rect = getRectUnderCursor(event);
+      if (!rect) return;
+      didSetPixel(rect.x, rect.y, currPaletteItem);
+      lastPixelDownRef.current = true;
+    };
+    const onPointerUp = () => {
+      lastPixelDownRef.current = null;
+    };
+
+    svg.addEventListener("pointermove", onPointerMove);
+    svg.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerup", onPointerUp);
+
+    return () => {
+      svg.removeEventListener("pointermove", onPointerMove);
+      svg.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
+    };
+  }, [width, height, palette, paletteSize, pixels]);
+
   return (
-    <div className="min-h-screen flex flex-col bg-black">
+    <div className="min-h-screen flex flex-col bg-slate-800">
       <div className="flex justify-left">
         <div className="ml-6 mt-2">
           <CanvasLogo></CanvasLogo>
@@ -298,9 +374,7 @@ export const ExquisitePalette = (props) => {
             />
           </fieldset>
         </div>
-        <div className="mt-6">
-          <div className="flex flex-col flex-auto">{MyRows}</div>
-        </div>
+        <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
       </div>
     </div>
