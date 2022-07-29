@@ -38,6 +38,7 @@ export const ExquisitePalette = (props) => {
     pal_1: "#0EA5E9",
   });
   const [paletteSize, setPaletteSize] = useState(2);
+  const [currPaletteItem, setCurrPaletteItem] = useState(1);
   const [pixels, setPixels] = useState({});
   const header = {
     version: 1,
@@ -183,6 +184,7 @@ export const ExquisitePalette = (props) => {
           type="text"
           name="BACKGROUND_COLOR"
           value={itemColor}
+          onClick={(event) => setCurrPaletteItem(pi)}
           onChange={(event) =>
             handleSetPaletteColor(itemKey, event.target.value)
           }
@@ -284,17 +286,14 @@ export const ExquisitePalette = (props) => {
       const rect = getRectUnderCursor(event);
       if (!rect) return;
       event.preventDefault();
-      didSetPixel(rect.x, rect.y, 1);
+      didSetPixel(rect.x, rect.y, currPaletteItem);
     };
 
     const onPointerDown = (event: PointerEvent) => {
       const rect = getRectUnderCursor(event);
       if (!rect) return;
-      const pixelIsOn = palettePosForPixel(rect.x, rect.y) != 0;
-      const on = !pixelIsOn;
-      const setPalettePos = pixelIsOn ? 0 : 1;
-      didSetPixel(rect.x, rect.y, setPalettePos);
-      lastPixelDownRef.current = on;
+      didSetPixel(rect.x, rect.y, currPaletteItem);
+      lastPixelDownRef.current = true;
     };
     const onPointerUp = () => {
       lastPixelDownRef.current = null;
