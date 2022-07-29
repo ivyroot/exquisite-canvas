@@ -55,15 +55,6 @@ export const ExquisitePalette = (props) => {
   const svgCanvasRef = useRef();
   const lastPixelDownRef = useRef<boolean>(null);
 
-  const didClickPix = (x, y) => {
-    const keyName = pixelKey(x, y);
-    const nextPos = pixels[keyName] ? pixels[keyName] + 1 : 1;
-    const wrappedPos = nextPos >= paletteSize ? 0 : nextPos;
-    const ChangeSet = {};
-    ChangeSet[keyName] = wrappedPos;
-    setPixels({ ...pixels, ...ChangeSet });
-  };
-
   const didSetPixel = (x, y, palettePos) => {
     const keyName = pixelKey(x, y);
     const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
