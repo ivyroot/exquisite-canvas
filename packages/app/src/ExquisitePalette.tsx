@@ -293,22 +293,22 @@ export const ExquisitePalette = (props) => {
     };
 
     const onPointerDown = (event: PointerEvent) => {
+      lastPixelDownRef.current = true;
       const rect = getRectUnderCursor(event);
       if (!rect) return;
       didSetPixel(rect.x, rect.y, currPaletteItem);
-      lastPixelDownRef.current = true;
     };
     const onPointerUp = () => {
       lastPixelDownRef.current = null;
     };
 
     svg.addEventListener("pointermove", onPointerMove);
-    svg.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
 
     return () => {
       svg.removeEventListener("pointermove", onPointerMove);
-      svg.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);
     };
   }, [width, height, palette, paletteSize, pixels]);
