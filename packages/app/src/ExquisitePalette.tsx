@@ -347,7 +347,7 @@ export const ExquisitePalette = (props) => {
             <input
               type="range"
               min="10"
-              max="500"
+              max="400"
               value={zoom}
               onChange={(event) => setZoom(event.target.value)}
             />
