@@ -172,11 +172,15 @@ export const ExquisitePalette = (props) => {
   for (let pi = 0; pi < paletteSize; pi++) {
     const itemKey = paletteKey(pi);
     const itemColor = paletteItemColor(pi);
+    const borderText =
+      currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
+    const itemClasses = `mx-8 my-4 p-4 border-8 ${borderText}`;
     PaletteItems.push(
       <div
         key={itemKey}
-        className="mx-8 my-4 p-4"
+        className={itemClasses}
         style={{ backgroundColor: itemColor }}
+        onClick={(event) => setCurrPaletteItem(pi)}
       >
         <input
           className="p-2 w-24"
@@ -184,7 +188,6 @@ export const ExquisitePalette = (props) => {
           type="text"
           name="BACKGROUND_COLOR"
           value={itemColor}
-          onClick={(event) => setCurrPaletteItem(pi)}
           onChange={(event) =>
             handleSetPaletteColor(itemKey, event.target.value)
           }
