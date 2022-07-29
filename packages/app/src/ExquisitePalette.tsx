@@ -33,6 +33,7 @@ const paletteKey = (i) => {
 export const ExquisitePalette = (props) => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
+  const [zoom, setZoom] = useState(100);
   const [palette, setPalette] = useState({
     pal_0: "#F8FAFC",
     pal_1: "#0EA5E9",
@@ -159,7 +160,7 @@ export const ExquisitePalette = (props) => {
     <div className="flex justify-center">
       <svg
         ref={svgCanvasRef}
-        width={`${width}em`}
+        width={`${width * (zoom / 100.0)}em`}
         viewBox={`0 0 ${width} ${height}`}
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -350,6 +351,17 @@ export const ExquisitePalette = (props) => {
         >
           <span className="bg-slate-600 py-2 px-4 ml-12 ">Export SVG</span>
         </button>
+        <div className="flex flex-column items-center">
+          <div className="bg-slate-600 py-2 px-4 ml-12 h-10">
+            <input
+              type="range"
+              min="10"
+              max="500"
+              value={zoom}
+              onChange={(event) => setZoom(event.target.value)}
+            />
+          </div>
+        </div>
       </div>
       <div className="containe mt-12">
         <div className="flex justify-center">
