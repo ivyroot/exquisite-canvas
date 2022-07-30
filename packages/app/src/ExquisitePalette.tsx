@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { HexColorPicker } from "react-colorful";
 
 import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
@@ -38,6 +39,8 @@ export const ExquisitePalette = (props) => {
     pal_0: "#F8FAFC",
     pal_1: "#0EA5E9",
   });
+  const [color, setColor] = useState("#aabbcc");
+
   const [paletteSize, setPaletteSize] = useState(2);
   const [currPaletteItem, setCurrPaletteItem] = useState(1);
   const [pixels, setPixels] = useState({});
@@ -379,6 +382,7 @@ export const ExquisitePalette = (props) => {
         </div>
         <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
+        <HexColorPicker color={color} onChange={setColor} />;
       </div>
     </div>
   );

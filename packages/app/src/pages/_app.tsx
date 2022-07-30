@@ -19,7 +19,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title>EC</title>
+        <title>X C</title>
       </Head>
       <GraphProvider value={graphClient}>
         <EthereumProviders>

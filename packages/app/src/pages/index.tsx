@@ -1,13 +1,11 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
 
-import { Clock } from "../Clock";
 import { useExampleNFTContractRead } from "../contracts";
 import { ExquisitePalette } from "../ExquisitePalette";
 import { Inventory } from "../Inventory";
 import { MintButton } from "../MintButton";
 import { useIsMounted } from "../useIsMounted";
-import { Widget } from "../Widget";
 
 const HomePage: NextPage = () => {
   const isMounted = useIsMounted();
