@@ -140,8 +140,8 @@ export const ExquisitePalette = (props) => {
         <rect
           key={pixelKey(rowX, rowY)}
           id={pixelKey(rowX, rowY)}
-          width="1"
-          height="1"
+          width="1.1"
+          height="1.1"
           x={rowX}
           y={rowY}
           fill={pxColor}
