@@ -316,7 +316,7 @@ export const ExquisitePalette = (props) => {
   }, [width, height, palette, paletteSize, pixels]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-800">
+    <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
       <div className="flex justify-left">
         <div className="ml-6 mt-2">
           <CanvasLogo></CanvasLogo>
@@ -389,7 +389,7 @@ export const ExquisitePalette = (props) => {
         </div>
         <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
-        <div className="m-6">
+        <div className="my-6 mx-32">
           <HexColorPicker
             color={currPaletteItemColor()}
             onChange={setCurrPaletteItemColor}
