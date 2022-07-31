@@ -371,7 +371,7 @@ export const ExquisitePalette = (props) => {
           </div>
         </div>
       </div>
-      <div className="containe mt-12">
+      <div className="mt-12">
         <div className="flex justify-center">
           <fieldset className="bg-slate-200 mx-2">
             <label className="mx-2">Width:</label>
