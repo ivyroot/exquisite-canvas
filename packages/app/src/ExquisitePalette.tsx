@@ -34,13 +34,11 @@ const paletteKey = (i) => {
 export const ExquisitePalette = (props) => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
-  const [zoom, setZoom] = useState(100);
+  const [zoom, setZoom] = useState(200);
   const [palette, setPalette] = useState({
     pal_0: "#F8FAFC",
     pal_1: "#0EA5E9",
   });
-  const [color, setColor] = useState("#aabbcc");
-
   const [paletteSize, setPaletteSize] = useState(2);
   const [currPaletteItem, setCurrPaletteItem] = useState(1);
   const [pixels, setPixels] = useState({});
@@ -111,6 +109,10 @@ export const ExquisitePalette = (props) => {
       colorCodeElements[position % 5]
     }${colorCodeElements[position % 3]}`;
     return palette.hasOwnProperty(itemKey) ? palette[itemKey] : generativeColor;
+  };
+
+  const currPaletteItemColor = () => {
+    return paletteItemColor(currPaletteItem);
   };
 
   const palettePosForPixel = (x, y) => {
@@ -234,6 +236,11 @@ export const ExquisitePalette = (props) => {
     if (file) {
       useLoadPixelBuffer(file, loadFromPixBuffer);
     }
+  };
+
+  const setCurrPaletteItemColor = (color) => {
+    const itemKey = paletteKey(currPaletteItem);
+    handleSetPaletteColor(itemKey, color);
   };
 
   const handleSetPaletteColor = (itemKey, val) => {
@@ -382,7 +389,12 @@ export const ExquisitePalette = (props) => {
         </div>
         <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
-        <HexColorPicker color={color} onChange={setColor} />;
+        <div className="m-6">
+          <HexColorPicker
+            color={currPaletteItemColor()}
+            onChange={setCurrPaletteItemColor}
+          />
+        </div>
       </div>
     </div>
   );
