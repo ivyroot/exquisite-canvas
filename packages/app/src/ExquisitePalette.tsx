@@ -303,15 +303,22 @@ export const ExquisitePalette = (props) => {
     const onPointerUp = () => {
       lastPixelDownRef.current = null;
     };
+    const onTouchMove = (event: Event) => {
+      if (lastPixelDownRef.current == null) return;
+      // on touchscreens, allow painting on canvas instead of scrolling page
+      // event.preventDefault();
+    };
 
     svg.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
+    window.addEventListener("touchmove", onTouchMove, { passive: false });
 
     return () => {
       svg.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);
+      window.removeEventListener("touchmove", onTouchMove);
     };
   }, [width, height, palette, paletteSize, pixels]);
 
