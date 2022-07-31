@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import { HexColorPicker } from "react-colorful";
 
 import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
@@ -33,6 +34,7 @@ const paletteKey = (i) => {
 export const ExquisitePalette = (props) => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
+  const [zoom, setZoom] = useState(200);
   const [palette, setPalette] = useState({
     pal_0: "#F8FAFC",
     pal_1: "#0EA5E9",
@@ -53,15 +55,6 @@ export const ExquisitePalette = (props) => {
   const inputRef = useRef();
   const svgCanvasRef = useRef();
   const lastPixelDownRef = useRef<boolean>(null);
-
-  const didClickPix = (x, y) => {
-    const keyName = pixelKey(x, y);
-    const nextPos = pixels[keyName] ? pixels[keyName] + 1 : 1;
-    const wrappedPos = nextPos >= paletteSize ? 0 : nextPos;
-    const ChangeSet = {};
-    ChangeSet[keyName] = wrappedPos;
-    setPixels({ ...pixels, ...ChangeSet });
-  };
 
   const didSetPixel = (x, y, palettePos) => {
     const keyName = pixelKey(x, y);
@@ -118,6 +111,10 @@ export const ExquisitePalette = (props) => {
     return palette.hasOwnProperty(itemKey) ? palette[itemKey] : generativeColor;
   };
 
+  const currPaletteItemColor = () => {
+    return paletteItemColor(currPaletteItem);
+  };
+
   const palettePosForPixel = (x, y) => {
     const keyName = pixelKey(x, y);
     const pixelPos = pixels[keyName];
@@ -145,8 +142,8 @@ export const ExquisitePalette = (props) => {
         <rect
           key={pixelKey(rowX, rowY)}
           id={pixelKey(rowX, rowY)}
-          width="1"
-          height="1"
+          width="1.1"
+          height="1.1"
           x={rowX}
           y={rowY}
           fill={pxColor}
@@ -159,7 +156,7 @@ export const ExquisitePalette = (props) => {
     <div className="flex justify-center">
       <svg
         ref={svgCanvasRef}
-        width={`${width}em`}
+        width={`${width * (zoom / 100.0)}em`}
         viewBox={`0 0 ${width} ${height}`}
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -241,6 +238,11 @@ export const ExquisitePalette = (props) => {
     }
   };
 
+  const setCurrPaletteItemColor = (color) => {
+    const itemKey = paletteKey(currPaletteItem);
+    handleSetPaletteColor(itemKey, color);
+  };
+
   const handleSetPaletteColor = (itemKey, val) => {
     const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
     const ChangeSet = {};
@@ -293,22 +295,22 @@ export const ExquisitePalette = (props) => {
     };
 
     const onPointerDown = (event: PointerEvent) => {
+      lastPixelDownRef.current = true;
       const rect = getRectUnderCursor(event);
       if (!rect) return;
       didSetPixel(rect.x, rect.y, currPaletteItem);
-      lastPixelDownRef.current = true;
     };
     const onPointerUp = () => {
       lastPixelDownRef.current = null;
     };
 
     svg.addEventListener("pointermove", onPointerMove);
-    svg.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
 
     return () => {
       svg.removeEventListener("pointermove", onPointerMove);
-      svg.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);
     };
   }, [width, height, palette, paletteSize, pixels]);
@@ -350,6 +352,17 @@ export const ExquisitePalette = (props) => {
         >
           <span className="bg-slate-600 py-2 px-4 ml-12 ">Export SVG</span>
         </button>
+        <div className="flex flex-column items-center">
+          <div className="bg-slate-600 py-2 px-4 ml-12 h-10">
+            <input
+              type="range"
+              min="10"
+              max="400"
+              value={zoom}
+              onChange={(event) => setZoom(event.target.value)}
+            />
+          </div>
+        </div>
       </div>
       <div className="containe mt-12">
         <div className="flex justify-center">
@@ -376,6 +389,12 @@ export const ExquisitePalette = (props) => {
         </div>
         <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
+        <div className="m-6">
+          <HexColorPicker
+            color={currPaletteItemColor()}
+            onChange={setCurrPaletteItemColor}
+          />
+        </div>
       </div>
     </div>
   );
