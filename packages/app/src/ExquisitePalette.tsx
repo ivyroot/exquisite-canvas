@@ -324,8 +324,8 @@ export const ExquisitePalette = (props) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
-      <div className="flex justify-left">
-        <div className="ml-6 mt-2">
+      <div id="headerNav" className="flex flex-wrap justify-left">
+        <div className="ml-6 my-2">
           <CanvasLogo></CanvasLogo>
         </div>
 
@@ -338,28 +338,28 @@ export const ExquisitePalette = (props) => {
             inputRef.current.value = null;
           }}
         />
-        <button className="mt-2 " onClick={() => inputRef.current.click()}>
+        <button className="my-2 " onClick={() => inputRef.current.click()}>
           <span className="bg-slate-600 py-2 px-4 ml-12">Load</span>
         </button>
         <button
-          className="mt-2"
+          className="my-2"
           onClick={(event) => didClickSave(event, "binary")}
         >
           <span className="bg-slate-600 py-2 px-4 ml-12">Save</span>
         </button>
         <button
-          className="mt-2"
+          className="my-2"
           onClick={(event) => didClickSave(event, "hex")}
         >
           <span className="bg-slate-600 py-2 px-4 ml-12 ">Export Hex</span>
         </button>
         <button
-          className="mt-2"
+          className="my-2"
           onClick={(event) => didClickSave(event, "svg")}
         >
           <span className="bg-slate-600 py-2 px-4 ml-12 ">Export SVG</span>
         </button>
-        <div className="flex flex-column items-center">
+        <div className="flex flex-column items-center my-2">
           <div className="bg-slate-600 py-2 px-4 ml-12 h-10">
             <input
               type="range"
@@ -376,7 +376,7 @@ export const ExquisitePalette = (props) => {
           <fieldset className="bg-slate-200 mx-2">
             <label className="mx-2">Width:</label>
             <input
-              className="px-2"
+              className="w-12 px-2"
               type="number"
               name="WIDTH"
               value={width}
@@ -386,7 +386,7 @@ export const ExquisitePalette = (props) => {
           <fieldset className="bg-slate-200 mx-2">
             <label className="mx-2">Height:</label>
             <input
-              className="px-2"
+              className="w-12 px-2"
               type="number"
               name="HEIGHT"
               value={height}
