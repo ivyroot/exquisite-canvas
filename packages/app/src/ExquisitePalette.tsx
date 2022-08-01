@@ -305,20 +305,21 @@ export const ExquisitePalette = (props) => {
     };
     const onTouchMove = (event: Event) => {
       if (lastPixelDownRef.current == null) return;
-      // on touchscreens, allow painting on canvas instead of scrolling page
-      // event.preventDefault();
+      // on touchscreens, allow painting on canvas by preventing
+      // touch movements on canvas from scrolling page
+      event.preventDefault();
     };
 
     svg.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
+    svg.addEventListener("touchmove", onTouchMove, { passive: false });
 
     return () => {
       svg.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);
-      window.removeEventListener("touchmove", onTouchMove);
+      svg.removeEventListener("touchmove", onTouchMove);
     };
   }, [width, height, palette, paletteSize, pixels]);
 
@@ -396,7 +397,7 @@ export const ExquisitePalette = (props) => {
         </div>
         <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
-        <div className="my-6 mx-32">
+        <div className="my-6 mx-24">
           <HexColorPicker
             color={currPaletteItemColor()}
             onChange={setCurrPaletteItemColor}
