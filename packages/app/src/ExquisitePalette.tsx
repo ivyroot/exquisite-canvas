@@ -303,22 +303,30 @@ export const ExquisitePalette = (props) => {
     const onPointerUp = () => {
       lastPixelDownRef.current = null;
     };
+    const onTouchMove = (event: Event) => {
+      if (lastPixelDownRef.current == null) return;
+      // on touchscreens, allow painting on canvas by preventing
+      // touch movements on canvas from scrolling page
+      event.preventDefault();
+    };
 
     svg.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
+    svg.addEventListener("touchmove", onTouchMove, { passive: false });
 
     return () => {
       svg.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);
+      svg.removeEventListener("touchmove", onTouchMove);
     };
   }, [width, height, palette, paletteSize, pixels]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
-      <div className="flex justify-left">
-        <div className="ml-6 mt-2">
+      <div id="headerNav" className="flex flex-wrap justify-left">
+        <div className="ml-6 my-2">
           <CanvasLogo></CanvasLogo>
         </div>
 
@@ -331,28 +339,28 @@ export const ExquisitePalette = (props) => {
             inputRef.current.value = null;
           }}
         />
-        <button className="mt-2 " onClick={() => inputRef.current.click()}>
+        <button className="my-2 " onClick={() => inputRef.current.click()}>
           <span className="bg-slate-600 py-2 px-4 ml-12">Load</span>
         </button>
         <button
-          className="mt-2"
+          className="my-2"
           onClick={(event) => didClickSave(event, "binary")}
         >
           <span className="bg-slate-600 py-2 px-4 ml-12">Save</span>
         </button>
         <button
-          className="mt-2"
+          className="my-2"
           onClick={(event) => didClickSave(event, "hex")}
         >
           <span className="bg-slate-600 py-2 px-4 ml-12 ">Export Hex</span>
         </button>
         <button
-          className="mt-2"
+          className="my-2"
           onClick={(event) => didClickSave(event, "svg")}
         >
           <span className="bg-slate-600 py-2 px-4 ml-12 ">Export SVG</span>
         </button>
-        <div className="flex flex-column items-center">
+        <div className="flex flex-column items-center my-2">
           <div className="bg-slate-600 py-2 px-4 ml-12 h-10">
             <input
               type="range"
@@ -364,12 +372,12 @@ export const ExquisitePalette = (props) => {
           </div>
         </div>
       </div>
-      <div className="containe mt-12">
+      <div className="mt-12">
         <div className="flex justify-center">
           <fieldset className="bg-slate-200 mx-2">
             <label className="mx-2">Width:</label>
             <input
-              className="px-2"
+              className="w-12 px-2"
               type="number"
               name="WIDTH"
               value={width}
@@ -379,7 +387,7 @@ export const ExquisitePalette = (props) => {
           <fieldset className="bg-slate-200 mx-2">
             <label className="mx-2">Height:</label>
             <input
-              className="px-2"
+              className="w-12 px-2"
               type="number"
               name="HEIGHT"
               value={height}
@@ -389,7 +397,7 @@ export const ExquisitePalette = (props) => {
         </div>
         <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
-        <div className="my-6 mx-32">
+        <div className="my-6 mx-24">
           <HexColorPicker
             color={currPaletteItemColor()}
             onChange={setCurrPaletteItemColor}
