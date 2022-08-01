@@ -3,6 +3,7 @@ import { HexColorPicker } from "react-colorful";
 
 import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
+import { CanvasSkin } from "./CanvasSkin";
 import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
@@ -397,6 +398,9 @@ export const ExquisitePalette = (props) => {
               onChange={(event) => setHeight(event.target.value)}
             />
           </fieldset>
+          <div className="bg-slate-200 mx-2">
+            <CanvasSkin name="dropper"></CanvasSkin>
+          </div>
         </div>
         <div className="mt-6">{canvasSvg}</div>
         {PaletteChooser}
