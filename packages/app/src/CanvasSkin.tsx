@@ -8,7 +8,7 @@ export const CanvasSkin = (params) => {
       shapeRendering="crispEdges"
       version="1.1"
       viewBox="0 0 144 256"
-      className="h-6"
+      className="h-8"
     >
       <g transform="scale(16 16)">
         <rect fill="#F8FAFC" x="0" y="0" height="1" width="1" />
@@ -164,7 +164,7 @@ export const CanvasSkin = (params) => {
       shapeRendering="crispEdges"
       version="1.1"
       viewBox="0 0 144 256"
-      className="h-6"
+      className="h-8"
     >
       <g transform="scale(16 16)">
         <rect fill="#6effff" x="0" y="0" height="1" width="1" />

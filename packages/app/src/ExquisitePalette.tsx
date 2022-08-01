@@ -42,6 +42,7 @@ export const ExquisitePalette = (props) => {
   });
   const [paletteSize, setPaletteSize] = useState(2);
   const [currPaletteItem, setCurrPaletteItem] = useState(1);
+  const [dropperActive, setDropperActive] = useState(false);
   const [pixels, setPixels] = useState({});
   const header = {
     version: 1,
@@ -56,14 +57,6 @@ export const ExquisitePalette = (props) => {
   const inputRef = useRef();
   const svgCanvasRef = useRef();
   const lastPixelDownRef = useRef<boolean>(null);
-
-  const didSetPixel = (x, y, palettePos) => {
-    const keyName = pixelKey(x, y);
-    const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
-    const ChangeSet = {};
-    ChangeSet[keyName] = wrappedPos;
-    setPixels({ ...pixels, ...ChangeSet });
-  };
 
   const paletteArray = () => {
     return Array.from({ length: paletteSize }, (v, i) => {
@@ -114,6 +107,30 @@ export const ExquisitePalette = (props) => {
 
   const currPaletteItemColor = () => {
     return paletteItemColor(currPaletteItem);
+  };
+
+  const didSetPixel = (x, y, palettePos) => {
+    const keyName = pixelKey(x, y);
+    const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
+    const ChangeSet = {};
+    ChangeSet[keyName] = wrappedPos;
+    setPixels({ ...pixels, ...ChangeSet });
+  };
+
+  const didClickPixel = (x, y) => {
+    if (!dropperActive) {
+      lastPixelDownRef.current = true;
+      didSetPixel(x, y, currPaletteItem);
+    } else {
+      // set current palette item based on pixel clicked
+      const newPalettePos = palettePosForPixel(x, y);
+      if (currPaletteItem != newPalettePos) {
+        setCurrPaletteItem(newPalettePos);
+      }
+      setDropperActive(false);
+      lastPixelDownRef.current = true;
+      didSetPixel(x, y, newPalettePos);
+    }
   };
 
   const palettePosForPixel = (x, y) => {
@@ -206,6 +223,10 @@ export const ExquisitePalette = (props) => {
     }
   };
 
+  const didClickDropper = (e) => {
+    setDropperActive(!dropperActive);
+  };
+
   const loadFromPixBuffer = (pixBuffer) => {
     setWidth(pixBuffer.header.width);
     setHeight(pixBuffer.header.height);
@@ -274,7 +295,6 @@ export const ExquisitePalette = (props) => {
   useEffect(() => {
     const svg = svgCanvasRef.current;
     if (!svg) return;
-    console.log(`Connecting mouse handlers`);
 
     const getRectUnderCursor = (event: PointerEvent) => {
       const element = document.elementFromPoint(event.clientX, event.clientY);
@@ -296,10 +316,9 @@ export const ExquisitePalette = (props) => {
     };
 
     const onPointerDown = (event: PointerEvent) => {
-      lastPixelDownRef.current = true;
       const rect = getRectUnderCursor(event);
       if (!rect) return;
-      didSetPixel(rect.x, rect.y, currPaletteItem);
+      didClickPixel(rect.x, rect.y);
     };
     const onPointerUp = () => {
       lastPixelDownRef.current = null;
@@ -322,7 +341,15 @@ export const ExquisitePalette = (props) => {
       window.removeEventListener("pointerup", onPointerUp);
       svg.removeEventListener("touchmove", onTouchMove);
     };
-  }, [width, height, palette, paletteSize, pixels]);
+  }, [
+    width,
+    height,
+    currPaletteItem,
+    dropperActive,
+    palette,
+    paletteSize,
+    pixels,
+  ]);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
@@ -399,7 +426,11 @@ export const ExquisitePalette = (props) => {
             />
           </fieldset>
           <div className="bg-slate-200 mx-2">
-            <CanvasSkin item="dropper"></CanvasSkin>
+            <button onClick={(event) => didClickDropper(event)}>
+              <CanvasSkin
+                item={dropperActive ? "dropper-active" : "dropper"}
+              ></CanvasSkin>
+            </button>
           </div>
         </div>
         <div className="mt-6">{canvasSvg}</div>
