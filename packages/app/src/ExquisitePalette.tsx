@@ -171,7 +171,7 @@ export const ExquisitePalette = (props) => {
     const itemColor = paletteItemColor(pi);
     const borderText =
       currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
-    const itemClasses = `mx-8 my-4 p-4 border-8 ${borderText}`;
+    const itemClasses = `mx-2 sm:mx-8 my-4 p-4 border-8 ${borderText}`;
     PaletteItems.push(
       <div
         key={itemKey}
@@ -252,7 +252,7 @@ export const ExquisitePalette = (props) => {
 
   const PaletteChooser = (
     <div className="my-12 flex justify-left flex-wrap">
-      <div className="mx-8 p-0 flex flex-col justify-center">
+      <div className="mx-2 sm:mx-8 p-0 flex flex-col justify-center">
         <button
           className="bg-slate-200  p-1"
           onClick={(event) => didClickAddPaletteItem(event)}
@@ -326,7 +326,7 @@ export const ExquisitePalette = (props) => {
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
       <div id="headerNav" className="flex flex-wrap justify-left">
-        <div className="ml-6 my-2">
+        <div className="ml-6 my-2 w-20 sm:w-28">
           <CanvasLogo></CanvasLogo>
         </div>
 
@@ -339,29 +339,32 @@ export const ExquisitePalette = (props) => {
             inputRef.current.value = null;
           }}
         />
-        <button className="my-2 " onClick={() => inputRef.current.click()}>
-          <span className="bg-slate-600 py-2 px-4 ml-12">Load</span>
+        <button
+          className="my-2 ml-4 sm:ml-12"
+          onClick={() => inputRef.current.click()}
+        >
+          <span className="bg-slate-600 py-2 px-2 sm:px-4">Load</span>
         </button>
         <button
-          className="my-2"
+          className="my-2 ml-4 sm:ml-12"
           onClick={(event) => didClickSave(event, "binary")}
         >
-          <span className="bg-slate-600 py-2 px-4 ml-12">Save</span>
+          <span className="bg-slate-600 py-2 px-2 sm:px-4">Save</span>
         </button>
         <button
-          className="my-2"
+          className="my-2 ml-4 sm:ml-12"
           onClick={(event) => didClickSave(event, "hex")}
         >
-          <span className="bg-slate-600 py-2 px-4 ml-12 ">Export Hex</span>
+          <span className="bg-slate-600 py-2 px-2 sm:px-4">Export Hex</span>
         </button>
         <button
-          className="my-2"
+          className="my-2 ml-4 sm:ml-12"
           onClick={(event) => didClickSave(event, "svg")}
         >
-          <span className="bg-slate-600 py-2 px-4 ml-12 ">Export SVG</span>
+          <span className="bg-slate-600 py-2 px-2 sm:px-4">Export SVG</span>
         </button>
-        <div className="flex flex-column items-center my-2">
-          <div className="bg-slate-600 py-2 px-4 ml-12 h-10">
+        <div className="flex flex-column items-center my-2 ml-4 sm:ml-12">
+          <div className="bg-slate-600 py-2 px-2 sm:px-4 h-10">
             <input
               type="range"
               min="10"
