@@ -399,7 +399,7 @@ export const ExquisitePalette = (props) => {
             />
           </fieldset>
           <div className="bg-slate-200 mx-2">
-            <CanvasSkin name="dropper"></CanvasSkin>
+            <CanvasSkin item="dropper"></CanvasSkin>
           </div>
         </div>
         <div className="mt-6">{canvasSvg}</div>
