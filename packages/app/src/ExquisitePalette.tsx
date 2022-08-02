@@ -171,6 +171,30 @@ export const ExquisitePalette = (props) => {
     }
   }
 
+  const moveImage = (direction: string) => {
+    const deltas = { x: 0, y: 0 };
+    if (direction == "up") {
+      deltas.y = -1;
+    } else if (direction == "down") {
+      deltas.y = 1;
+    } else if (direction == "left") {
+      deltas.x = -1;
+    } else if (direction == "right") {
+      deltas.x = 1;
+    } else {
+      return;
+    }
+    const movedPixels = {};
+    for (const key in pixels) {
+      if (pixels.hasOwnProperty(key)) {
+        const [x, y] = pixelKeyVals(key);
+        const newKey = pixelKey(parseInt(x) + deltas.x, parseInt(y) + deltas.y);
+        movedPixels[newKey] = pixels[key];
+      }
+    }
+    setPixels(movedPixels);
+  };
+
   const canvasSvg = (
     <div className="flex justify-center">
       <svg
@@ -435,6 +459,39 @@ export const ExquisitePalette = (props) => {
               <CanvasSkin
                 item={dropperActive ? "dropper-active" : "dropper"}
               ></CanvasSkin>
+            </button>
+          </div>
+
+          <div className="bg-slate-200 mx-2">
+            <button onClick={(event) => moveImage("up")} className="pt-1 px-1">
+              <CanvasSkin item="dropper"></CanvasSkin>
+            </button>
+          </div>
+
+          <div className="bg-slate-200 mx-2">
+            <button
+              onClick={(event) => moveImage("down")}
+              className="pt-1 px-1"
+            >
+              <CanvasSkin item="dropper"></CanvasSkin>
+            </button>
+          </div>
+
+          <div className="bg-slate-200 mx-2">
+            <button
+              onClick={(event) => moveImage("left")}
+              className="pt-1 px-1"
+            >
+              <CanvasSkin item="dropper"></CanvasSkin>
+            </button>
+          </div>
+
+          <div className="bg-slate-200 mx-2">
+            <button
+              onClick={(event) => moveImage("right")}
+              className="pt-1 px-1"
+            >
+              <CanvasSkin item="dropper"></CanvasSkin>
             </button>
           </div>
         </div>
