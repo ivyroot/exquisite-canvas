@@ -19,44 +19,54 @@ function bytesToHex(bytes: number[]) {
   return hex.join("");
 }
 
-const pixelKey = (x, y) => {
+const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
 };
 
-const pixelKeyVals = (pxKey) => {
+const pixelKeyVals = (pxKey: string) => {
   if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
   return pxKey.replace("px_", "").split("X");
 };
 
-const paletteKey = (i) => {
+const paletteKey = (i: number) => {
   return `pal_${i}`;
 };
 
-export const ExquisitePalette = (props) => {
+interface paletteItemCollection {
+  [index: string]: string;
+}
+
+interface pixelCanvas {
+  [index: string]: number;
+}
+
+export const ExquisitePalette = () => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [zoom, setZoom] = useState(200);
-  const [palette, setPalette] = useState({
+  const defaultPallet: paletteItemCollection = {
     pal_0: "#F8FAFC",
     pal_1: "#0EA5E9",
-  });
+  };
+  const [palette, setPalette] = useState(defaultPallet);
   const [paletteSize, setPaletteSize] = useState(2);
   const [currPaletteItem, setCurrPaletteItem] = useState(1);
   const [dropperActive, setDropperActive] = useState(false);
-  const [pixels, setPixels] = useState({});
+  const emptyPixels: pixelCanvas = {};
+  const [pixels, setPixels] = useState(emptyPixels);
   const header = {
     version: 1,
-    width: parseInt(width),
-    height: parseInt(height),
-    numColors: parseInt(paletteSize),
+    width: width,
+    height: height,
+    numColors: paletteSize,
     scaleFactor: 1,
     alpha: false,
     backgroundIncluded: false,
     backgroundIndex: 0,
   };
-  const inputRef = useRef();
-  const svgCanvasRef = useRef();
-  const lastPixelDownRef = useRef<boolean>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const svgCanvasRef = useRef<SVGSVGElement | null>(null);
+  const lastPixelDownRef = useRef<boolean | null>(null);
 
   const paletteArray = () => {
     return Array.from({ length: paletteSize }, (v, i) => {
@@ -79,7 +89,7 @@ export const ExquisitePalette = (props) => {
     return pixelList;
   };
 
-  const didClickSave = (e, format) => {
+  const didClickSave = (e: any, format: string) => {
     e.preventDefault();
     const pb = new PixelBuffer(header, paletteArray());
     const pixels = generatePixels();
@@ -95,7 +105,7 @@ export const ExquisitePalette = (props) => {
     String.fromCharCode("A".charCodeAt(0) + i)
   );
 
-  const paletteItemColor = (position) => {
+  const paletteItemColor = (position: number) => {
     const itemKey = paletteKey(position);
     const generativeColor = `#${colorCodeElements[position % 6]}${
       colorCodeElements[position % 5]
@@ -109,15 +119,15 @@ export const ExquisitePalette = (props) => {
     return paletteItemColor(currPaletteItem);
   };
 
-  const didSetPixel = (x, y, palettePos) => {
+  const didSetPixel = (x: number, y: number, palettePos: number) => {
     const keyName = pixelKey(x, y);
     const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
-    const ChangeSet = {};
+    const ChangeSet: pixelCanvas = {};
     ChangeSet[keyName] = wrappedPos;
     setPixels({ ...pixels, ...ChangeSet });
   };
 
-  const didClickPixel = (x, y) => {
+  const didClickPixel = (x: number, y: number) => {
     if (!dropperActive) {
       lastPixelDownRef.current = true;
       didSetPixel(x, y, currPaletteItem);
@@ -133,22 +143,22 @@ export const ExquisitePalette = (props) => {
     }
   };
 
-  const palettePosForPixel = (x, y) => {
+  const palettePosForPixel = (x: number, y: number) => {
     const keyName = pixelKey(x, y);
     const pixelPos = pixels[keyName];
     if (pixelPos && pixelPos > 0) {
       const cappedPixelPos =
         pixelPos < paletteSize ? pixelPos : paletteSize - 1;
-      return parseInt(cappedPixelPos);
+      return cappedPixelPos;
     }
     return 0;
   };
 
-  const colorForPixel = (x, y) => {
+  const colorForPixel = (x: number, y: number) => {
     return paletteItemColor(palettePosForPixel(x, y));
   };
 
-  const pixStyles = (x, y) => {
+  const pixStyles = (x: number, y: number) => {
     return { backgroundColor: colorForPixel(x, y) };
   };
 
@@ -184,7 +194,7 @@ export const ExquisitePalette = (props) => {
     } else {
       return;
     }
-    const movedPixels = {};
+    const movedPixels: pixelCanvas = {};
     for (const key in pixels) {
       if (pixels.hasOwnProperty(key)) {
         const [x, y] = pixelKeyVals(key);
@@ -236,37 +246,37 @@ export const ExquisitePalette = (props) => {
     );
   }
 
-  const didClickAddPaletteItem = (e) => {
+  const didClickAddPaletteItem = (e: any) => {
     e.preventDefault();
     setPaletteSize(paletteSize + 1);
   };
 
-  const didClickRemovePaletteItem = (e) => {
+  const didClickRemovePaletteItem = (e: any) => {
     e.preventDefault();
     if (paletteSize > 2) {
       setPaletteSize(paletteSize - 1);
     }
   };
 
-  const didClickDropper = (e) => {
+  const didClickDropper = (e: any) => {
     setDropperActive(!dropperActive);
   };
 
-  const loadFromPixBuffer = (pixBuffer) => {
+  const loadFromPixBuffer = (pixBuffer: any) => {
     setWidth(pixBuffer.header.width);
     setHeight(pixBuffer.header.height);
-    const htmlPalette = {};
+    const htmlPalette: paletteItemCollection = {};
     for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
       const palColor = pixBuffer.palette[pi];
       const palKey = paletteKey(pi);
-      const fmtColor = (
+      const fmtColor: string = (
         Array.from(palColor)[0] == "#" ? palColor : `#${palColor}`
       ).slice(0, 7);
       htmlPalette[palKey] = fmtColor;
     }
     setPalette(htmlPalette);
     setPaletteSize(pixBuffer.palette.length);
-    const pixelMap = {};
+    const pixelMap: pixelCanvas = {};
     for (let y = 0; y < pixBuffer.header.height; y++) {
       for (let x = 0; x < pixBuffer.header.width; x++) {
         const keyName = pixelKey(x, y);
@@ -277,22 +287,24 @@ export const ExquisitePalette = (props) => {
     setPixels(pixelMap);
   };
 
-  const loadFile = (e) => {
-    const files = Array.from(e.target.files);
-    const file = files[0];
+  const loadFile = (e: any) => {
+    if (!e || !e.target) return;
+    const filesToLoad: any = e.target;
+    const files: File[] = Array.from(filesToLoad.files);
+    const file: File = files[0];
     if (file) {
       useLoadPixelBuffer(file, loadFromPixBuffer);
     }
   };
 
-  const setCurrPaletteItemColor = (color) => {
+  const setCurrPaletteItemColor = (color: string) => {
     const itemKey = paletteKey(currPaletteItem);
     handleSetPaletteColor(itemKey, color);
   };
 
-  const handleSetPaletteColor = (itemKey, val) => {
+  const handleSetPaletteColor = (itemKey: string, val: string) => {
     const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
-    const ChangeSet = {};
+    const ChangeSet: paletteItemCollection = {};
     ChangeSet[itemKey] = fmtVal;
     setPalette({ ...palette, ...ChangeSet });
   };
@@ -318,7 +330,7 @@ export const ExquisitePalette = (props) => {
   );
 
   useEffect(() => {
-    const svg = svgCanvasRef.current;
+    const svg: SVGSVGElement | null = svgCanvasRef.current;
     if (!svg) return;
 
     const getRectUnderCursor = (event: PointerEvent) => {
@@ -377,6 +389,8 @@ export const ExquisitePalette = (props) => {
     pixels,
   ]);
 
+  const canvasWidth = "100%";
+
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
       <div id="headerNav" className="flex flex-wrap justify-left">
@@ -390,12 +404,18 @@ export const ExquisitePalette = (props) => {
           style={{ display: "none" }}
           onChange={(e) => {
             loadFile(e);
-            inputRef.current.value = null;
+            if (inputRef.current) {
+              inputRef.current.value = "";
+            }
           }}
         />
         <button
           className="my-2 ml-4 sm:ml-12"
-          onClick={() => inputRef.current.click()}
+          onClick={() => {
+            if (inputRef.current) {
+              inputRef.current.click();
+            }
+          }}
         >
           <span className="bg-slate-600 py-2 px-2 sm:px-4">Load</span>
         </button>
@@ -424,7 +444,11 @@ export const ExquisitePalette = (props) => {
               min="10"
               max="400"
               value={zoom}
-              onChange={(event) => setZoom(event.target.value)}
+              onChange={(event) => {
+                if (event.target) {
+                  setZoom(parseInt(event.target.value));
+                }
+              }}
             />
           </div>
         </div>
@@ -438,7 +462,11 @@ export const ExquisitePalette = (props) => {
               type="number"
               name="WIDTH"
               value={width}
-              onChange={(event) => setWidth(event.target.value)}
+              onChange={(event) => {
+                if (event.target) {
+                  setWidth(parseInt(event.target.value));
+                }
+              }}
             />
           </fieldset>
           <fieldset className="bg-slate-200 mt-2 mx-2 p-1">
@@ -448,7 +476,11 @@ export const ExquisitePalette = (props) => {
               type="number"
               name="HEIGHT"
               value={height}
-              onChange={(event) => setHeight(event.target.value)}
+              onChange={(event) => {
+                if (event.target) {
+                  setHeight(parseInt(event.target.value));
+                }
+              }}
             />
           </fieldset>
           <div className="bg-slate-200 mt-2 mx-2">

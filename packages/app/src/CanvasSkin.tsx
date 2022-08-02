@@ -1,4 +1,4 @@
-export const CanvasSkin = (params) => {
+export const CanvasSkin = (params: { item: string }) => {
   const skinItem = params.item;
 
   const DropperIcon = (
