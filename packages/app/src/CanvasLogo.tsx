@@ -1,4 +1,4 @@
-export const CanvasLogo = (width: string) => {
+export const CanvasLogo = () => {
   return (
     <svg
       id="Layer_1"

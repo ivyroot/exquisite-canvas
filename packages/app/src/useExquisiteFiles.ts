@@ -1,7 +1,7 @@
 import { getSVGPixelBuffer, Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 
-function hexStringToByte(str) {
+function hexStringToByte(str: string) {
   if (!str) {
     return new Uint8Array();
   }
@@ -19,9 +19,13 @@ function hexStringToByte(str) {
 // 'binary' => .xqst native file format
 // 'hex' => text string of hex code for native file format (useful to paste into source code)
 // 'svg' => rendered svg image file
-export function useDownload(pixelBuffer, format, filename) {
+export function useDownload(
+  pixelBuffer: PixelBuffer,
+  format: string,
+  filename: string
+) {
   const data = pixelBuffer.getPixelBuffer();
-  let blob = "";
+  let blob: Blob | MediaSource;
   let fileExtension = "";
   if (format == "binary") {
     console.log(`DOWNLOAD BINARY FILE`);
@@ -40,6 +44,8 @@ export function useDownload(pixelBuffer, format, filename) {
     fileExtension = "svg";
     const svgString = getSVGPixelBuffer(pixelBuffer);
     blob = new Blob([svgString]);
+  } else {
+    blob = new Blob([]);
   }
 
   const link = document.createElement("a");
@@ -50,15 +56,15 @@ export function useDownload(pixelBuffer, format, filename) {
 
 // load a file containing an Exquisite Graphics image
 // file must be an HTML File object https://developer.mozilla.org/en-US/docs/Web/API/File
-export function useLoadPixelBuffer(file, didLoad) {
+export function useLoadPixelBuffer(file: File, didLoad: any): void {
   if (!file) {
-    return false;
+    return;
   }
-  const reader = new FileReader();
-  reader.readAsArrayBuffer(file, "UTF-8");
+  const reader: any = new FileReader();
+  reader.readAsArrayBuffer(file);
   reader.onload = () => {
     const fileBytes = [...new Uint8Array(reader.result)];
-    console.log(`Loaded file contents, bytes count: ${fileBytes.byteLength}`);
+    console.log(`Loaded file contents, bytes count: ${fileBytes.length}`);
     const head = new Uint8Array(fileBytes.slice(0, 2));
     console.log(`first 2 bytes: ${head[0]}, ${head[1]}`);
     const isHexString = head[0] == 48 && head[1] == 120;
@@ -82,7 +88,7 @@ export function useLoadPixelBuffer(file, didLoad) {
     );
     didLoad(exquisiteBuffer);
   };
-  reader.onerror = (e) => {
+  reader.onerror = (e: any) => {
     console.log(`ERROR LOADING FILE CONTENTS`);
   };
 }
