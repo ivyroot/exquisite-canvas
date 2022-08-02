@@ -160,6 +160,7 @@ export const ExquisitePalette = (props) => {
         <rect
           key={pixelKey(rowX, rowY)}
           id={pixelKey(rowX, rowY)}
+          data-is-pixel="true"
           width="1.1"
           height="1.1"
           x={rowX}
@@ -299,6 +300,7 @@ export const ExquisitePalette = (props) => {
     const getRectUnderCursor = (event: PointerEvent) => {
       const element = document.elementFromPoint(event.clientX, event.clientY);
       if (!(element instanceof SVGRectElement)) return;
+      if (!element.getAttribute("data-is-pixel")) return;
       const [x, y] = pixelKeyVals(element.id);
       return {
         element,
@@ -405,20 +407,20 @@ export const ExquisitePalette = (props) => {
       </div>
       <div className="mt-12">
         <div className="flex justify-center">
-          <fieldset className="bg-slate-200 mx-2">
-            <label className="mx-2">Width:</label>
+          <fieldset className="bg-slate-200 mx-2 p-1">
+            <label className="mx-2 h-8">Width:</label>
             <input
-              className="w-12 px-2"
+              className="w-16 px-2 h-8"
               type="number"
               name="WIDTH"
               value={width}
               onChange={(event) => setWidth(event.target.value)}
             />
           </fieldset>
-          <fieldset className="bg-slate-200 mx-2">
-            <label className="mx-2">Height:</label>
+          <fieldset className="bg-slate-200 mx-2 p-1">
+            <label className="mx-2 h-8">Height:</label>
             <input
-              className="w-12 px-2"
+              className="w-16 px-2 h-8"
               type="number"
               name="HEIGHT"
               value={height}
@@ -426,7 +428,10 @@ export const ExquisitePalette = (props) => {
             />
           </fieldset>
           <div className="bg-slate-200 mx-2">
-            <button onClick={(event) => didClickDropper(event)}>
+            <button
+              onClick={(event) => didClickDropper(event)}
+              className="pt-1 px-1"
+            >
               <CanvasSkin
                 item={dropperActive ? "dropper-active" : "dropper"}
               ></CanvasSkin>

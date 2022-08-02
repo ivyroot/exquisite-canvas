@@ -1,5 +1,4 @@
 export const CanvasSkin = (params) => {
-  console.log(`FETCHING SKIN ITEM: ${params.item}`);
   const skinItem = params.item;
 
   const DropperIcon = (
