@@ -455,7 +455,7 @@ export const ExquisitePalette = () => {
       </div>
       <div className="mt-12">
         <div className="flex flex-wrap justify-center">
-          <fieldset className="bg-slate-200 mt-2 mx-2 p-1">
+          <fieldset className="bg-white mt-2 mx-2 p-1">
             <label className="mx-2 h-8">Width:</label>
             <input
               className="w-16 px-2 h-8"
@@ -469,7 +469,7 @@ export const ExquisitePalette = () => {
               }}
             />
           </fieldset>
-          <fieldset className="bg-slate-200 mt-2 mx-2 p-1">
+          <fieldset className="bg-white mt-2 mx-2 p-1">
             <label className="mx-2 h-8">Height:</label>
             <input
               className="w-16 px-2 h-8"
@@ -483,7 +483,7 @@ export const ExquisitePalette = () => {
               }}
             />
           </fieldset>
-          <div className="bg-slate-200 mt-2 mx-2">
+          <div className="bg-white mt-2 mx-2">
             <button
               onClick={(event) => didClickDropper(event)}
               className="pt-1 px-1"
@@ -494,13 +494,13 @@ export const ExquisitePalette = () => {
             </button>
           </div>
 
-          <div className="bg-slate-200 mt-2 mx-2">
+          <div className="bg-white mt-2 mx-2">
             <button onClick={(event) => moveImage("up")} className="pt-1 px-1">
               <CanvasSkin item="move-up"></CanvasSkin>
             </button>
           </div>
 
-          <div className="bg-slate-200 mt-2 mx-2">
+          <div className="bg-white mt-2 mx-2">
             <button
               onClick={(event) => moveImage("down")}
               className="pt-1 px-1"
@@ -509,7 +509,7 @@ export const ExquisitePalette = () => {
             </button>
           </div>
 
-          <div className="bg-slate-200 mt-2 mx-2">
+          <div className="bg-white mt-2 mx-2">
             <button
               onClick={(event) => moveImage("left")}
               className="pt-1 px-1"
@@ -518,7 +518,7 @@ export const ExquisitePalette = () => {
             </button>
           </div>
 
-          <div className="bg-slate-200 mt-2 mx-2">
+          <div className="bg-white mt-2 mx-2">
             <button
               onClick={(event) => moveImage("right")}
               className="pt-1 px-1"
