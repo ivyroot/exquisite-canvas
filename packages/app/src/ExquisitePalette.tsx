@@ -224,7 +224,7 @@ export const ExquisitePalette = () => {
     const itemColor = paletteItemColor(pi);
     const borderText =
       currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
-    const itemClasses = `mx-2 sm:mx-8 my-4 p-4 border-8 ${borderText}`;
+    const itemClasses = `mr-2 sm:mr-8 my-4 p-1 sm:p-4 border-8 ${borderText}`;
     PaletteItems.push(
       <div
         key={itemKey}
@@ -313,16 +313,17 @@ export const ExquisitePalette = () => {
     <div className="my-12 flex justify-left flex-wrap">
       <div className="mx-2 sm:mx-8 p-0 flex flex-col justify-center">
         <button
-          className="bg-slate-200  p-1"
           onClick={(event) => didClickAddPaletteItem(event)}
+          className="pt-1 px-1"
         >
-          +
+          <CanvasSkin item="add-palette-item"></CanvasSkin>
         </button>
+
         <button
-          className="bg-slate-200  p-1 mt-2"
           onClick={(event) => didClickRemovePaletteItem(event)}
+          className="pt-4 px-1"
         >
-          -
+          <CanvasSkin item="remove-palette-item"></CanvasSkin>
         </button>
       </div>
       {PaletteItems}
