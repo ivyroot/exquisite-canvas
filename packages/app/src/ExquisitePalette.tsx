@@ -45,7 +45,7 @@ export const ExquisitePalette = () => {
   const [height, setHeight] = useState(16);
   const [zoom, setZoom] = useState(200);
   const defaultPallet: paletteItemCollection = {
-    pal_0: "#F8FAFC",
+    pal_0: "#FFFFFF",
     pal_1: "#0EA5E9",
   };
   const [palette, setPalette] = useState(defaultPallet);
@@ -224,7 +224,13 @@ export const ExquisitePalette = () => {
     const itemColor = paletteItemColor(pi);
     const borderText =
       currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
-    const itemClasses = `mr-2 sm:mr-8 my-4 p-1 sm:p-4 border-8 ${borderText}`;
+    const itemClasses = `relative mx-1 sm:mx-4 my-6 p-1 sm:p-4 border-8 ${borderText}`;
+    const labelText = pi > 0 ? `Color ${pi}` : `Background`;
+    const label = (
+      <div className="absolute -bottom-10 w-24">
+        <h3 className="text-slate-500 text-center">{labelText}</h3>
+      </div>
+    );
     PaletteItems.push(
       <div
         key={itemKey}
@@ -242,6 +248,7 @@ export const ExquisitePalette = () => {
             handleSetPaletteColor(itemKey, event.target.value)
           }
         />
+        {label}
       </div>
     );
   }
@@ -311,7 +318,8 @@ export const ExquisitePalette = () => {
 
   const PaletteChooser = (
     <div className="my-12 flex justify-left flex-wrap">
-      <div className="mx-2 sm:mx-8 p-0 flex flex-col justify-center">
+      {PaletteItems}
+      <div className="mx-2 p-0 flex flex-col justify-center">
         <button
           onClick={(event) => didClickAddPaletteItem(event)}
           className="pt-1 px-1"
@@ -326,7 +334,6 @@ export const ExquisitePalette = () => {
           <CanvasSkin item="remove-palette-item"></CanvasSkin>
         </button>
       </div>
-      {PaletteItems}
     </div>
   );
 
