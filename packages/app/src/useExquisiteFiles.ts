@@ -44,8 +44,6 @@ export function useDownload(
     fileExtension = "svg";
     const svgString = getSVGPixelBuffer(pixelBuffer);
     blob = new Blob([svgString]);
-  } else {
-    blob = new Blob([]);
   }
 
   const link = document.createElement("a");
