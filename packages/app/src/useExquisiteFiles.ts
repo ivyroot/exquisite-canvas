@@ -33,17 +33,20 @@ export function useDownload(
     const rawData = data.replace("0x", "");
     const bytes = hexStringToByte(rawData);
     blob = new Blob([bytes]);
-  }
+  } else 
   if (format == "hex") {
     console.log(`DOWNLOAD AS HEX STRING`);
     fileExtension = `txt`;
     blob = new Blob([data]);
-  }
+  } else
   if (format == "svg") {
     console.log(`EXPORT AS SVG`);
     fileExtension = "svg";
     const svgString = getSVGPixelBuffer(pixelBuffer);
     blob = new Blob([svgString]);
+  } else
+  {
+    blob = new Blob([]);
   }
 
   const link = document.createElement("a");
