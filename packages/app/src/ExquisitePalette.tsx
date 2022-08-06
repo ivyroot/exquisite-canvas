@@ -94,12 +94,15 @@ export const ExquisitePalette = () => {
 
   const paletteItemColor = (position: number) => {
     const itemKey = paletteKey(position);
+    if (palette.hasOwnProperty(itemKey)) {
+      return palette[itemKey];
+    }
     const generativeColor = `#${colorCodeElements[position % 6]}${
       colorCodeElements[position % 5]
     }${colorCodeElements[position % 5]}${colorCodeElements[position % 4]}${
       colorCodeElements[position % 5]
     }${colorCodeElements[position % 3]}`;
-    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : generativeColor;
+    return generativeColor;
   };
 
   const currPaletteItemColor = () => {
