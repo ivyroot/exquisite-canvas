@@ -74,28 +74,15 @@ export const ExquisitePalette = () => {
     });
   };
 
-  const generatePixels = () => {
-    const pixelList = [];
-    for (let iy = 0; iy < height; iy++) {
-      for (let ix = 0; ix < width; ix++) {
-        const palettePos = palettePosForPixel(ix, iy);
-        pixelList.push({
-          x: ix,
-          y: iy,
-          color: palettePos,
-        });
-      }
-    }
-    return pixelList;
-  };
-
   const didClickSave = (e: any, format: string) => {
     e.preventDefault();
     const pb = new PixelBuffer(header, paletteArray());
-    const pixels = generatePixels();
-    pixels.forEach((el) => {
-      pb.setPixel(el.x, el.y, el.color);
-    });
+    for (let iy = 0; iy < height; iy++) {
+      for (let ix = 0; ix < width; ix++) {
+        const palettePos = palettePosForPixel(ix, iy);
+        pb.setPixel(ix, iy, palettePos);
+      }
+    }
     const timestamp = new Date().getTime();
     const filename = `exquisite-graphics-image-${timestamp}`;
     useDownload(pb, format, filename);
