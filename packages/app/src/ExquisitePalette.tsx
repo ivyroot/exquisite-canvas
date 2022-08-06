@@ -148,10 +148,6 @@ export const ExquisitePalette = () => {
     return paletteItemColor(palettePosForPixel(x, y));
   };
 
-  const pixStyles = (x: number, y: number) => {
-    return { backgroundColor: colorForPixel(x, y) };
-  };
-
   const pixelRects = [];
   for (let rowY = 0; rowY < height; rowY++) {
     for (let rowX = 0; rowX < width; rowX++) {
