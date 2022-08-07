@@ -40,7 +40,7 @@ interface pixelCanvas {
   [index: string]: number;
 }
 
-export const ExquisitePalette = () => {
+export const ExquisiteCanvas = () => {
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [zoom, setZoom] = useState(200);
