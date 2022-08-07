@@ -8,17 +8,6 @@ import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 
-// Convert a byte array to a hex string
-// TODO use existing implementation
-function bytesToHex(bytes: number[]) {
-  for (var hex: string[] = [], i = 0; i < bytes.length; i++) {
-    const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
-    hex.push((current >>> 4).toString(16));
-    hex.push((current & 0xf).toString(16));
-  }
-  return hex.join("");
-}
-
 const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
 };
