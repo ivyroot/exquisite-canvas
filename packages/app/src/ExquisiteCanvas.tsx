@@ -30,6 +30,7 @@ interface pixelCanvas {
 }
 
 export const ExquisiteCanvas = () => {
+  // core canvas state
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [zoom, setZoom] = useState(200);
@@ -39,10 +40,21 @@ export const ExquisiteCanvas = () => {
   };
   const [palette, setPalette] = useState(defaultPallet);
   const [paletteSize, setPaletteSize] = useState(2);
-  const [currPaletteItem, setCurrPaletteItem] = useState(1);
-  const [dropperActive, setDropperActive] = useState(false);
   const emptyPixels: pixelCanvas = {};
   const [pixels, setPixels] = useState(emptyPixels);
+
+  // core canvas UI
+  const svgCanvasRef = useRef<SVGSVGElement | null>(null);
+
+  // core canvas input handlers
+  const lastPixelDownRef = useRef<boolean | null>(null);
+
+  // plugins UI
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // plugin state
+  const [currPaletteItem, setCurrPaletteItem] = useState(1);
+  const [dropperActive, setDropperActive] = useState(false);
   const header = {
     version: 1,
     width: width,
@@ -53,9 +65,8 @@ export const ExquisiteCanvas = () => {
     backgroundIncluded: false,
     backgroundIndex: 0,
   };
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const svgCanvasRef = useRef<SVGSVGElement | null>(null);
-  const lastPixelDownRef = useRef<boolean | null>(null);
+
+
 
   const paletteArray = () => {
     return Array.from({ length: paletteSize }, (v, i) => {
