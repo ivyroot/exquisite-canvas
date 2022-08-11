@@ -521,7 +521,9 @@ export const DemoCanvas = () => {
             </button>
           </div>
         </div>
-        <div className="mt-6">{canvasSvg}</div>
+        <div className="mt-6">
+          {canvasSvg}
+        </div>
         {PaletteChooser}
         <div className="my-6 mx-24">
           <HexColorPicker
