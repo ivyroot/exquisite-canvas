@@ -8,17 +8,6 @@ import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 
-// Convert a byte array to a hex string
-// TODO use existing implementation
-function bytesToHex(bytes: number[]) {
-  for (var hex: string[] = [], i = 0; i < bytes.length; i++) {
-    const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
-    hex.push((current >>> 4).toString(16));
-    hex.push((current & 0xf).toString(16));
-  }
-  return hex.join("");
-}
-
 const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
 };
@@ -40,7 +29,8 @@ interface pixelCanvas {
   [index: string]: number;
 }
 
-export const ExquisitePalette = () => {
+export const ExquisiteCanvas = () => {
+  // core canvas state
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
   const [zoom, setZoom] = useState(200);
@@ -50,10 +40,21 @@ export const ExquisitePalette = () => {
   };
   const [palette, setPalette] = useState(defaultPallet);
   const [paletteSize, setPaletteSize] = useState(2);
-  const [currPaletteItem, setCurrPaletteItem] = useState(1);
-  const [dropperActive, setDropperActive] = useState(false);
   const emptyPixels: pixelCanvas = {};
   const [pixels, setPixels] = useState(emptyPixels);
+
+  // core canvas UI
+  const svgCanvasRef = useRef<SVGSVGElement | null>(null);
+
+  // core canvas input handlers
+  const lastPixelDownRef = useRef<boolean | null>(null);
+
+  // plugins UI
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  // plugin state
+  const [currPaletteItem, setCurrPaletteItem] = useState(1);
+  const [dropperActive, setDropperActive] = useState(false);
   const header = {
     version: 1,
     width: width,
@@ -64,9 +65,8 @@ export const ExquisitePalette = () => {
     backgroundIncluded: false,
     backgroundIndex: 0,
   };
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const svgCanvasRef = useRef<SVGSVGElement | null>(null);
-  const lastPixelDownRef = useRef<boolean | null>(null);
+
+
 
   const paletteArray = () => {
     return Array.from({ length: paletteSize }, (v, i) => {
@@ -74,28 +74,15 @@ export const ExquisitePalette = () => {
     });
   };
 
-  const generatePixels = () => {
-    const pixelList = [];
-    for (let iy = 0; iy < height; iy++) {
-      for (let ix = 0; ix < width; ix++) {
-        const palettePos = palettePosForPixel(ix, iy);
-        pixelList.push({
-          x: ix,
-          y: iy,
-          color: palettePos,
-        });
-      }
-    }
-    return pixelList;
-  };
-
   const didClickSave = (e: any, format: string) => {
     e.preventDefault();
     const pb = new PixelBuffer(header, paletteArray());
-    const pixels = generatePixels();
-    pixels.forEach((el) => {
-      pb.setPixel(el.x, el.y, el.color);
-    });
+    for (let iy = 0; iy < height; iy++) {
+      for (let ix = 0; ix < width; ix++) {
+        const palettePos = palettePosForPixel(ix, iy);
+        pb.setPixel(ix, iy, palettePos);
+      }
+    }
     const timestamp = new Date().getTime();
     const filename = `exquisite-graphics-image-${timestamp}`;
     useDownload(pb, format, filename);
@@ -107,12 +94,15 @@ export const ExquisitePalette = () => {
 
   const paletteItemColor = (position: number) => {
     const itemKey = paletteKey(position);
+    if (palette.hasOwnProperty(itemKey)) {
+      return palette[itemKey];
+    }
     const generativeColor = `#${colorCodeElements[position % 6]}${
       colorCodeElements[position % 5]
     }${colorCodeElements[position % 5]}${colorCodeElements[position % 4]}${
       colorCodeElements[position % 5]
     }${colorCodeElements[position % 3]}`;
-    return palette.hasOwnProperty(itemKey) ? palette[itemKey] : generativeColor;
+    return generativeColor;
   };
 
   const currPaletteItemColor = () => {
@@ -156,10 +146,6 @@ export const ExquisitePalette = () => {
 
   const colorForPixel = (x: number, y: number) => {
     return paletteItemColor(palettePosForPixel(x, y));
-  };
-
-  const pixStyles = (x: number, y: number) => {
-    return { backgroundColor: colorForPixel(x, y) };
   };
 
   const pixelRects = [];

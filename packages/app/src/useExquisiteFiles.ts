@@ -1,18 +1,6 @@
 import { getSVGPixelBuffer, Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
-
-function hexStringToByte(str: string) {
-  if (!str) {
-    return new Uint8Array();
-  }
-
-  const a = [];
-  for (let i = 0, len = str.length; i < len; i += 2) {
-    a.push(parseInt(str.substr(i, 2), 16));
-  }
-
-  return new Uint8Array(a);
-}
+import { useHexStringToBytes } from "./useUtils";
 
 // trigger download of Exquisite Graphics js lib pixelBuffer
 // format options:
@@ -31,7 +19,7 @@ export function useDownload(
     console.log(`DOWNLOAD BINARY FILE`);
     fileExtension = `xgfx`;
     const rawData = data.replace("0x", "");
-    const bytes = hexStringToByte(rawData);
+    const bytes = useHexStringToBytes(rawData);
     blob = new Blob([bytes]);
   } else 
   if (format == "hex") {

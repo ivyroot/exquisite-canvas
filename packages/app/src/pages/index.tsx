@@ -2,7 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import type { NextPage } from "next";
 
 import { useExampleNFTContractRead } from "../contracts";
-import { ExquisitePalette } from "../ExquisitePalette";
+import { ExquisiteCanvas } from "../ExquisiteCanvas";
 import { Inventory } from "../Inventory";
 import { MintButton } from "../MintButton";
 import { useIsMounted } from "../useIsMounted";
@@ -12,7 +12,7 @@ const HomePage: NextPage = () => {
 
   return (
     <div>
-      <ExquisitePalette />
+      <ExquisiteCanvas />
       <div className="h-36 bg-white"></div>
     </div>
   );
