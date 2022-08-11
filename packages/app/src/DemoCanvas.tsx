@@ -29,7 +29,7 @@ interface pixelCanvas {
   [index: string]: number;
 }
 
-export const ExquisiteCanvas = () => {
+export const DemoCanvas = () => {
   // core canvas state
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
