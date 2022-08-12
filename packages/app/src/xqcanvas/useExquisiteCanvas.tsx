@@ -10,44 +10,38 @@ export interface pixelCanvas {
 export interface pixelArray {
     pixels: number[];
 }
-
-type SetNumberFunction = (val: number) => void;
-type SetStringFunction = (val: string) => void;
-type getStringsFunction = () => string[];
-
-const pixelKey = (x: number, y: number) => {
+export const pixelKey = (x: number, y: number) => {
     return `px_${x}X${y}`;
 };
 
-const pixelKeyVals = (pxKey: string) => {
+export const pixelKeyVals = (pxKey: string) => {
     if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
     return pxKey.replace("px_", "").split("X");
 };
 
-const paletteKey = (i: number) => {
+export const paletteKey = (i: number) => {
     return `pal_${i}`;
 };
   
 
 interface ExquisiteCanvas {
+    version: number;
     width: number;
-    bboy: number;
-    setWidth: SetNumberFunction;
+    setWidth: (val: number) => void;
     height: number;
-    setHeight: SetNumberFunction;
+    setHeight: (val: number) => void;
     zoom: number;
-    setZoom: SetNumberFunction;
+    setZoom: (val: number) => void;
     palette: paletteItemCollection;
     setPalette: (palette: paletteItemCollection) => void;
     setPaletteItem: (item: number, val: string) => void;
     getPaletteItems: () => string[];
     paletteSize: number;
-    setPaletteSize: SetNumberFunction;
-    paletteArray: paletteArray;
+    setPaletteSize: (val: number) => void;
+    paletteArray: () => string[];
     pixels: pixelCanvas;
-    dog: (val: any) => void;
-    cat: (val: number) => void;
-    foo: SetStringFunction;
+    setPixels: (val: pixelCanvas) => void;
+    setPixel: (x: number, y: number, val: number) => void;
 }
 
 export function useExquisiteCanvas(): ExquisiteCanvas {
@@ -69,7 +63,7 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         });
     }
 
-    const handleSetPaletteColor = (item: number, val: string) => {
+    const handleSetPaletteItem = (item: number, val: string) => {
         const itemKey = paletteKey(item);
         const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
         const ChangeSet: paletteItemCollection = {};
@@ -77,7 +71,19 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         setPalette({ ...palette, ...ChangeSet });
     };
 
-    const didSetPixel = (x: number, y: number, palettePos: number) => {
+    const handleSetPaletteSize = (size: number) => {
+        const newSize = Math.max(2, size);
+        setPaletteSize(newSize);
+    };
+
+    const handleSetPixels = (val: pixelCanvas) => {
+        console.log(`Setting pixels`);
+        // setPixels({ ...pixels, ...ChangeSet });
+    };
+
+    const handleSetPixel = (x: number, y: number, palettePos: number) => {
+        console.log(`Setting single pixel`);
+
         const keyName = pixelKey(x, y);
         const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
         const ChangeSet: pixelCanvas = {};
@@ -115,11 +121,14 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         zoom: zoom,
         setZoom: setZoom,
         palette: palette,
+        getPaletteItems: getPaletteItems,
         setPalette: setPalette,
-        setPaletteItem: handleSetPaletteColor,
+        setPaletteItem: handleSetPaletteItem,
         paletteSize: paletteSize,
-        setPaletteSize: didSetPixel,
+        setPaletteSize: handleSetPaletteSize,
         pixels: pixels,
+        setPixel: handleSetPixel,
+        setPixels: handleSetPixels,
     };
 
     return(canvas);

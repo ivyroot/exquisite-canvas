@@ -36,7 +36,7 @@ export const DemoCanvas = () => {
   const [zoom, setZoom] = [xqCanvas.zoom, xqCanvas.setZoom];
   const [palette, setPalette] = [xqCanvas.palette, xqCanvas.setPalette];
   const [paletteSize, setPaletteSize] = [xqCanvas.paletteSize, xqCanvas.setPaletteSize];
-  const [pixels, setPix] = [xqCanvas.pixels, xqCanvas.replacePixels];
+  const [pixels, setPixels] = [xqCanvas.pixels, xqCanvas.setPixels];
 
   // core canvas UI
   const svgCanvasRef = useRef<SVGSVGElement | null>(null);
@@ -61,17 +61,9 @@ export const DemoCanvas = () => {
     backgroundIndex: 0,
   };
 
-
-
-  const paletteArray = () => {
-    return Array.from({ length: paletteSize }, (v, i) => {
-      return paletteItemColor(i);
-    });
-  };
-
   const didClickSave = (e: any, format: string) => {
     e.preventDefault();
-    const pb = new PixelBuffer(header, paletteArray());
+    const pb = new PixelBuffer(header, xqCanvas.getPaletteItems());
     for (let iy = 0; iy < height; iy++) {
       for (let ix = 0; ix < width; ix++) {
         const palettePos = palettePosForPixel(ix, iy);
