@@ -7,7 +7,8 @@ import { CanvasSkin } from "./CanvasSkin";
 import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
-import { pixelCanvas, ExquisiteCanvas, useExquisiteCanvas } from "./xqcanvas/useExquisiteCanvas";
+import { ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./xqcanvas/canvasInterfaces";
+import { useExquisiteCanvas } from "./xqcanvas/useExquisiteCanvas";
 
 const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
@@ -38,12 +39,6 @@ export const DemoCanvas = () => {
   const [paletteSize, setPaletteSize] = [xqCanvas.paletteSize, xqCanvas.setPaletteSize];
   const [pixels, setPixels] = [xqCanvas.pixels, xqCanvas.setPixels];
 
-  // core canvas UI
-  const svgCanvasRef = useRef<SVGSVGElement | null>(null);
-
-  // core canvas input handlers
-  const lastPixelDownRef = useRef<boolean | null>(null);
-
   // plugins UI
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -66,7 +61,7 @@ export const DemoCanvas = () => {
     const pb = new PixelBuffer(header, xqCanvas.getPaletteItems());
     for (let iy = 0; iy < height; iy++) {
       for (let ix = 0; ix < width; ix++) {
-        const palettePos = palettePosForPixel(ix, iy);
+        const palettePos = xqCanvas.getPixelVal(ix, iy);
         pb.setPixel(ix, iy, palettePos);
       }
     }
@@ -89,7 +84,7 @@ export const DemoCanvas = () => {
       didSetPixel(x, y, currPaletteItem);
     } else {
       // set current palette item based on pixel clicked
-      const newPalettePos = palettePosForPixel(x, y);
+      const newPalettePos = xqCanvas.getPixelVal(x, y);
       if (currPaletteItem != newPalettePos) {
         setCurrPaletteItem(newPalettePos);
       }
@@ -98,51 +93,6 @@ export const DemoCanvas = () => {
       didSetPixel(x, y, newPalettePos);
     }
   };
-
-  const palettePosForPixel = (x: number, y: number) => {
-    const keyName = pixelKey(x, y);
-    const pixelPos = pixels[keyName];
-    if (pixelPos && pixelPos > 0) {
-      const cappedPixelPos =
-        pixelPos < paletteSize ? pixelPos : paletteSize - 1;
-      return cappedPixelPos;
-    }
-    return 0;
-  };
-
-  const pixelRects = [];
-  for (let rowY = 0; rowY < height; rowY++) {
-    for (let rowX = 0; rowX < width; rowX++) {
-      const pxColor = xqCanvas.getPixelColor(rowX, rowY);
-      if (pxColor != '#FFFFFF') 
-        console.log(`PIX ${rowX}, ${rowY} : ${pxColor}`);
-      pixelRects.push(
-        <rect
-          key={pixelKey(rowX, rowY)}
-          id={pixelKey(rowX, rowY)}
-          data-is-pixel="true"
-          width="1.1"
-          height="1.1"
-          x={rowX}
-          y={rowY}
-          fill={pxColor}
-        />
-      );
-    }
-  }
-
-  const canvasSvg = (
-    <div className="flex justify-center">
-      <svg
-        ref={svgCanvasRef}
-        width={`${width * (zoom / 100.0)}em`}
-        viewBox={`0 0 ${width} ${height}`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {pixelRects}
-      </svg>
-    </div>
-  );
 
   const moveImage = (direction: string) => {
     const deltas = { x: 0, y: 0 };
@@ -279,67 +229,7 @@ export const DemoCanvas = () => {
     </div>
   );
 
-  useEffect(() => {
-    const svg: SVGSVGElement | null = svgCanvasRef.current;
-    if (!svg) return;
-
-    const getRectUnderCursor = (event: PointerEvent) => {
-      const element = document.elementFromPoint(event.clientX, event.clientY);
-      if (!(element instanceof SVGRectElement)) return;
-      if (!element.getAttribute("data-is-pixel")) return;
-      const [x, y] = pixelKeyVals(element.id);
-      return {
-        element,
-        x: parseInt(x),
-        y: parseInt(y),
-      };
-    };
-
-    const onPointerMove = (event: PointerEvent) => {
-      if (lastPixelDownRef.current == null) return;
-      const rect = getRectUnderCursor(event);
-      if (!rect) return;
-      event.preventDefault();
-      didSetPixel(rect.x, rect.y, currPaletteItem);
-    };
-
-    const onPointerDown = (event: PointerEvent) => {
-      const rect = getRectUnderCursor(event);
-      if (!rect) return;
-      didClickPixel(rect.x, rect.y);
-    };
-    const onPointerUp = () => {
-      lastPixelDownRef.current = null;
-    };
-    const onTouchMove = (event: Event) => {
-      if (lastPixelDownRef.current == null) return;
-      // on touchscreens, allow painting on canvas by preventing
-      // touch movements on canvas from scrolling page
-      event.preventDefault();
-    };
-
-    svg.addEventListener("pointermove", onPointerMove);
-    window.addEventListener("pointerdown", onPointerDown);
-    window.addEventListener("pointerup", onPointerUp);
-    svg.addEventListener("touchmove", onTouchMove, { passive: false });
-
-    return () => {
-      svg.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerdown", onPointerDown);
-      window.removeEventListener("pointerup", onPointerUp);
-      svg.removeEventListener("touchmove", onTouchMove);
-    };
-  }, [
-    width,
-    height,
-    currPaletteItem,
-    dropperActive,
-    palette,
-    paletteSize,
-    pixels,
-  ]);
-
-  const canvasWidth = "100%";
+ 
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
@@ -478,7 +368,7 @@ export const DemoCanvas = () => {
           </div>
         </div>
         <div className="mt-6">
-          {canvasSvg}
+          {xqCanvas.displayElement}
         </div>
         {PaletteChooser}
         <div className="my-6 mx-24">
