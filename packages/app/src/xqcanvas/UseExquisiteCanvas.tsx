@@ -45,7 +45,7 @@ interface ExquisiteCanvas {
     foo: SetStringFunction;
 }
 
-export function UseExquisiteCanvas(): ExquisiteCanvas {
+export function useExquisiteCanvas(): ExquisiteCanvas {
     const [width, setWidth] = useState(16);
     const [height, setHeight] = useState(16);
     const [zoom, setZoom] = useState(200);

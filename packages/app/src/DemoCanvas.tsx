@@ -7,7 +7,7 @@ import { CanvasSkin } from "./CanvasSkin";
 import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
-import { pixelCanvas, ExquisiteCanvas, UseExquisiteCanvas } from "./xqcanvas/UseExquisiteCanvas";
+import { pixelCanvas, ExquisiteCanvas, useExquisiteCanvas } from "./xqcanvas/useExquisiteCanvas";
 
 const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
@@ -27,7 +27,7 @@ interface paletteItemCollection {
 }
 
 export const DemoCanvas = () => {
-  const xqCanvas: ExquisiteCanvas = UseExquisiteCanvas();
+  const xqCanvas: ExquisiteCanvas = useExquisiteCanvas();
   console.log(`MADE AN EXQUISITE CANVAS: ${xqCanvas.width} X ${xqCanvas.height}`);
 
   // core canvas state
