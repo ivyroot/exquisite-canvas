@@ -255,15 +255,7 @@ export const DemoCanvas = () => {
   };
 
   const setCurrPaletteItemColor = (color: string) => {
-    const itemKey = paletteKey(currPaletteItem);
-    handleSetPaletteColor(itemKey, color);
-  };
-
-  const handleSetPaletteColor = (itemKey: string, val: string) => {
-    const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
-    const ChangeSet: paletteItemCollection = {};
-    ChangeSet[itemKey] = fmtVal;
-    setPalette({ ...palette, ...ChangeSet });
+    xqCanvas.setPaletteItem(currPaletteItem, color);
   };
 
   const PaletteChooser = (

@@ -125,9 +125,6 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         return generativeColor;
     };
 
-    const currPaletteItemColor = () => {
-        return paletteItemColor(currPaletteItem);
-    };
 
     const canvas: ExquisiteCanvas = {
         version: '1.0',
