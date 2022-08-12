@@ -7,7 +7,7 @@ import { CanvasSkin } from "./CanvasSkin";
 import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
-import { useExquisiteCanvas } from "./xqcanvas/useExquisiteCanvas";
+import { pixelCanvas, ExquisiteCanvas, UseExquisiteCanvas } from "./xqcanvas/UseExquisiteCanvas";
 
 const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
@@ -22,31 +22,21 @@ const paletteKey = (i: number) => {
   return `pal_${i}`;
 };
 
-interface paletteItemCollection {
+interface paletteItemCollection { 
   [index: string]: string;
 }
 
-interface pixelCanvas {
-  [index: string]: number;
-}
-
 export const DemoCanvas = () => {
-  const newCanvas = useExquisiteCanvas();
-  console.log(`MADE AN EXQUISITE CANVAS: ${newCanvas.width} X ${newCanvas.height}`);
+  const xqCanvas: ExquisiteCanvas = UseExquisiteCanvas();
+  console.log(`MADE AN EXQUISITE CANVAS: ${xqCanvas.width} X ${xqCanvas.height}`);
 
   // core canvas state
-  const [width, setWidth] = useState(16);
-  const [height, setHeight] = useState(16);
-  console.log(`USE DATA FOR LEGACY CANVAS: ${width}X${height}`);
-  const [zoom, setZoom] = useState(200);
-  const defaultPallet: paletteItemCollection = {
-    pal_0: "#FFFFFF",
-    pal_1: "#0EA5E9",
-  };
-  const [palette, setPalette] = useState(defaultPallet);
-  const [paletteSize, setPaletteSize] = useState(2);
-  const emptyPixels: pixelCanvas = {};
-  const [pixels, setPixels] = useState(emptyPixels);
+  const [width, setWidth] = [xqCanvas.width, xqCanvas.setWidth];
+  const [height, setHeight] = [xqCanvas.height, xqCanvas.setHeight];
+  const [zoom, setZoom] = [xqCanvas.zoom, xqCanvas.setZoom];
+  const [palette, setPalette] = [xqCanvas.palette, xqCanvas.setPalette];
+  const [paletteSize, setPaletteSize] = [xqCanvas.paletteSize, xqCanvas.setPaletteSize];
+  const [pixels, setPix] = [xqCanvas.pixels, xqCanvas.replacePixels];
 
   // core canvas UI
   const svgCanvasRef = useRef<SVGSVGElement | null>(null);
@@ -115,11 +105,16 @@ export const DemoCanvas = () => {
   };
 
   const didSetPixel = (x: number, y: number, palettePos: number) => {
+    console.log(`DID SET PIXL ${x}, ${y}: ${palettePos}`);
     const keyName = pixelKey(x, y);
     const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
     const ChangeSet: pixelCanvas = {};
     ChangeSet[keyName] = wrappedPos;
-    setPixels({ ...pixels, ...ChangeSet });
+    console.log(`SET PIXELS IS ${typeof xqCanvas.width}`);
+    console.log(`CANVAS ATT: ${xqCanvas.bboy}`)
+    xqCanvas.foo('23');
+    xqCanvas.cat('XA15');
+    // xqCanvas.changePixels({ ...pixels, ...ChangeSet });
   };
 
   const didClickPixel = (x: number, y: number) => {
@@ -157,6 +152,8 @@ export const DemoCanvas = () => {
   for (let rowY = 0; rowY < height; rowY++) {
     for (let rowX = 0; rowX < width; rowX++) {
       const pxColor = colorForPixel(rowX, rowY);
+      if (pxColor != '#FFFFFF') 
+        console.log(`PIX ${rowX}, ${rowY} : ${pxColor}`);
       pixelRects.push(
         <rect
           key={pixelKey(rowX, rowY)}

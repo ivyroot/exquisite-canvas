@@ -28,20 +28,24 @@ const paletteKey = (i: number) => {
 
 interface ExquisiteCanvas {
     width: number;
+    bboy: number;
     setWidth: SetNumberFunction;
     height: number;
     setHeight: SetNumberFunction;
     zoom: number;
     setZoom: SetNumberFunction;
     palette: paletteItemCollection;
+    setPalette: (palette: paletteItemCollection) => void;
     setPaletteItem: (item: number, val: string) => void;
     paletteSize: number;
     setPaletteSize: SetNumberFunction;
     pixels: pixelCanvas;
-    setPixel: (x: number, y: number, item: number) => void;
+    dog: (val: any) => void;
+    cat: (val: number) => void;
+    foo: SetStringFunction;
 }
 
-export function useExquisiteCanvas(): ExquisiteCanvas {
+export function UseExquisiteCanvas(): ExquisiteCanvas {
     const [width, setWidth] = useState(16);
     const [height, setHeight] = useState(16);
     const [zoom, setZoom] = useState(200);
@@ -53,7 +57,7 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
     const [paletteSize, setPaletteSize] = useState(2);
     const emptyPixels: pixelCanvas = {};
     const [pixels, setPixels] = useState(emptyPixels);
-  
+
     const handleSetPaletteColor = (item: number, val: string) => {
         const itemKey = paletteKey(item);
         const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
@@ -70,7 +74,26 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         setPixels({ ...pixels, ...ChangeSet });
     };
 
+    const dog = (val: any) => {
+        console.log(`DOG  -- ${val}`);
+
+    };
+
+    const cat = (val: any) => {
+        console.log(`MEOW  -- ${val}`);
+
+    };
+
+    const foom = (val: string) => {
+        console.log(`FOOM SETTING PIXELS: YAY -- ${val}`);
+    };
+
+    const foob = (val: string) => {
+        console.log(`FOOB SETTING PIXELS: YAY -- ${val}`);
+    };
+
     const canvas: ExquisiteCanvas = {
+        bboy: 12,
         width: width,
         setWidth: setWidth,
         height: height,
@@ -78,11 +101,15 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         zoom: zoom,
         setZoom: setZoom,
         palette: palette,
+        setPalette: setPalette,
         setPaletteItem: handleSetPaletteColor,
         paletteSize: paletteSize,
-        setPaletteSize: setPaletteSize,
+        foo: foom,
+        dog: foom,
+        setPalette: setPalette,
+        setPaletteSize: didSetPixel,
         pixels: pixels,
-        setPixel: didSetPixel,
+        cat: cat,
     };
 
     return(canvas);
