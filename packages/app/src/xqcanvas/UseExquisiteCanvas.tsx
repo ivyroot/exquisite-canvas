@@ -41,7 +41,7 @@ interface ExquisiteCanvas {
     setPixel: (x: number, y: number, item: number) => void;
 }
 
-export function useExquisiteCanvas(didClickPixel: any): ExquisiteCanvas {
+export function useExquisiteCanvas(): ExquisiteCanvas {
     const [width, setWidth] = useState(16);
     const [height, setHeight] = useState(16);
     const [zoom, setZoom] = useState(200);

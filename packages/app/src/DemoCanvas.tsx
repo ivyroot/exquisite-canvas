@@ -31,10 +31,13 @@ interface pixelCanvas {
 }
 
 export const DemoCanvas = () => {
+  const newCanvas = useExquisiteCanvas();
+  console.log(`MADE AN EXQUISITE CANVAS: ${newCanvas.width} X ${newCanvas.height}`);
 
   // core canvas state
   const [width, setWidth] = useState(16);
   const [height, setHeight] = useState(16);
+  console.log(`USE DATA FOR LEGACY CANVAS: ${width}X${height}`);
   const [zoom, setZoom] = useState(200);
   const defaultPallet: paletteItemCollection = {
     pal_0: "#FFFFFF",
@@ -134,10 +137,6 @@ export const DemoCanvas = () => {
       didSetPixel(x, y, newPalettePos);
     }
   };
-
-  const newCanvas = useExquisiteCanvas(didClickPixel);
-  console.log(`MADE AN EXQUISITE CANVAS: ${newCanvas.width} X ${newCanvas.height}`);
-
 
   const palettePosForPixel = (x: number, y: number) => {
     const keyName = pixelKey(x, y);
