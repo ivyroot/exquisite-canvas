@@ -111,9 +111,7 @@ export const DemoCanvas = () => {
     const ChangeSet: pixelCanvas = {};
     ChangeSet[keyName] = wrappedPos;
     console.log(`SET PIXELS IS ${typeof xqCanvas.width}`);
-    console.log(`CANVAS ATT: ${xqCanvas.bboy}`)
-    xqCanvas.foo('23');
-    xqCanvas.cat('XA15');
+    // ZZZ TODO 
     // xqCanvas.changePixels({ ...pixels, ...ChangeSet });
   };
 

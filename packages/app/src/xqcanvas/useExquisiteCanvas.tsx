@@ -4,13 +4,16 @@ import React, { useEffect, useRef, useState } from "react";
 export interface paletteItemCollection {
     [index: string]: string;
 }
-  
 export interface pixelCanvas {
     [index: string]: number;
+}
+export interface pixelArray {
+    pixels: number[];
 }
 
 type SetNumberFunction = (val: number) => void;
 type SetStringFunction = (val: string) => void;
+type getStringsFunction = () => string[];
 
 const pixelKey = (x: number, y: number) => {
     return `px_${x}X${y}`;
@@ -37,8 +40,10 @@ interface ExquisiteCanvas {
     palette: paletteItemCollection;
     setPalette: (palette: paletteItemCollection) => void;
     setPaletteItem: (item: number, val: string) => void;
+    getPaletteItems: () => string[];
     paletteSize: number;
     setPaletteSize: SetNumberFunction;
+    paletteArray: paletteArray;
     pixels: pixelCanvas;
     dog: (val: any) => void;
     cat: (val: number) => void;
@@ -58,6 +63,12 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
     const emptyPixels: pixelCanvas = {};
     const [pixels, setPixels] = useState(emptyPixels);
 
+    const getPaletteItems = () => {
+        return Array.from({ length: paletteSize }, (v, i) => {
+            return paletteItemColor(i);
+        });
+    }
+
     const handleSetPaletteColor = (item: number, val: string) => {
         const itemKey = paletteKey(item);
         const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
@@ -74,26 +85,29 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         setPixels({ ...pixels, ...ChangeSet });
     };
 
-    const dog = (val: any) => {
-        console.log(`DOG  -- ${val}`);
+    const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
+        String.fromCharCode("A".charCodeAt(0) + i)
+    );
 
+    const paletteItemColor = (position: number) => {
+        const itemKey = paletteKey(position);
+        if (palette.hasOwnProperty(itemKey)) {
+        return palette[itemKey];
+        }
+        const generativeColor = `#${colorCodeElements[position % 6]}${
+        colorCodeElements[position % 5]
+        }${colorCodeElements[position % 5]}${colorCodeElements[position % 4]}${
+        colorCodeElements[position % 5]
+        }${colorCodeElements[position % 3]}`;
+        return generativeColor;
     };
 
-    const cat = (val: any) => {
-        console.log(`MEOW  -- ${val}`);
-
-    };
-
-    const foom = (val: string) => {
-        console.log(`FOOM SETTING PIXELS: YAY -- ${val}`);
-    };
-
-    const foob = (val: string) => {
-        console.log(`FOOB SETTING PIXELS: YAY -- ${val}`);
+    const currPaletteItemColor = () => {
+        return paletteItemColor(currPaletteItem);
     };
 
     const canvas: ExquisiteCanvas = {
-        bboy: 12,
+        version: '1.0',
         width: width,
         setWidth: setWidth,
         height: height,
@@ -104,12 +118,8 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         setPalette: setPalette,
         setPaletteItem: handleSetPaletteColor,
         paletteSize: paletteSize,
-        foo: foom,
-        dog: foom,
-        setPalette: setPalette,
         setPaletteSize: didSetPixel,
         pixels: pixels,
-        cat: cat,
     };
 
     return(canvas);
