@@ -75,36 +75,12 @@ export const DemoCanvas = () => {
     useDownload(pb, format, filename);
   };
 
-  const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
-    String.fromCharCode("A".charCodeAt(0) + i)
-  );
-
-  const paletteItemColor = (position: number) => {
-    const itemKey = paletteKey(position);
-    if (palette.hasOwnProperty(itemKey)) {
-      return palette[itemKey];
-    }
-    const generativeColor = `#${colorCodeElements[position % 6]}${
-      colorCodeElements[position % 5]
-    }${colorCodeElements[position % 5]}${colorCodeElements[position % 4]}${
-      colorCodeElements[position % 5]
-    }${colorCodeElements[position % 3]}`;
-    return generativeColor;
-  };
-
   const currPaletteItemColor = () => {
-    return paletteItemColor(currPaletteItem);
+    return xqCanvas.getPaletteItem(currPaletteItem);
   };
 
   const didSetPixel = (x: number, y: number, palettePos: number) => {
-    console.log(`DID SET PIXL ${x}, ${y}: ${palettePos}`);
-    const keyName = pixelKey(x, y);
-    const wrappedPos = palettePos >= paletteSize ? paletteSize - 1 : palettePos;
-    const ChangeSet: pixelCanvas = {};
-    ChangeSet[keyName] = wrappedPos;
-    console.log(`SET PIXELS IS ${typeof xqCanvas.width}`);
-    // ZZZ TODO 
-    // xqCanvas.changePixels({ ...pixels, ...ChangeSet });
+    xqCanvas.setPixel(x, y, palettePos);
   };
 
   const didClickPixel = (x: number, y: number) => {
@@ -134,14 +110,10 @@ export const DemoCanvas = () => {
     return 0;
   };
 
-  const colorForPixel = (x: number, y: number) => {
-    return paletteItemColor(palettePosForPixel(x, y));
-  };
-
   const pixelRects = [];
   for (let rowY = 0; rowY < height; rowY++) {
     for (let rowX = 0; rowX < width; rowX++) {
-      const pxColor = colorForPixel(rowX, rowY);
+      const pxColor = xqCanvas.getPixelColor(rowX, rowY);
       if (pxColor != '#FFFFFF') 
         console.log(`PIX ${rowX}, ${rowY} : ${pxColor}`);
       pixelRects.push(
@@ -158,6 +130,19 @@ export const DemoCanvas = () => {
       );
     }
   }
+
+  const canvasSvg = (
+    <div className="flex justify-center">
+      <svg
+        ref={svgCanvasRef}
+        width={`${width * (zoom / 100.0)}em`}
+        viewBox={`0 0 ${width} ${height}`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {pixelRects}
+      </svg>
+    </div>
+  );
 
   const moveImage = (direction: string) => {
     const deltas = { x: 0, y: 0 };
@@ -183,23 +168,10 @@ export const DemoCanvas = () => {
     setPixels(movedPixels);
   };
 
-  const canvasSvg = (
-    <div className="flex justify-center">
-      <svg
-        ref={svgCanvasRef}
-        width={`${width * (zoom / 100.0)}em`}
-        viewBox={`0 0 ${width} ${height}`}
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {pixelRects}
-      </svg>
-    </div>
-  );
-
   const PaletteItems = [];
   for (let pi = 0; pi < paletteSize; pi++) {
     const itemKey = paletteKey(pi);
-    const itemColor = paletteItemColor(pi);
+    const itemColor = xqCanvas.getPaletteItem(pi);
     const borderText =
       currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-6 p-1 sm:p-4 border-8 ${borderText}`;

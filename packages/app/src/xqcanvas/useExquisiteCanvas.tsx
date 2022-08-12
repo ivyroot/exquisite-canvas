@@ -35,6 +35,7 @@ interface ExquisiteCanvas {
     palette: paletteItemCollection;
     setPalette: (palette: paletteItemCollection) => void;
     setPaletteItem: (item: number, val: string) => void;
+    getPaletteItem: (item: number) => string;
     getPaletteItems: () => string[];
     paletteSize: number;
     setPaletteSize: (val: number) => void;
@@ -42,6 +43,8 @@ interface ExquisiteCanvas {
     pixels: pixelCanvas;
     setPixels: (val: pixelCanvas) => void;
     setPixel: (x: number, y: number, val: number) => void;
+    getPixelVal: (x: number, y: number) => number;
+    getPixelColor: (x: number, y: number) => string;
 }
 
 export function useExquisiteCanvas(): ExquisiteCanvas {
@@ -76,6 +79,11 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         setPaletteSize(newSize);
     };
 
+    const getPaletteItem = (item: number) => {
+        const itemKey = paletteKey(item);
+        return(palette[itemKey]);
+    };
+
     const handleSetPixels = (val: pixelCanvas) => {
         console.log(`Setting pixels`);
         // setPixels({ ...pixels, ...ChangeSet });
@@ -89,6 +97,15 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         const ChangeSet: pixelCanvas = {};
         ChangeSet[keyName] = wrappedPos;
         setPixels({ ...pixels, ...ChangeSet });
+    };
+
+    const getPixelVal = (x: number, y: number) => {
+        const keyName = pixelKey(x, y);
+        return(pixels[keyName]);
+    };
+
+    const getPixelColor = (x: number, y: number) => {
+        return getPaletteItem(getPixelVal(x, y));
     };
 
     const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
@@ -124,11 +141,14 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         getPaletteItems: getPaletteItems,
         setPalette: setPalette,
         setPaletteItem: handleSetPaletteItem,
+        getPaletteItem: getPaletteItem,
         paletteSize: paletteSize,
         setPaletteSize: handleSetPaletteSize,
         pixels: pixels,
         setPixel: handleSetPixel,
         setPixels: handleSetPixels,
+        getPixelVal: getPixelVal,
+        getPixelColor: getPixelColor,
     };
 
     return(canvas);
