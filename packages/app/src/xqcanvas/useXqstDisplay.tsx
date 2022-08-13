@@ -1,23 +1,31 @@
 import { useEffect, useRef, useState } from "react";
 import { ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./canvasInterfaces";
 
-export const useXqstDisplay = (
-        getPixelColor: (x: number, y: number) => string,
-        didClickPixel: (x: number, y: number) => void,
-        width: number, 
-        height: number, 
-        zoom: number
-        ) => {
-    console.log(`MAKING A DISPLAY FOR CANVAS ${width}X${height}`);
+export const useXqstDisplay = (c: ExquisiteCanvas,
+                                didClickPixel: (x: number, y: number) => void
+                               ) => {
+        // getPixelColor: (x: number, y: number) => string,
+        //
+        // width: number, 
+        // height: number, 
+        // zoom: number
+        // ) => {
+            const width = c.width;
+            const height = c.height;
+            const zoom = c.zoom;
+
+    console.log(`MAKING A DISPLAY FOR CANVAS ${c.width}X${c.height}`);
     const svgCanvasRef = useRef<SVGSVGElement | null>(null);
     const lastPixelDownRef = useRef<boolean | null>(null);
+
+    const getPixelColor = (x: number, y: number) => {
+        return c.getPixelColor(x, y);
+    };
 
     const pixelRects = [];
     for (let rowY = 0; rowY < height; rowY++) {
       for (let rowX = 0; rowX < width; rowX++) {
         const pxColor = getPixelColor(rowX, rowY);
-        if (pxColor != '#FFFFFF') 
-          console.log(`PIX ${rowX}, ${rowY} : ${pxColor}`);
         pixelRects.push(
           <rect
             key={pixelKey(rowX, rowY)}
@@ -101,5 +109,10 @@ export const useXqstDisplay = (
         height,
       ]);
     
-    return [svgCanvasRef, canvasSvg];
+    return (
+        <div class='bg-white'>
+            <h1>Hey</h1>
+            {canvasSvg}
+        </div>
+    );
 };

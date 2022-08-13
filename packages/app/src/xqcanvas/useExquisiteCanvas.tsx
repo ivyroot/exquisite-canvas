@@ -86,7 +86,7 @@ export function useExquisiteCanvas(): ExquisiteCanvas {
         handleSetPixel(x, y, 1);
     }  
 
-    const  [svgCanvasRef, canvasSvg] = useXqstDisplay(getPixelColor, didClickPixel, width, height, zoom);
+    const  [svgCanvasRef, canvasSvg] = [null, null]; // useXqstDisplay(getPixelColor, didClickPixel, width, height, zoom);
 
     const canvas: ExquisiteCanvas = {
         version: '1.0',

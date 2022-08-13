@@ -9,6 +9,7 @@ import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 import { ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./xqcanvas/canvasInterfaces";
 import { useExquisiteCanvas } from "./xqcanvas/useExquisiteCanvas";
+import { useXqstDisplay } from './xqcanvas/useXqstDisplay';
 
 const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
@@ -77,6 +78,8 @@ export const DemoCanvas = () => {
   const didSetPixel = (x: number, y: number, palettePos: number) => {
     xqCanvas.setPixel(x, y, palettePos);
   };
+
+  
 
   const didClickPixel = (x: number, y: number) => {
     if (!dropperActive) {
@@ -207,6 +210,8 @@ export const DemoCanvas = () => {
   const setCurrPaletteItemColor = (color: string) => {
     xqCanvas.setPaletteItem(currPaletteItem, color);
   };
+
+  const xqstDisplay = useXqstDisplay(xqCanvas, didClickPixel);
 
   const PaletteChooser = (
     <div className="my-12 flex justify-left flex-wrap">
@@ -368,7 +373,7 @@ export const DemoCanvas = () => {
           </div>
         </div>
         <div className="mt-6">
-          {xqCanvas.displayElement}
+          {xqstDisplay}
         </div>
         {PaletteChooser}
         <div className="my-6 mx-24">
