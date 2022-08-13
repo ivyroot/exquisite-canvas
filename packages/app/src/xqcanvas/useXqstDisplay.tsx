@@ -4,16 +4,9 @@ import { ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelK
 export const useXqstDisplay = (c: ExquisiteCanvas,
                                 didClickPixel: (x: number, y: number) => void
                                ) => {
-        // getPixelColor: (x: number, y: number) => string,
-        //
-        // width: number, 
-        // height: number, 
-        // zoom: number
-        // ) => {
-            const width = c.width;
-            const height = c.height;
-            const zoom = c.zoom;
-
+    const width = c.width;
+    const height = c.height;
+    const zoom = c.zoom;
     console.log(`MAKING A DISPLAY FOR CANVAS ${c.width}X${c.height}`);
     const svgCanvasRef = useRef<SVGSVGElement | null>(null);
     const lastPixelDownRef = useRef<boolean | null>(null);
