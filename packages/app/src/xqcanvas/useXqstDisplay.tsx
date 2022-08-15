@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./canvasInterfaces";
+import { CanvasStore, ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./canvasInterfaces";
 
-export const useXqstDisplay = (c: ExquisiteCanvas,
+export const useXqstDisplay = (c: CanvasStore,
                                 didClickPixel: (x: number, y: number) => void
                                ) => {
     const width = c.width;
@@ -11,14 +11,10 @@ export const useXqstDisplay = (c: ExquisiteCanvas,
     const svgCanvasRef = useRef<SVGSVGElement | null>(null);
     const lastPixelDownRef = useRef<boolean | null>(null);
 
-    const getPixelColor = (x: number, y: number) => {
-        return c.getPixelColor(x, y);
-    };
-
     const pixelRects = [];
     for (let rowY = 0; rowY < height; rowY++) {
       for (let rowX = 0; rowX < width; rowX++) {
-        const pxColor = getPixelColor(rowX, rowY);
+        const pxColor = c.getPixelColor(rowX, rowY);
         pixelRects.push(
           <rect
             key={pixelKey(rowX, rowY)}

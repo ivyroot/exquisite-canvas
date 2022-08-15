@@ -7,9 +7,10 @@ import { CanvasSkin } from "./CanvasSkin";
 import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
-import { ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./xqcanvas/canvasInterfaces";
+import { CanvasStore, ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./xqcanvas/canvasInterfaces";
 import { useExquisiteCanvas } from "./xqcanvas/useExquisiteCanvas";
 import { useXqstDisplay } from './xqcanvas/useXqstDisplay';
+import { useXqstCanvasStore } from './xqcanvas/useXqstCanvasStore';
 
 const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
@@ -31,6 +32,8 @@ interface paletteItemCollection {
 export const DemoCanvas = () => {
   const xqCanvas: ExquisiteCanvas = useExquisiteCanvas();
   console.log(`MADE AN EXQUISITE CANVAS: ${xqCanvas.width} X ${xqCanvas.height}`);
+
+  const XStore = useXqstCanvasStore();
 
   // core canvas state
   const [width, setWidth] = [xqCanvas.width, xqCanvas.setWidth];
@@ -76,14 +79,14 @@ export const DemoCanvas = () => {
   };
 
   const didSetPixel = (x: number, y: number, palettePos: number) => {
-    xqCanvas.setPixel(x, y, palettePos);
+    XStore.setPixel(x, y, palettePos);
   };
 
   
 
   const didClickPixel = (x: number, y: number) => {
     if (!dropperActive) {
-      lastPixelDownRef.current = true;
+      // lastPixelDownRef.current = true;
       didSetPixel(x, y, currPaletteItem);
     } else {
       // set current palette item based on pixel clicked
@@ -92,7 +95,7 @@ export const DemoCanvas = () => {
         setCurrPaletteItem(newPalettePos);
       }
       setDropperActive(false);
-      lastPixelDownRef.current = true;
+      // lastPixelDownRef.current = true;
       didSetPixel(x, y, newPalettePos);
     }
   };
@@ -211,7 +214,7 @@ export const DemoCanvas = () => {
     xqCanvas.setPaletteItem(currPaletteItem, color);
   };
 
-  const xqstDisplay = useXqstDisplay(xqCanvas, didClickPixel);
+  const xqstDisplay = useXqstDisplay(XStore, didClickPixel);
 
   const PaletteChooser = (
     <div className="my-12 flex justify-left flex-wrap">

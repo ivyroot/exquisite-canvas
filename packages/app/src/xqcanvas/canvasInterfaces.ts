@@ -44,3 +44,16 @@ export default interface ExquisiteCanvas {
     getPixelColor: (x: number, y: number) => string;
     displayElement: HTMLElement;
 };
+
+interface CanvasStore {
+    width: number;
+    height: number;
+    zoom: number;
+    palette: paletteItemCollection;
+    paletteItemsStr: () => string;
+    paletteSize: number;
+    pixels: pixelCanvas;
+    setPixel: (x: number, y: number, val: number) => void;
+    getPixelColor: (x: number, y: number) => string;
+
+};
