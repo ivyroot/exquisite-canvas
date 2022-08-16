@@ -53,7 +53,7 @@ export const LoadFile = (props: { canvas: CanvasStore }) => {
   };
 
   return (
-    <div className="my-2 ml-4 sm:ml-12">
+    <div className="my-2 ml-4 sm:ml-12 pt-4">
       <input
         ref={inputRef}
         type="file"
