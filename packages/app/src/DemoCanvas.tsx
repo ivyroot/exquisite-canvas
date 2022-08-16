@@ -6,6 +6,7 @@ import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
 import { CanvasSkin } from "./CanvasSkin";
 import { LoadFile } from "./loadFile";
+import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./saveFile";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import {
@@ -34,13 +35,9 @@ export const DemoCanvas = () => {
     XqstStore.setCurrPaletteItem(newPaletteItem);
   };
 
-  const didSetPixel = (x: number, y: number, palettePos: number) => {
-    XqstStore.setPixel(x, y, palettePos);
-  };
-
   const didClickPixel = (x: number, y: number) => {
     if (!XqstStore.dropperActive) {
-      didSetPixel(x, y, XqstStore.currPaletteItem);
+      XqstStore.setPixel(x, y, XqstStore.currPaletteItem);
     } else {
       // set current palette item based on pixel clicked
       const newPalettePos = XqstStore.getPixelVal(x, y);
@@ -48,32 +45,8 @@ export const DemoCanvas = () => {
         handleSetCurrPaletteItem(newPalettePos);
       }
       XqstStore.setDropperActive(false);
-      didSetPixel(x, y, newPalettePos);
+      XqstStore.setPixel(x, y, newPalettePos);
     }
-  };
-
-  const moveImage = (direction: string) => {
-    const deltas = { x: 0, y: 0 };
-    if (direction == "up") {
-      deltas.y = -1;
-    } else if (direction == "down") {
-      deltas.y = 1;
-    } else if (direction == "left") {
-      deltas.x = -1;
-    } else if (direction == "right") {
-      deltas.x = 1;
-    } else {
-      return;
-    }
-    const movedPixels: pixelCanvas = {};
-    for (const key in pixels) {
-      if (pixels.hasOwnProperty(key)) {
-        const [x, y] = pixelKeyVals(key);
-        const newKey = pixelKey(parseInt(x) + deltas.x, parseInt(y) + deltas.y);
-        movedPixels[newKey] = pixels[key];
-      }
-    }
-    XqstStore.setPixels(movedPixels);
   };
 
   const PaletteItems = [];
@@ -222,38 +195,17 @@ export const DemoCanvas = () => {
               ></CanvasSkin>
             </button>
           </div>
-
           <div className="bg-white mt-2 mx-2">
-            <button onClick={(event) => moveImage("up")} className="pt-1 px-1">
-              <CanvasSkin item="move-up"></CanvasSkin>
-            </button>
+            <MoveImage canvas={XqstStore} direction="up"></MoveImage>
           </div>
-
           <div className="bg-white mt-2 mx-2">
-            <button
-              onClick={(event) => moveImage("down")}
-              className="pt-1 px-1"
-            >
-              <CanvasSkin item="move-down"></CanvasSkin>
-            </button>
+            <MoveImage canvas={XqstStore} direction="down"></MoveImage>
           </div>
-
           <div className="bg-white mt-2 mx-2">
-            <button
-              onClick={(event) => moveImage("left")}
-              className="pt-1 px-1"
-            >
-              <CanvasSkin item="move-left"></CanvasSkin>
-            </button>
+            <MoveImage canvas={XqstStore} direction="left"></MoveImage>
           </div>
-
           <div className="bg-white mt-2 mx-2">
-            <button
-              onClick={(event) => moveImage("right")}
-              className="pt-1 px-1"
-            >
-              <CanvasSkin item="move-right"></CanvasSkin>
-            </button>
+            <MoveImage canvas={XqstStore} direction="right"></MoveImage>
           </div>
         </div>
         <div className="mt-6">{xqstDisplay}</div>

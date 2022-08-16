@@ -56,8 +56,7 @@ const useCanvasStore = create((set) => ({
       const newPixels = { ...state.pixels, ...ChangeSet };
       return { pixels: newPixels };
     }),
-  setPixels: (vals: pixelCanvas) =>
-    set((state) => ({ pixels: { ...state.pixels, vals } })),
+  setPixels: (vals: pixelCanvas) => set((state) => ({ pixels: vals })),
   dropperActive: false,
   setDropperActive: (val: boolean) => set({ dropperActive: val }),
 }));
