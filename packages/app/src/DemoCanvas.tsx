@@ -25,9 +25,6 @@ export const DemoCanvas = () => {
   const XqstStore = useXqstCanvasStore();
   const paletteSize = XqstStore.paletteSize;
 
-  // plugins UI
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
   // plugin state
   //
   //  Attempt to create storage for plugins outside of core canvas
@@ -67,6 +64,9 @@ export const DemoCanvas = () => {
     backgroundIncluded: false,
     backgroundIndex: 0,
   };
+
+  // file upload ui
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const didClickSave = (e: any, format: string) => {
     e.preventDefault();
