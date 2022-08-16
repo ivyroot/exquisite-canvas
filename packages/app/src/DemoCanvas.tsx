@@ -19,8 +19,8 @@ import {
   pixelKey,
   pixelKeyVals,
 } from "./xqcanvas/CanvasInterfaces";
-import { useXqstCanvasDisplay } from "./xqcanvas/useXqstCanvasDisplay";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
+import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
 
 export const DemoCanvas = () => {
   // core canvas state
@@ -44,7 +44,7 @@ export const DemoCanvas = () => {
       // set current palette item based on pixel clicked
       const newPalettePos = XqstStore.getPixelVal(x, y);
       if (XqstStore.currPaletteItem != newPalettePos) {
-        handleSetCurrPaletteItem(newPalettePos);
+        XqstStore.setCurrPaletteItem(newPalettePos);
       }
       XqstStore.setDropperActive(false);
       XqstStore.setPixel(x, y, newPalettePos);
@@ -54,8 +54,6 @@ export const DemoCanvas = () => {
   const didClickDropper = (e: any) => {
     XqstStore.setDropperActive(true);
   };
-
-  const xqstDisplay = useXqstCanvasDisplay(XqstStore, didClickPixel);
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
@@ -137,7 +135,12 @@ export const DemoCanvas = () => {
           </div>
         </div>
 
-        <div className="mt-6">{xqstDisplay}</div>
+        <div className="mt-6">
+          <XqstCanvasDisplay
+            canvas={XqstStore}
+            didClickPixel={didClickPixel}
+          ></XqstCanvasDisplay>
+        </div>
 
         <BasicPalette canvas={XqstStore}></BasicPalette>
 
