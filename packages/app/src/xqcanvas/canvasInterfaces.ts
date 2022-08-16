@@ -47,13 +47,17 @@ export default interface ExquisiteCanvas {
 
 interface CanvasStore {
     width: number;
+    setWidth: (val: number) => void;
     height: number;
+    setHeight: (val: number) => void;
     zoom: number;
+    setZoom: (val: number) => void;
     palette: paletteItemCollection;
     paletteItemsStr: () => string;
     paletteSize: number;
     pixels: pixelCanvas;
     setPixel: (x: number, y: number, val: number) => void;
+    setPixels: (val: pixelCanvas) => void;
     getPixelColor: (x: number, y: number) => string;
 
 };

@@ -31,17 +31,11 @@ interface paletteItemCollection {
 
 export const DemoCanvas = () => {
   const xqCanvas: ExquisiteCanvas = useExquisiteCanvas();
-  console.log(`MADE AN EXQUISITE CANVAS: ${xqCanvas.width} X ${xqCanvas.height}`);
-
   const XStore = useXqstCanvasStore();
 
   // core canvas state
-  const [width, setWidth] = [xqCanvas.width, xqCanvas.setWidth];
-  const [height, setHeight] = [xqCanvas.height, xqCanvas.setHeight];
-  const [zoom, setZoom] = [xqCanvas.zoom, xqCanvas.setZoom];
   const [palette, setPalette] = [xqCanvas.palette, xqCanvas.setPalette];
   const [paletteSize, setPaletteSize] = [xqCanvas.paletteSize, xqCanvas.setPaletteSize];
-  const [pixels, setPixels] = [xqCanvas.pixels, xqCanvas.setPixels];
 
   // plugins UI
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -51,8 +45,8 @@ export const DemoCanvas = () => {
   const [dropperActive, setDropperActive] = useState(false);
   const header = {
     version: 1,
-    width: width,
-    height: height,
+    width: XStore.width,
+    height: XStore.height,
     numColors: paletteSize,
     scaleFactor: 1,
     alpha: false,
@@ -63,8 +57,8 @@ export const DemoCanvas = () => {
   const didClickSave = (e: any, format: string) => {
     e.preventDefault();
     const pb = new PixelBuffer(header, xqCanvas.getPaletteItems());
-    for (let iy = 0; iy < height; iy++) {
-      for (let ix = 0; ix < width; ix++) {
+    for (let iy = 0; iy < XStore.height; iy++) {
+      for (let ix = 0; ix < XStore.width; ix++) {
         const palettePos = xqCanvas.getPixelVal(ix, iy);
         pb.setPixel(ix, iy, palettePos);
       }
@@ -121,7 +115,7 @@ export const DemoCanvas = () => {
         movedPixels[newKey] = pixels[key];
       }
     }
-    setPixels(movedPixels);
+    XStore.setPixels(movedPixels);
   };
 
   const PaletteItems = [];
@@ -176,8 +170,8 @@ export const DemoCanvas = () => {
   };
 
   const loadFromPixBuffer = (pixBuffer: any) => {
-    setWidth(pixBuffer.header.width);
-    setHeight(pixBuffer.header.height);
+    XStore.setWidth(pixBuffer.header.width);
+    XStore.setHeight(pixBuffer.header.height);
     const htmlPalette: paletteItemCollection = {};
     for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
       const palColor = pixBuffer.palette[pi];
@@ -197,7 +191,7 @@ export const DemoCanvas = () => {
         pixelMap[keyName] = pixelPos;
       }
     }
-    setPixels(pixelMap);
+    XStore.setPixels(pixelMap);
   };
 
   const loadFile = (e: any) => {
@@ -291,10 +285,10 @@ export const DemoCanvas = () => {
               type="range"
               min="10"
               max="400"
-              value={zoom}
+              value={XStore.zoom}
               onChange={(event) => {
                 if (event.target) {
-                  setZoom(parseInt(event.target.value));
+                  XStore.setZoom(parseInt(event.target.value));
                 }
               }}
             />
@@ -309,10 +303,10 @@ export const DemoCanvas = () => {
               className="w-16 px-2 h-8"
               type="number"
               name="WIDTH"
-              value={width}
+              value={XStore.width}
               onChange={(event) => {
                 if (event.target) {
-                  setWidth(parseInt(event.target.value));
+                  XStore.setWidth(parseInt(event.target.value));
                 }
               }}
             />
@@ -323,10 +317,10 @@ export const DemoCanvas = () => {
               className="w-16 px-2 h-8"
               type="number"
               name="HEIGHT"
-              value={height}
+              value={XStore.height}
               onChange={(event) => {
                 if (event.target) {
-                  setHeight(parseInt(event.target.value));
+                  XStore.setHeight(parseInt(event.target.value));
                 }
               }}
             />

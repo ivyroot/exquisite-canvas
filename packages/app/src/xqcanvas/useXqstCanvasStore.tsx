@@ -25,8 +25,11 @@ const EmptyPixels : pixelCanvas = {};
 
 const useCanvasStore = create((set) => ({
     width: 8,
+    setWidth: (val: number) => set((state) => ({ width: val })),
     height: 8,
+    setHeight: (val: number) => set((state) => ({ height: val })),
     zoom: 200,
+    setZoom: (val: number) => set((state) => ({ zoom: val })),
     palette: DefaultPalette,
     paletteSize: 2,
     pixels: EmptyPixels,
@@ -38,7 +41,8 @@ const useCanvasStore = create((set) => ({
             ChangeSet[keyName] = wrappedPos;
             const newPixels = { ...state.pixels, ...ChangeSet };
             return {pixels: newPixels};
-        })
+        }),
+    setPixels: (vals: pixelCanvas) => set( state => ({pixels: {...state.pixels, vals}}) )
 }));
 
 
