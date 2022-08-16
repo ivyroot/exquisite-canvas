@@ -26,16 +26,6 @@ export const DemoCanvas = () => {
   // core canvas state
   const XqstStore = useXqstCanvasStore();
 
-  const currPaletteItemColor = () => {
-    const currItem = XqstStore.currPaletteItem;
-    const itemColor = XqstStore.getPaletteItem(currItem);
-    return itemColor;
-  };
-
-  const setCurrPaletteItemColor = (color: string) => {
-    XqstStore.setPaletteItem(XqstStore.currPaletteItem, color);
-  };
-
   const didClickPixel = (x: number, y: number) => {
     if (!XqstStore.dropperActive) {
       XqstStore.setPixel(x, y, XqstStore.currPaletteItem);
@@ -52,6 +42,16 @@ export const DemoCanvas = () => {
 
   const didClickDropper = (e: any) => {
     XqstStore.setDropperActive(true);
+  };
+
+  const currPaletteItemColor = () => {
+    const currItem = XqstStore.currPaletteItem;
+    const itemColor = XqstStore.getPaletteItem(currItem);
+    return itemColor;
+  };
+
+  const setCurrPaletteItemColor = (color: string) => {
+    XqstStore.setPaletteItem(XqstStore.currPaletteItem, color);
   };
 
   return (
