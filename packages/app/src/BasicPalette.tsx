@@ -13,12 +13,10 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
   };
 
   const didClickAddPaletteItem = (e: any) => {
-    e.preventDefault();
     canvas.setPaletteSize(canvas.paletteSize + 1);
   };
 
   const didClickRemovePaletteItem = (e: any) => {
-    e.preventDefault();
     if (canvas.paletteSize > 2) {
       canvas.setPaletteSize(canvas.paletteSize - 1);
     }
