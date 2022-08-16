@@ -17,8 +17,8 @@ import {
   pixelKey,
   pixelKeyVals,
 } from "./xqcanvas/canvasInterfaces";
+import { useXqstCanvasDisplay } from "./xqcanvas/useXqstCanvasDisplay";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
-import { useXqstDisplay } from "./xqcanvas/useXqstDisplay";
 
 export const DemoCanvas = () => {
   // core canvas state
@@ -180,7 +180,6 @@ export const DemoCanvas = () => {
         XqstStore.setPixel(x, y, pixelPos);
       }
     }
-    //XqstStore.setPixels(pixelMap);
   };
 
   const loadFile = (e: any) => {
@@ -197,7 +196,7 @@ export const DemoCanvas = () => {
     XqstStore.setPaletteItem(XqstStore.currPaletteItem, color);
   };
 
-  const xqstDisplay = useXqstDisplay(XqstStore, didClickPixel);
+  const xqstDisplay = useXqstCanvasDisplay(XqstStore, didClickPixel);
 
   const PaletteChooser = (
     <div className="my-12 flex justify-left flex-wrap">

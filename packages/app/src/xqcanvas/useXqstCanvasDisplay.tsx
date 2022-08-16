@@ -10,7 +10,7 @@ import {
   pixelKeyVals,
 } from "./canvasInterfaces";
 
-export const useXqstDisplay = (
+export const useXqstCanvasDisplay = (
   c: CanvasStore,
   didClickPixel: (x: number, y: number) => void
 ) => {
