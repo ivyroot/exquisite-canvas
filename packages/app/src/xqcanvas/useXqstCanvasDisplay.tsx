@@ -8,7 +8,7 @@ import {
   pixelCanvas,
   pixelKey,
   pixelKeyVals,
-} from "./canvasInterfaces";
+} from "./CanvasInterfaces";
 
 export const useXqstCanvasDisplay = (
   c: CanvasStore,

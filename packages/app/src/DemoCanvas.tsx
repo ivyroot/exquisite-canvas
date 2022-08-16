@@ -16,7 +16,7 @@ import {
   pixelCanvas,
   pixelKey,
   pixelKeyVals,
-} from "./xqcanvas/canvasInterfaces";
+} from "./xqcanvas/CanvasInterfaces";
 import { useXqstCanvasDisplay } from "./xqcanvas/useXqstCanvasDisplay";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 

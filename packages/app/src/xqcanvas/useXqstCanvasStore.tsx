@@ -9,7 +9,7 @@ import {
   pixelCanvas,
   pixelKey,
   pixelKeyVals,
-} from "./canvasInterfaces";
+} from "./CanvasInterfaces";
 import { useXqstDisplay } from "./useXqstDisplay";
 
 const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
