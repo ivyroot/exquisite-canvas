@@ -42,6 +42,9 @@ const useCanvasStore = create((set) => ({
       ChangeSet[itemKey] = fmtVal;
       return { palette: { ...state.palette, ...ChangeSet } };
     }),
+  currPaletteItem: 1,
+  setCurrPaletteItem: (val: number) =>
+    set((state) => ({ currPaletteItem: val })),
   pixels: EmptyPixels,
   setPixel: (x: number, y: number, palettePos: number) =>
     set((state) => {

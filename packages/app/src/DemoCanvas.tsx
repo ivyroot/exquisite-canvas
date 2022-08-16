@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import create from "zustand";
 
 import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
@@ -22,12 +23,39 @@ import { useXqstDisplay } from "./xqcanvas/useXqstDisplay";
 export const DemoCanvas = () => {
   // core canvas state
   const XqstStore = useXqstCanvasStore();
+  const paletteSize = XqstStore.paletteSize;
 
   // plugins UI
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   // plugin state
-  const [currPaletteItem, setCurrPaletteItem] = useState(1);
+  //
+  //  Attempt to create storage for plugins outside of core canvas
+  //
+  // const useCanvasPlugins = create((set) => ({
+  //   currPaletteItem: 1,
+  //   setCurrPaletteItem: (val: number) =>
+  //     set((state) => ({
+  //       currPaletteItem: val,
+  //     })),
+  // }));
+  // const currPaletteItem = useCanvasPlugins((state) => state.currPaletteItem);
+  //
+  // const setCurrPaletteItem = useCanvasPlugins((state) =>
+  //   state.setCurrPaletteItem(0)
+  // );
+
+  const currPaletteItemColor = () => {
+    const currItem = XqstStore.currPaletteItem;
+    const itemColor = XqstStore.getPaletteItem(currItem);
+    return itemColor;
+  };
+
+  const handleSetCurrPaletteItem = (newPaletteItem: number) => {
+    console.log(`UPDATING CURRENT PALETTE SELECTION: ${newPaletteItem}`);
+    XqstStore.setCurrPaletteItem(newPaletteItem);
+  };
+
   const [dropperActive, setDropperActive] = useState(false);
   const header = {
     version: 1,
@@ -54,26 +82,20 @@ export const DemoCanvas = () => {
     useDownload(pb, format, filename);
   };
 
-  const currPaletteItemColor = () => {
-    return XqstStore.getPaletteItem(currPaletteItem);
-  };
-
   const didSetPixel = (x: number, y: number, palettePos: number) => {
     XqstStore.setPixel(x, y, palettePos);
   };
 
   const didClickPixel = (x: number, y: number) => {
     if (!dropperActive) {
-      // lastPixelDownRef.current = true;
-      didSetPixel(x, y, currPaletteItem);
+      didSetPixel(x, y, XqstStore.currPaletteItem);
     } else {
       // set current palette item based on pixel clicked
       const newPalettePos = XqstStore.getPixelVal(x, y);
-      if (currPaletteItem != newPalettePos) {
-        setCurrPaletteItem(newPalettePos);
+      if (XqstStore.currPaletteItem != newPalettePos) {
+        handleSetCurrPaletteItem(newPalettePos);
       }
       setDropperActive(false);
-      // lastPixelDownRef.current = true;
       didSetPixel(x, y, newPalettePos);
     }
   };
@@ -107,7 +129,9 @@ export const DemoCanvas = () => {
     const itemKey = paletteKey(pi);
     const itemColor = XqstStore.getPaletteItem(pi);
     const borderText =
-      currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
+      XqstStore.currPaletteItem == pi
+        ? "border-indigo-300"
+        : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-6 p-1 sm:p-4 border-8 ${borderText}`;
     const labelText = pi > 0 ? `Color ${pi}` : `Background`;
     const label = (
@@ -120,7 +144,7 @@ export const DemoCanvas = () => {
         key={itemKey}
         className={itemClasses}
         style={{ backgroundColor: itemColor }}
-        onClick={(event) => setCurrPaletteItem(pi)}
+        onClick={(event) => handleSetCurrPaletteItem(pi)}
       >
         <input
           className="p-2 w-24"
@@ -190,7 +214,7 @@ export const DemoCanvas = () => {
   };
 
   const setCurrPaletteItemColor = (color: string) => {
-    XqstStore.setPaletteItem(currPaletteItem, color);
+    XqstStore.setPaletteItem(XqstStore.currPaletteItem, color);
   };
 
   const xqstDisplay = useXqstDisplay(XqstStore, didClickPixel);
