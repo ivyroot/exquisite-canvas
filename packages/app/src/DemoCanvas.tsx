@@ -6,9 +6,8 @@ import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
 import { CanvasSkin } from "./CanvasSkin";
 import { LoadFile } from "./loadFile";
-import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
+import { SaveFile } from "./saveFile";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
-import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 import {
   CanvasStore,
   paletteItemCollection,
@@ -33,34 +32,6 @@ export const DemoCanvas = () => {
 
   const handleSetCurrPaletteItem = (newPaletteItem: number) => {
     XqstStore.setCurrPaletteItem(newPaletteItem);
-  };
-
-  const header = {
-    version: 1,
-    width: XqstStore.width,
-    height: XqstStore.height,
-    numColors: XqstStore.paletteSize,
-    scaleFactor: 1,
-    alpha: false,
-    backgroundIncluded: false,
-    backgroundIndex: 0,
-  };
-
-  // file upload ui
-  const inputRef = useRef<HTMLInputElement | null>(null);
-
-  const didClickSave = (e: any, format: string) => {
-    e.preventDefault();
-    const pb = new PixelBuffer(header, XqstStore.getPaletteItems());
-    for (let iy = 0; iy < XqstStore.height; iy++) {
-      for (let ix = 0; ix < XqstStore.width; ix++) {
-        const palettePos = XqstStore.getPixelVal(ix, iy);
-        pb.setPixel(ix, iy, palettePos);
-      }
-    }
-    const timestamp = new Date().getTime();
-    const filename = `exquisite-graphics-image-${timestamp}`;
-    useDownload(pb, format, filename);
   };
 
   const didSetPixel = (x: number, y: number, palettePos: number) => {
@@ -192,24 +163,9 @@ export const DemoCanvas = () => {
           <CanvasLogo></CanvasLogo>
         </div>
         <LoadFile canvas={XqstStore}></LoadFile>
-        <button
-          className="my-2 ml-4 sm:ml-12"
-          onClick={(event) => didClickSave(event, "binary")}
-        >
-          <span className="bg-slate-600 py-2 px-2 sm:px-4">Save</span>
-        </button>
-        <button
-          className="my-2 ml-4 sm:ml-12"
-          onClick={(event) => didClickSave(event, "hex")}
-        >
-          <span className="bg-slate-600 py-2 px-2 sm:px-4">Export Hex</span>
-        </button>
-        <button
-          className="my-2 ml-4 sm:ml-12"
-          onClick={(event) => didClickSave(event, "svg")}
-        >
-          <span className="bg-slate-600 py-2 px-2 sm:px-4">Export SVG</span>
-        </button>
+        <SaveFile canvas={XqstStore} format="binary"></SaveFile>
+        <SaveFile canvas={XqstStore} format="hex"></SaveFile>
+        <SaveFile canvas={XqstStore} format="svg"></SaveFile>
         <div className="flex flex-column items-center my-2 ml-4 sm:ml-12">
           <div className="bg-slate-600 py-2 px-2 sm:px-4 h-10">
             <input
