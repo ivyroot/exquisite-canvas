@@ -21,7 +21,7 @@ import { useXqstDisplay } from "./xqcanvas/useXqstDisplay";
 
 export const DemoCanvas = () => {
   // core canvas state
-  const XStore = useXqstCanvasStore();
+  const XqstStore = useXqstCanvasStore();
 
   // plugins UI
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -31,9 +31,9 @@ export const DemoCanvas = () => {
   const [dropperActive, setDropperActive] = useState(false);
   const header = {
     version: 1,
-    width: XStore.width,
-    height: XStore.height,
-    numColors: XStore.paletteSize,
+    width: XqstStore.width,
+    height: XqstStore.height,
+    numColors: XqstStore.paletteSize,
     scaleFactor: 1,
     alpha: false,
     backgroundIncluded: false,
@@ -42,10 +42,10 @@ export const DemoCanvas = () => {
 
   const didClickSave = (e: any, format: string) => {
     e.preventDefault();
-    const pb = new PixelBuffer(header, XStore.getPaletteItems());
-    for (let iy = 0; iy < XStore.height; iy++) {
-      for (let ix = 0; ix < XStore.width; ix++) {
-        const palettePos = XStore.getPixelVal(ix, iy);
+    const pb = new PixelBuffer(header, XqstStore.getPaletteItems());
+    for (let iy = 0; iy < XqstStore.height; iy++) {
+      for (let ix = 0; ix < XqstStore.width; ix++) {
+        const palettePos = XqstStore.getPixelVal(ix, iy);
         pb.setPixel(ix, iy, palettePos);
       }
     }
@@ -55,11 +55,11 @@ export const DemoCanvas = () => {
   };
 
   const currPaletteItemColor = () => {
-    return XStore.getPaletteItem(currPaletteItem);
+    return XqstStore.getPaletteItem(currPaletteItem);
   };
 
   const didSetPixel = (x: number, y: number, palettePos: number) => {
-    XStore.setPixel(x, y, palettePos);
+    XqstStore.setPixel(x, y, palettePos);
   };
 
   const didClickPixel = (x: number, y: number) => {
@@ -68,7 +68,7 @@ export const DemoCanvas = () => {
       didSetPixel(x, y, currPaletteItem);
     } else {
       // set current palette item based on pixel clicked
-      const newPalettePos = XStore.getPixelVal(x, y);
+      const newPalettePos = XqstStore.getPixelVal(x, y);
       if (currPaletteItem != newPalettePos) {
         setCurrPaletteItem(newPalettePos);
       }
@@ -99,13 +99,13 @@ export const DemoCanvas = () => {
         movedPixels[newKey] = pixels[key];
       }
     }
-    XStore.setPixels(movedPixels);
+    XqstStore.setPixels(movedPixels);
   };
 
   const PaletteItems = [];
-  for (let pi = 0; pi < XStore.paletteSize; pi++) {
+  for (let pi = 0; pi < XqstStore.paletteSize; pi++) {
     const itemKey = paletteKey(pi);
-    const itemColor = XStore.getPaletteItem(pi);
+    const itemColor = XqstStore.getPaletteItem(pi);
     const borderText =
       currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-6 p-1 sm:p-4 border-8 ${borderText}`;
@@ -139,13 +139,13 @@ export const DemoCanvas = () => {
 
   const didClickAddPaletteItem = (e: any) => {
     e.preventDefault();
-    XStore.setPaletteSize(XStore.paletteSize + 1);
+    XqstStore.setPaletteSize(XqstStore.paletteSize + 1);
   };
 
   const didClickRemovePaletteItem = (e: any) => {
     e.preventDefault();
     if (paletteSize > 2) {
-      XStore.setPaletteSize(XStore.paletteSize - 1);
+      XqstStore.setPaletteSize(XqstStore.paletteSize - 1);
     }
   };
 
@@ -154,8 +154,8 @@ export const DemoCanvas = () => {
   };
 
   const loadFromPixBuffer = (pixBuffer: any) => {
-    XStore.setWidth(pixBuffer.header.width);
-    XStore.setHeight(pixBuffer.header.height);
+    XqstStore.setWidth(pixBuffer.header.width);
+    XqstStore.setHeight(pixBuffer.header.height);
     const htmlPalette: paletteItemCollection = {};
     for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
       const palColor = pixBuffer.palette[pi];
@@ -165,18 +165,18 @@ export const DemoCanvas = () => {
       ).slice(0, 7);
       htmlPalette[palKey] = fmtColor;
     }
-    XStore.setPalette(htmlPalette);
-    XStore.setPaletteSize(pixBuffer.palette.length);
+    XqstStore.setPalette(htmlPalette);
+    XqstStore.setPaletteSize(pixBuffer.palette.length);
     const pixelMap: pixelCanvas = {};
     for (let y = 0; y < pixBuffer.header.height; y++) {
       for (let x = 0; x < pixBuffer.header.width; x++) {
         const keyName = pixelKey(x, y);
         const pixelPos = pixBuffer.getPixel(x, y);
         pixelMap[keyName] = pixelPos;
-        XStore.setPixel(x, y, pixelPos);
+        XqstStore.setPixel(x, y, pixelPos);
       }
     }
-    //XStore.setPixels(pixelMap);
+    //XqstStore.setPixels(pixelMap);
   };
 
   const loadFile = (e: any) => {
@@ -190,10 +190,10 @@ export const DemoCanvas = () => {
   };
 
   const setCurrPaletteItemColor = (color: string) => {
-    XStore.setPaletteItem(currPaletteItem, color);
+    XqstStore.setPaletteItem(currPaletteItem, color);
   };
 
-  const xqstDisplay = useXqstDisplay(XStore, didClickPixel);
+  const xqstDisplay = useXqstDisplay(XqstStore, didClickPixel);
 
   const PaletteChooser = (
     <div className="my-12 flex justify-left flex-wrap">
@@ -268,10 +268,10 @@ export const DemoCanvas = () => {
               type="range"
               min="10"
               max="400"
-              value={XStore.zoom}
+              value={XqstStore.zoom}
               onChange={(event) => {
                 if (event.target) {
-                  XStore.setZoom(parseInt(event.target.value));
+                  XqstStore.setZoom(parseInt(event.target.value));
                 }
               }}
             />
@@ -286,10 +286,10 @@ export const DemoCanvas = () => {
               className="w-16 px-2 h-8"
               type="number"
               name="WIDTH"
-              value={XStore.width}
+              value={XqstStore.width}
               onChange={(event) => {
                 if (event.target) {
-                  XStore.setWidth(parseInt(event.target.value));
+                  XqstStore.setWidth(parseInt(event.target.value));
                 }
               }}
             />
@@ -300,10 +300,10 @@ export const DemoCanvas = () => {
               className="w-16 px-2 h-8"
               type="number"
               name="HEIGHT"
-              value={XStore.height}
+              value={XqstStore.height}
               onChange={(event) => {
                 if (event.target) {
-                  XStore.setHeight(parseInt(event.target.value));
+                  XqstStore.setHeight(parseInt(event.target.value));
                 }
               }}
             />
