@@ -14,6 +14,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
 
   const didClickAddPaletteItem = (e: any) => {
     canvas.setPaletteSize(canvas.paletteSize + 1);
+    canvas.setCurrPaletteItem(canvas.paletteSize);
   };
 
   const didClickRemovePaletteItem = (e: any) => {
