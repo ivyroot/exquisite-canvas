@@ -40,6 +40,8 @@ interface CanvasStore {
   setPixels: (vals: pixelCanvas) => void;
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
+  currPaletteItem: 1;
+  setCurrPaletteItem: (val: number) => void;
   dropperActive: boolean;
   setDropperActive: (val: boolean) => void;
 }

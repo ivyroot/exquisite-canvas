@@ -42,9 +42,6 @@ const useCanvasStore = create((set) => ({
       ChangeSet[itemKey] = fmtVal;
       return { palette: { ...state.palette, ...ChangeSet } };
     }),
-  currPaletteItem: 1,
-  setCurrPaletteItem: (val: number) =>
-    set((state) => ({ currPaletteItem: val })),
   pixels: EmptyPixels,
   setPixel: (x: number, y: number, palettePos: number) =>
     set((state) => {
@@ -59,6 +56,9 @@ const useCanvasStore = create((set) => ({
   setPixels: (vals: pixelCanvas) => set((state) => ({ pixels: vals })),
   dropperActive: false,
   setDropperActive: (val: boolean) => set({ dropperActive: val }),
+  currPaletteItem: 1,
+  setCurrPaletteItem: (val: number) =>
+    set((state) => ({ currPaletteItem: val })),
 }));
 
 export function useXqstCanvasStore(): CanvasStore {
