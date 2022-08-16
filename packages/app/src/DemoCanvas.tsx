@@ -5,6 +5,7 @@ import create from "zustand";
 import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
 import { CanvasSkin } from "./CanvasSkin";
+import { LoadFile } from "./loadFile";
 import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
@@ -17,7 +18,6 @@ import {
   pixelKey,
   pixelKeyVals,
 } from "./xqcanvas/CanvasInterfaces";
-import { LoadFile } from "./xqcanvas/plugins/loadFile";
 import { useXqstCanvasDisplay } from "./xqcanvas/useXqstCanvasDisplay";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 

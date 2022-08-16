@@ -1,16 +1,7 @@
 import { useRef } from "react";
 
-import { useLoadPixelBuffer } from "../../useExquisiteFiles";
-import {
-  CanvasStore,
-  paletteItemCollection,
-  paletteKey,
-  pixelArray,
-  pixelCanvas,
-  pixelKey,
-  pixelKeyVals,
-} from "../CanvasInterfaces";
-import { useXqstDisplay } from "../useXqstDisplay";
+import { useLoadPixelBuffer } from "./useExquisiteFiles";
+import { CanvasStore, paletteKey, pixelKey } from "./xqcanvas/CanvasInterfaces";
 
 export const LoadFile = (props: { canvas: CanvasStore }) => {
   const canvas = props.canvas;
