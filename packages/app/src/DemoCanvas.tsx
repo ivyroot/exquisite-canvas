@@ -35,6 +35,10 @@ export const DemoCanvas = () => {
     XqstStore.setCurrPaletteItem(newPaletteItem);
   };
 
+  const setCurrPaletteItemColor = (color: string) => {
+    XqstStore.setPaletteItem(XqstStore.currPaletteItem, color);
+  };
+
   const didClickPixel = (x: number, y: number) => {
     if (!XqstStore.dropperActive) {
       XqstStore.setPixel(x, y, XqstStore.currPaletteItem);
@@ -100,10 +104,6 @@ export const DemoCanvas = () => {
 
   const didClickDropper = (e: any) => {
     XqstStore.setDropperActive(true);
-  };
-
-  const setCurrPaletteItemColor = (color: string) => {
-    XqstStore.setPaletteItem(XqstStore.currPaletteItem, color);
   };
 
   const xqstDisplay = useXqstCanvasDisplay(XqstStore, didClickPixel);
