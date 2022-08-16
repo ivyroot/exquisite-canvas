@@ -7,9 +7,17 @@ import { CanvasSkin } from "./CanvasSkin";
 import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
-import { CanvasStore, ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./xqcanvas/canvasInterfaces";
-import { useXqstCanvasStore } from './xqcanvas/useXqstCanvasStore';
-import { useXqstDisplay } from './xqcanvas/useXqstDisplay';
+import {
+  CanvasStore,
+  paletteItemCollection,
+  paletteKey,
+  pixelArray,
+  pixelCanvas,
+  pixelKey,
+  pixelKeyVals,
+} from "./xqcanvas/canvasInterfaces";
+import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
+import { useXqstDisplay } from "./xqcanvas/useXqstDisplay";
 
 export const DemoCanvas = () => {
   // core canvas state
@@ -53,8 +61,6 @@ export const DemoCanvas = () => {
   const didSetPixel = (x: number, y: number, palettePos: number) => {
     XStore.setPixel(x, y, palettePos);
   };
-
-  
 
   const didClickPixel = (x: number, y: number) => {
     if (!dropperActive) {
@@ -167,7 +173,7 @@ export const DemoCanvas = () => {
         const keyName = pixelKey(x, y);
         const pixelPos = pixBuffer.getPixel(x, y);
         pixelMap[keyName] = pixelPos;
-        XStore.setPixel(x, y, pixelPos)
+        XStore.setPixel(x, y, pixelPos);
       }
     }
     //XStore.setPixels(pixelMap);
@@ -209,8 +215,6 @@ export const DemoCanvas = () => {
       </div>
     </div>
   );
-
- 
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-800 pb-12">
@@ -348,9 +352,7 @@ export const DemoCanvas = () => {
             </button>
           </div>
         </div>
-        <div className="mt-6">
-          {xqstDisplay}
-        </div>
+        <div className="mt-6">{xqstDisplay}</div>
         {PaletteChooser}
         <div className="my-6 mx-24">
           <HexColorPicker
