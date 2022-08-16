@@ -20,30 +20,6 @@ export const paletteKey = (i: number) => {
   return `pal_${i}`;
 };
 
-export default interface ExquisiteCanvas {
-  version: number;
-  width: number;
-  setWidth: (val: number) => void;
-  height: number;
-  setHeight: (val: number) => void;
-  zoom: number;
-  setZoom: (val: number) => void;
-  palette: paletteItemCollection;
-  setPalette: (palette: paletteItemCollection) => void;
-  setPaletteItem: (item: number, val: string) => void;
-  getPaletteItem: (item: number) => string;
-  getPaletteItems: () => string[];
-  paletteSize: number;
-  setPaletteSize: (val: number) => void;
-  paletteArray: () => string[];
-  pixels: pixelCanvas;
-  setPixels: (val: pixelCanvas) => void;
-  setPixel: (x: number, y: number, val: number) => void;
-  getPixelVal: (x: number, y: number) => number;
-  getPixelColor: (x: number, y: number) => string;
-  displayElement: HTMLElement;
-}
-
 interface CanvasStore {
   width: number;
   setWidth: (val: number) => void;

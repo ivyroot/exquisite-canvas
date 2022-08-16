@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react";
 
 import {
   CanvasStore,
-  ExquisiteCanvas,
   paletteItemCollection,
   paletteKey,
   pixelArray,
