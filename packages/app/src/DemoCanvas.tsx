@@ -23,24 +23,6 @@ import { useXqstDisplay } from "./xqcanvas/useXqstDisplay";
 export const DemoCanvas = () => {
   // core canvas state
   const XqstStore = useXqstCanvasStore();
-  const paletteSize = XqstStore.paletteSize;
-
-  // plugin state
-  //
-  //  Attempt to create storage for plugins outside of core canvas
-  //
-  // const useCanvasPlugins = create((set) => ({
-  //   currPaletteItem: 1,
-  //   setCurrPaletteItem: (val: number) =>
-  //     set((state) => ({
-  //       currPaletteItem: val,
-  //     })),
-  // }));
-  // const currPaletteItem = useCanvasPlugins((state) => state.currPaletteItem);
-  //
-  // const setCurrPaletteItem = useCanvasPlugins((state) =>
-  //   state.setCurrPaletteItem(0)
-  // );
 
   const currPaletteItemColor = () => {
     const currItem = XqstStore.currPaletteItem;
@@ -49,11 +31,9 @@ export const DemoCanvas = () => {
   };
 
   const handleSetCurrPaletteItem = (newPaletteItem: number) => {
-    console.log(`UPDATING CURRENT PALETTE SELECTION: ${newPaletteItem}`);
     XqstStore.setCurrPaletteItem(newPaletteItem);
   };
 
-  const [dropperActive, setDropperActive] = useState(false);
   const header = {
     version: 1,
     width: XqstStore.width,
@@ -87,7 +67,7 @@ export const DemoCanvas = () => {
   };
 
   const didClickPixel = (x: number, y: number) => {
-    if (!dropperActive) {
+    if (!XqstStore.dropperActive) {
       didSetPixel(x, y, XqstStore.currPaletteItem);
     } else {
       // set current palette item based on pixel clicked
@@ -95,7 +75,7 @@ export const DemoCanvas = () => {
       if (XqstStore.currPaletteItem != newPalettePos) {
         handleSetCurrPaletteItem(newPalettePos);
       }
-      setDropperActive(false);
+      XqstStore.setDropperActive(false);
       didSetPixel(x, y, newPalettePos);
     }
   };
@@ -174,7 +154,7 @@ export const DemoCanvas = () => {
   };
 
   const didClickDropper = (e: any) => {
-    setDropperActive(!dropperActive);
+    XqstStore.setDropperActive(true);
   };
 
   const loadFromPixBuffer = (pixBuffer: any) => {
@@ -338,7 +318,7 @@ export const DemoCanvas = () => {
               className="pt-1 px-1"
             >
               <CanvasSkin
-                item={dropperActive ? "dropper-active" : "dropper"}
+                item={XqstStore.dropperActive ? "dropper-active" : "dropper"}
               ></CanvasSkin>
             </button>
           </div>

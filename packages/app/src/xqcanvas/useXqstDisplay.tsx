@@ -18,6 +18,7 @@ export const useXqstDisplay = (
   const height = c.height;
   const zoom = c.zoom;
   const currPaletteItem = c.currPaletteItem;
+  const dropperActive = c.dropperActive;
   const svgCanvasRef = useRef<SVGSVGElement | null>(null);
   const lastPixelDownRef = useRef<boolean | null>(null);
 
@@ -108,7 +109,7 @@ export const useXqstDisplay = (
       window.removeEventListener("pointerup", onPointerUp);
       svg.removeEventListener("touchmove", onTouchMove);
     };
-  }, [width, height, currPaletteItem]);
+  }, [width, height, currPaletteItem, dropperActive]);
 
   return <div>{canvasSvg}</div>;
 };

@@ -58,6 +58,8 @@ const useCanvasStore = create((set) => ({
     }),
   setPixels: (vals: pixelCanvas) =>
     set((state) => ({ pixels: { ...state.pixels, vals } })),
+  dropperActive: false,
+  setDropperActive: (val: boolean) => set({ dropperActive: val }),
 }));
 
 export function useXqstCanvasStore(): CanvasStore {
