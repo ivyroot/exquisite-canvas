@@ -8,34 +8,12 @@ import { useDownload, useLoadPixelBuffer } from "./useExquisiteFiles";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
 import { CanvasStore, ExquisiteCanvas, paletteItemCollection, pixelCanvas, pixelArray, pixelKey, pixelKeyVals, paletteKey } from "./xqcanvas/canvasInterfaces";
-import { useExquisiteCanvas } from "./xqcanvas/useExquisiteCanvas";
-import { useXqstDisplay } from './xqcanvas/useXqstDisplay';
 import { useXqstCanvasStore } from './xqcanvas/useXqstCanvasStore';
-
-const pixelKey = (x: number, y: number) => {
-  return `px_${x}X${y}`;
-};
-
-const pixelKeyVals = (pxKey: string) => {
-  if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
-  return pxKey.replace("px_", "").split("X");
-};
-
-const paletteKey = (i: number) => {
-  return `pal_${i}`;
-};
-
-interface paletteItemCollection { 
-  [index: string]: string;
-}
+import { useXqstDisplay } from './xqcanvas/useXqstDisplay';
 
 export const DemoCanvas = () => {
-  const xqCanvas: ExquisiteCanvas = useExquisiteCanvas();
-  const XStore = useXqstCanvasStore();
-
   // core canvas state
-  const [palette, setPalette] = [xqCanvas.palette, xqCanvas.setPalette];
-  const [paletteSize, setPaletteSize] = [xqCanvas.paletteSize, xqCanvas.setPaletteSize];
+  const XStore = useXqstCanvasStore();
 
   // plugins UI
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -47,7 +25,7 @@ export const DemoCanvas = () => {
     version: 1,
     width: XStore.width,
     height: XStore.height,
-    numColors: paletteSize,
+    numColors: XStore.paletteSize,
     scaleFactor: 1,
     alpha: false,
     backgroundIncluded: false,
@@ -56,10 +34,10 @@ export const DemoCanvas = () => {
 
   const didClickSave = (e: any, format: string) => {
     e.preventDefault();
-    const pb = new PixelBuffer(header, xqCanvas.getPaletteItems());
+    const pb = new PixelBuffer(header, XStore.getPaletteItems());
     for (let iy = 0; iy < XStore.height; iy++) {
       for (let ix = 0; ix < XStore.width; ix++) {
-        const palettePos = xqCanvas.getPixelVal(ix, iy);
+        const palettePos = XStore.getPixelVal(ix, iy);
         pb.setPixel(ix, iy, palettePos);
       }
     }
@@ -69,7 +47,7 @@ export const DemoCanvas = () => {
   };
 
   const currPaletteItemColor = () => {
-    return xqCanvas.getPaletteItem(currPaletteItem);
+    return XStore.getPaletteItem(currPaletteItem);
   };
 
   const didSetPixel = (x: number, y: number, palettePos: number) => {
@@ -84,7 +62,7 @@ export const DemoCanvas = () => {
       didSetPixel(x, y, currPaletteItem);
     } else {
       // set current palette item based on pixel clicked
-      const newPalettePos = xqCanvas.getPixelVal(x, y);
+      const newPalettePos = XStore.getPixelVal(x, y);
       if (currPaletteItem != newPalettePos) {
         setCurrPaletteItem(newPalettePos);
       }
@@ -119,9 +97,9 @@ export const DemoCanvas = () => {
   };
 
   const PaletteItems = [];
-  for (let pi = 0; pi < paletteSize; pi++) {
+  for (let pi = 0; pi < XStore.paletteSize; pi++) {
     const itemKey = paletteKey(pi);
-    const itemColor = xqCanvas.getPaletteItem(pi);
+    const itemColor = XStore.getPaletteItem(pi);
     const borderText =
       currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-6 p-1 sm:p-4 border-8 ${borderText}`;
@@ -155,13 +133,13 @@ export const DemoCanvas = () => {
 
   const didClickAddPaletteItem = (e: any) => {
     e.preventDefault();
-    setPaletteSize(paletteSize + 1);
+    XStore.setPaletteSize(XStore.paletteSize + 1);
   };
 
   const didClickRemovePaletteItem = (e: any) => {
     e.preventDefault();
     if (paletteSize > 2) {
-      setPaletteSize(paletteSize - 1);
+      XStore.setPaletteSize(XStore.paletteSize - 1);
     }
   };
 
@@ -181,17 +159,18 @@ export const DemoCanvas = () => {
       ).slice(0, 7);
       htmlPalette[palKey] = fmtColor;
     }
-    setPalette(htmlPalette);
-    setPaletteSize(pixBuffer.palette.length);
+    XStore.setPalette(htmlPalette);
+    XStore.setPaletteSize(pixBuffer.palette.length);
     const pixelMap: pixelCanvas = {};
     for (let y = 0; y < pixBuffer.header.height; y++) {
       for (let x = 0; x < pixBuffer.header.width; x++) {
         const keyName = pixelKey(x, y);
         const pixelPos = pixBuffer.getPixel(x, y);
         pixelMap[keyName] = pixelPos;
+        XStore.setPixel(x, y, pixelPos)
       }
     }
-    XStore.setPixels(pixelMap);
+    //XStore.setPixels(pixelMap);
   };
 
   const loadFile = (e: any) => {
@@ -205,7 +184,7 @@ export const DemoCanvas = () => {
   };
 
   const setCurrPaletteItemColor = (color: string) => {
-    xqCanvas.setPaletteItem(currPaletteItem, color);
+    XStore.setPaletteItem(currPaletteItem, color);
   };
 
   const xqstDisplay = useXqstDisplay(XStore, didClickPixel);

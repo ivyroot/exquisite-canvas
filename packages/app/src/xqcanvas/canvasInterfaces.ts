@@ -53,11 +53,17 @@ interface CanvasStore {
     zoom: number;
     setZoom: (val: number) => void;
     palette: paletteItemCollection;
+    getPaletteItem: (item: number) => string;
+    getPaletteItems: () => string[];
+    setPalette: (vals: paletteItemCollection) => void;
+    setPaletteItem: (item: number, val: string) => void;
     paletteItemsStr: () => string;
     paletteSize: number;
+    setPaletteSize: (val: number) => void;
     pixels: pixelCanvas;
     setPixel: (x: number, y: number, val: number) => void;
-    setPixels: (val: pixelCanvas) => void;
+    setPixels: (vals: pixelCanvas) => void;
+    getPixelVal: (x: number, y: number) => number;
     getPixelColor: (x: number, y: number) => string;
 
 };
