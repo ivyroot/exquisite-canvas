@@ -18,6 +18,8 @@ export const useXqstCanvasDisplay = (
   const height = c.height;
   const zoom = c.zoom;
   const currPaletteItem = c.currPaletteItem;
+  const paletteSize = c.paletteSize;
+  const paletteString = c.getPaletteItemsStr();
   const dropperActive = c.dropperActive;
   const svgCanvasRef = useRef<SVGSVGElement | null>(null);
   const lastPixelDownRef = useRef<boolean | null>(null);
@@ -109,7 +111,14 @@ export const useXqstCanvasDisplay = (
       window.removeEventListener("pointerup", onPointerUp);
       svg.removeEventListener("touchmove", onTouchMove);
     };
-  }, [width, height, currPaletteItem, dropperActive]);
+  }, [
+    width,
+    height,
+    currPaletteItem,
+    dropperActive,
+    paletteSize,
+    paletteString,
+  ]);
 
   return <div>{canvasSvg}</div>;
 };

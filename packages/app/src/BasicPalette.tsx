@@ -19,7 +19,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
 
   const didClickRemovePaletteItem = (e: any) => {
     e.preventDefault();
-    if (paletteSize > 2) {
+    if (canvas.paletteSize > 2) {
       canvas.setPaletteSize(canvas.paletteSize - 1);
     }
   };

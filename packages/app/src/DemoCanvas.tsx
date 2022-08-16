@@ -25,6 +25,7 @@ import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 export const DemoCanvas = () => {
   // core canvas state
   const XqstStore = useXqstCanvasStore();
+  const paletteSize = XqstStore.paletteSize;
 
   const currPaletteItemColor = () => {
     const currItem = XqstStore.currPaletteItem;

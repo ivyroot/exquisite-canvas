@@ -32,7 +32,7 @@ interface CanvasStore {
   getPaletteItems: () => string[];
   setPalette: (vals: paletteItemCollection) => void;
   setPaletteItem: (item: number, val: string) => void;
-  paletteItemsStr: () => string;
+  getPaletteItemsStr: () => string;
   paletteSize: number;
   setPaletteSize: (val: number) => void;
   pixels: pixelCanvas;
