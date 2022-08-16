@@ -84,12 +84,17 @@ export function useXqstCanvasStore(): CanvasStore {
       return getPaletteItems().join("_");
     };
     const getPixelVal = (x: number, y: number) => {
-      return state.pixels[pixelKey(x, y)];
+      const storePixVal = state.pixels[pixelKey(x, y)];
+      if (storePixVal == null) {
+        return 0;
+      } else if (storePixVal >= state.paletteSize) {
+        return state.paletteSize - 1;
+      } else {
+        return storePixVal;
+      }
     };
     const getPixelColor = (x: number, y: number) => {
-      const pixelItem = getPixelVal(x, y);
-      const color = state.palette[paletteKey(pixelItem)];
-      return color ? color : state.palette[paletteKey(0)];
+      return getPaletteItem(getPixelVal(x, y));
     };
     return {
       ...state,
