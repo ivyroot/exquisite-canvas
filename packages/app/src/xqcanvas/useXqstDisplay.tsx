@@ -69,18 +69,23 @@ export const useXqstDisplay = (
       };
     };
 
+    const onClickPixel = (x: number, y: number) => {
+      lastPixelDownRef.current = true;
+      didClickPixel(x, y);
+    };
+
     const onPointerMove = (event: PointerEvent) => {
       if (lastPixelDownRef.current == null) return;
       const rect = getRectUnderCursor(event);
       if (!rect) return;
       event.preventDefault();
-      didClickPixel(rect.x, rect.y);
+      onClickPixel(rect.x, rect.y);
     };
 
     const onPointerDown = (event: PointerEvent) => {
       const rect = getRectUnderCursor(event);
       if (!rect) return;
-      didClickPixel(rect.x, rect.y);
+      onClickPixel(rect.x, rect.y);
     };
     const onPointerUp = () => {
       lastPixelDownRef.current = null;
