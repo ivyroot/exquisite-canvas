@@ -3,7 +3,6 @@ import { HexColorPicker } from "react-colorful";
 import create from "zustand";
 
 import { BasicPalette } from "./BasicPalette";
-import { Button } from "./Button";
 import { CanvasLogo } from "./CanvasLogo";
 import { CanvasSkin } from "./CanvasSkin";
 import { LoadFile } from "./loadFile";
