@@ -5,6 +5,7 @@ import create from "zustand";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
 import { CanvasSkin } from "./CanvasSkin";
+import { EyeDropper } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
 import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
@@ -37,10 +38,6 @@ export const DemoCanvas = () => {
       XqstStore.setDropperActive(false);
       XqstStore.setPixel(x, y, newPalettePos);
     }
-  };
-
-  const didClickDropper = () => {
-    XqstStore.setDropperActive(!XqstStore.dropperActive);
   };
 
   const currPaletteItemColor = () => {
@@ -108,14 +105,7 @@ export const DemoCanvas = () => {
             />
           </fieldset>
           <div className="bg-white mt-2 mx-2">
-            <button
-              onClick={(event) => didClickDropper()}
-              className="pt-1 px-1"
-            >
-              <CanvasSkin
-                item={XqstStore.dropperActive ? "dropper-active" : "dropper"}
-              ></CanvasSkin>
-            </button>
+            <EyeDropper canvas={XqstStore}></EyeDropper>
           </div>
           <div className="bg-white mt-2 mx-2">
             <MoveImage canvas={XqstStore} direction="up"></MoveImage>
