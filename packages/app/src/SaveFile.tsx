@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 import { useDownload } from "./useExquisiteFiles";
-import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
+import { PixelBuffer } from "./xgfx/ll_api";
 import { CanvasStore, paletteKey, pixelKey } from "./xqcanvas/CanvasInterfaces";
 
 export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {

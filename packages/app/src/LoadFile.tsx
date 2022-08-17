@@ -1,6 +1,7 @@
 import { useRef } from "react";
 
 import { useLoadPixelBuffer } from "./useExquisiteFiles";
+import { PixelBuffer } from "./xgfx/ll_api";
 import { CanvasStore, paletteKey, pixelKey } from "./xqcanvas/CanvasInterfaces";
 
 export const LoadFile = (props: { canvas: CanvasStore }) => {
@@ -8,7 +9,7 @@ export const LoadFile = (props: { canvas: CanvasStore }) => {
 
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const loadFromPixBuffer = (pixBuffer: any) => {
+  const loadFromPixBuffer = (pixBuffer: PixelBuffer) => {
     canvas.setWidth(pixBuffer.header.width);
     canvas.setHeight(pixBuffer.header.height);
     const htmlPalette: paletteItemCollection = {};
