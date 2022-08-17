@@ -1,6 +1,3 @@
-import { useEffect, useRef, useState } from "react";
-import create from "zustand";
-
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
@@ -9,16 +6,6 @@ import { EyeDropper } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
 import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
-import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
-import {
-  CanvasStore,
-  paletteItemCollection,
-  paletteKey,
-  pixelArray,
-  pixelCanvas,
-  pixelKey,
-  pixelKeyVals,
-} from "./xqcanvas/CanvasInterfaces";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
 
@@ -30,13 +17,8 @@ export const DemoCanvas = () => {
     if (!XqstStore.dropperActive) {
       XqstStore.setPixel(x, y, XqstStore.currPaletteItem);
     } else {
-      // set current palette item based on pixel clicked
-      const newPalettePos = XqstStore.getPixelVal(x, y);
-      if (XqstStore.currPaletteItem != newPalettePos) {
-        XqstStore.setCurrPaletteItem(newPalettePos);
-      }
+      XqstStore.setCurrPaletteItem(XqstStore.getPixelVal(x, y));
       XqstStore.setDropperActive(false);
-      XqstStore.setPixel(x, y, newPalettePos);
     }
   };
 

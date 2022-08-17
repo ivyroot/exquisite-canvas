@@ -55,8 +55,8 @@ export const XqstCanvasDisplay = (props: {
       const [x, y] = pixelKeyVals(element.id);
       return {
         element,
-        x: parseInt(x),
-        y: parseInt(y),
+        x: x,
+        y: y,
       };
     };
 

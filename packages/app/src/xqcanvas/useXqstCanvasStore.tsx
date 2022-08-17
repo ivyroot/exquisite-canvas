@@ -1,16 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
 import create from "zustand";
 
 import {
   CanvasStore,
   paletteItemCollection,
   paletteKey,
-  pixelArray,
   pixelCanvas,
   pixelKey,
-  pixelKeyVals,
 } from "./CanvasInterfaces";
-import { useXqstDisplay } from "./useXqstDisplay";
 
 const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
   String.fromCharCode("A".charCodeAt(0) + i)
