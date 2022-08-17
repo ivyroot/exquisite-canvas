@@ -21,7 +21,7 @@ export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {
 
   const didClickSave = (e: any) => {
     e.preventDefault();
-    const pb = new PixelBuffer(header, canvas.getPaletteItems());
+    const pb = new PixelBuffer(header, canvas.getPaletteItemColors());
     for (let iy = 0; iy < canvas.height; iy++) {
       for (let ix = 0; ix < canvas.width; ix++) {
         const palettePos = canvas.getPixelVal(ix, iy);

@@ -29,10 +29,10 @@ interface CanvasStore {
   setZoom: (val: number) => void;
   palette: paletteItemCollection;
   getPaletteItemColor: (item: number) => string;
-  getPaletteItems: () => string[];
+  getPaletteItemColors: () => string[];
+  getPaletteItemColorsStr: () => string;
   setPalette: (vals: paletteItemCollection) => void;
   setPaletteItem: (item: number, val: string) => void;
-  getPaletteItemsStr: () => string;
   paletteSize: number;
   setPaletteSize: (val: number) => void;
   pixels: pixelCanvas;

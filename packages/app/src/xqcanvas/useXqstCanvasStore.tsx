@@ -75,13 +75,13 @@ export function useXqstCanvasStore(): CanvasStore {
       }${colorCodeElements[item % 3]}`;
       return generativeColor;
     };
-    const getPaletteItems = () => {
+    const getPaletteItemColors = () => {
       return Array.from({ length: state.paletteSize }, (v, i) => {
         return getPaletteItemColor(i);
       });
     };
-    const getPaletteItemsStr = () => {
-      return getPaletteItems().join("_");
+    const getPaletteItemColorsStr = () => {
+      return getPaletteItemColors().join("_");
     };
     const getPixelVal = (x: number, y: number) => {
       const storePixVal = state.pixels[pixelKey(x, y)];
@@ -99,8 +99,8 @@ export function useXqstCanvasStore(): CanvasStore {
     return {
       ...state,
       getPaletteItemColor,
-      getPaletteItems,
-      getPaletteItemsStr,
+      getPaletteItemColors,
+      getPaletteItemColorsStr,
       getPixelVal,
       getPixelColor,
     };
