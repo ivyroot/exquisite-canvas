@@ -9,7 +9,7 @@ export const EyeDropper = (props: { canvas: CanvasStore }) => {
   };
 
   return (
-    <button onClick={(event) => didClickDropper()} className="pt-1 px-1">
+    <button onClick={didClickDropper} className="pt-1 px-1">
       <CanvasSkin
         item={canvas.dropperActive ? "dropper-active" : "dropper"}
       ></CanvasSkin>
