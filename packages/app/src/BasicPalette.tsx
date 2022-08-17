@@ -48,9 +48,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
           type="text"
           name="BACKGROUND_COLOR"
           value={itemColor}
-          onChange={(event) =>
-            handleSetPaletteColor(itemKey, event.target.value)
-          }
+          onChange={(event) => canvas.setPaletteItem(pi, event.target.value)}
         />
         {label}
       </div>
