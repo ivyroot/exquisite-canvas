@@ -35,11 +35,9 @@ export const MoveImage = (props: {
     canvas.setPixels(movedPixels);
   };
 
-  const canvasSkinItem = `move-${direction}`;
-
   return (
     <button onClick={didClickMove} className="pt-1 px-1">
-      <CanvasSkin item={canvasSkinItem}></CanvasSkin>
+      <CanvasSkin item={`move-${direction}`}></CanvasSkin>
     </button>
   );
 };
