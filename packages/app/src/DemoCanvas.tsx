@@ -5,9 +5,9 @@ import create from "zustand";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
 import { CanvasSkin } from "./CanvasSkin";
-import { LoadFile } from "./loadFile";
+import { LoadFile } from "./LoadFile";
 import { MoveImage } from "./MoveImage";
-import { SaveFile } from "./saveFile";
+import { SaveFile } from "./SaveFile";
 import { Pixel, PixelColor, PixelMap } from "./xgfx/api";
 import {
   CanvasStore,
