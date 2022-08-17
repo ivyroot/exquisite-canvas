@@ -1,6 +1,7 @@
 import create from "zustand";
 
 import {
+  CanvasCoreStore,
   CanvasStore,
   paletteItemCollection,
   paletteKey,
@@ -18,7 +19,7 @@ const DefaultPalette: paletteItemCollection = {
 };
 const EmptyPixels: pixelCanvas = {};
 
-const useCanvasStore = create((set) => ({
+const useCanvasStore = create<CanvasCoreStore>((set) => ({
   width: 8,
   setWidth: (val: number) => set((state) => ({ width: val })),
   height: 8,

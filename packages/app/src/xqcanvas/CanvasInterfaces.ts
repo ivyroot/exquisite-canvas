@@ -23,7 +23,7 @@ export const paletteKey = (i: number) => {
   return `pal_${i}`;
 };
 
-export interface CanvasStore {
+export interface CanvasCoreStore {
   width: number;
   setWidth: (val: number) => void;
   height: number;
@@ -31,9 +31,6 @@ export interface CanvasStore {
   zoom: number;
   setZoom: (val: number) => void;
   palette: paletteItemCollection;
-  getPaletteItemColor: (item: number) => string;
-  getPaletteItemColors: () => string[];
-  getPaletteItemColorsStr: () => string;
   setPalette: (vals: paletteItemCollection) => void;
   setPaletteItem: (item: number, val: string) => void;
   paletteSize: number;
@@ -41,11 +38,18 @@ export interface CanvasStore {
   pixels: pixelCanvas;
   setPixel: (x: number, y: number, val: number) => void;
   setPixels: (vals: pixelCanvas) => void;
-  getPixelVal: (x: number, y: number) => number;
-  getPixelColor: (x: number, y: number) => string;
-  // the following are UI state and would be better outside of CanvasStore
-  currPaletteItem: 1;
+
+  // the following are UI state and would be better in their own stores
+  currPaletteItem: number;
   setCurrPaletteItem: (val: number) => void;
   dropperActive: boolean;
   setDropperActive: (val: boolean) => void;
+}
+
+export interface CanvasStore extends CanvasCoreStore {
+  getPaletteItemColor: (item: number) => string;
+  getPaletteItemColors: () => string[];
+  getPaletteItemColorsStr: () => string;
+  getPixelVal: (x: number, y: number) => number;
+  getPixelColor: (x: number, y: number) => string;
 }
