@@ -40,7 +40,7 @@ export const DemoCanvas = () => {
   };
 
   const didClickDropper = (e: any) => {
-    XqstStore.setDropperActive(true);
+    XqstStore.setDropperActive(!XqstStore.dropperActive);
   };
 
   const currPaletteItemColor = () => {
