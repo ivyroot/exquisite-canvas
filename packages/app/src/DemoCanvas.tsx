@@ -45,7 +45,7 @@ export const DemoCanvas = () => {
   };
 
   const currPaletteItemColor = () => {
-    return XqstStore.getPaletteItem(XqstStore.currPaletteItem);
+    return XqstStore.getPaletteItemColor(XqstStore.currPaletteItem);
   };
 
   const setCurrPaletteItemColor = (color: string) => {

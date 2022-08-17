@@ -28,7 +28,7 @@ interface CanvasStore {
   zoom: number;
   setZoom: (val: number) => void;
   palette: paletteItemCollection;
-  getPaletteItem: (item: number) => string;
+  getPaletteItemColor: (item: number) => string;
   getPaletteItems: () => string[];
   setPalette: (vals: paletteItemCollection) => void;
   setPaletteItem: (item: number, val: string) => void;

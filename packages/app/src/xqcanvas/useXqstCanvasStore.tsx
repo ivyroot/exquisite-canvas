@@ -63,7 +63,7 @@ const useCanvasStore = create((set) => ({
 
 export function useXqstCanvasStore(): CanvasStore {
   const store = useCanvasStore((state) => {
-    const getPaletteItem = (item: number) => {
+    const getPaletteItemColor = (item: number) => {
       const liveColor = state.palette[paletteKey(item)];
       if (liveColor) {
         return liveColor;
@@ -77,7 +77,7 @@ export function useXqstCanvasStore(): CanvasStore {
     };
     const getPaletteItems = () => {
       return Array.from({ length: state.paletteSize }, (v, i) => {
-        return getPaletteItem(i);
+        return getPaletteItemColor(i);
       });
     };
     const getPaletteItemsStr = () => {
@@ -94,11 +94,11 @@ export function useXqstCanvasStore(): CanvasStore {
       }
     };
     const getPixelColor = (x: number, y: number) => {
-      return getPaletteItem(getPixelVal(x, y));
+      return getPaletteItemColor(getPixelVal(x, y));
     };
     return {
       ...state,
-      getPaletteItem,
+      getPaletteItemColor,
       getPaletteItems,
       getPaletteItemsStr,
       getPixelVal,

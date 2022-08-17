@@ -29,7 +29,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
   const PaletteItems = [];
   for (let pi = 0; pi < canvas.paletteSize; pi++) {
     const itemKey = paletteKey(pi);
-    const itemColor = canvas.getPaletteItem(pi);
+    const itemColor = canvas.getPaletteItemColor(pi);
     const borderText =
       canvas.currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-6 p-1 sm:p-4 border-8 ${borderText}`;
