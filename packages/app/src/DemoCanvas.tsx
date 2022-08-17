@@ -39,7 +39,7 @@ export const DemoCanvas = () => {
     }
   };
 
-  const didClickDropper = (e: any) => {
+  const didClickDropper = () => {
     XqstStore.setDropperActive(!XqstStore.dropperActive);
   };
 
@@ -109,7 +109,7 @@ export const DemoCanvas = () => {
           </fieldset>
           <div className="bg-white mt-2 mx-2">
             <button
-              onClick={(event) => didClickDropper(event)}
+              onClick={(event) => didClickDropper()}
               className="pt-1 px-1"
             >
               <CanvasSkin
