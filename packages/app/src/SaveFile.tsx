@@ -19,8 +19,7 @@ export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {
     backgroundIndex: 0,
   };
 
-  const didClickSave = (e: any) => {
-    e.preventDefault();
+  const didClickSave = () => {
     const pb = new PixelBuffer(header, canvas.getPaletteItemColors());
     for (let iy = 0; iy < canvas.height; iy++) {
       for (let ix = 0; ix < canvas.width; ix++) {
@@ -37,10 +36,7 @@ export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {
     format == "binary" ? "Save" : `Export ${format.toUpperCase()}`;
 
   return (
-    <button
-      className="my-2 ml-4 sm:ml-12"
-      onClick={(event) => didClickSave(event)}
-    >
+    <button className="my-2 ml-4 sm:ml-12" onClick={didClickSave}>
       <span className="bg-slate-600 py-2 px-2 sm:px-4">{display}</span>
     </button>
   );
