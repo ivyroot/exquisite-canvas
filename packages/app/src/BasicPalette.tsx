@@ -8,12 +8,12 @@ import {
 export const BasicPalette = (props: { canvas: CanvasStore }) => {
   const canvas = props.canvas;
 
-  const didClickAddPaletteItem = (e: any) => {
+  const didClickAddPaletteItem = () => {
     canvas.setPaletteSize(canvas.paletteSize + 1);
     canvas.setCurrPaletteItem(canvas.paletteSize);
   };
 
-  const didClickRemovePaletteItem = (e: any) => {
+  const didClickRemovePaletteItem = () => {
     if (canvas.paletteSize > 2) {
       canvas.setPaletteSize(canvas.paletteSize - 1);
       if (canvas.currPaletteItem >= canvas.paletteSize - 1) {
@@ -62,14 +62,14 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
       {PaletteItems}
       <div className="mx-2 p-0 flex flex-col justify-center">
         <button
-          onClick={(event) => didClickAddPaletteItem(event)}
+          onClick={(event) => didClickAddPaletteItem()}
           className="pt-1 px-1"
         >
           <CanvasSkin item="add-palette-item"></CanvasSkin>
         </button>
 
         <button
-          onClick={(event) => didClickRemovePaletteItem(event)}
+          onClick={(event) => didClickRemovePaletteItem()}
           className="pt-4 px-1"
         >
           <CanvasSkin item="remove-palette-item"></CanvasSkin>
