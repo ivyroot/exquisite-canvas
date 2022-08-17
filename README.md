@@ -1,6 +1,8 @@
 # Exquisite Canvas
 
-Proof Of Concept of a canvas app to work with Exquisite Graphics files. Provides control of canvas size, palette, and pixels.
+A set of React components and a custom store so you can easily build a canvas app for working with Exquisite Graphics files. Provides  mix-and-match controls for common canvas features like exporting files, changing size, moving art, etc.
+
+See the [DemoCanvas](/packages/app/src/DemoCanvas.tsx) component for an example of how to integrate it into your site. 
 
 The canvas app is in the packages/app directory. To run it cd to that directory, install the node dependencies using npm (or pnpm or yarn), then run `npm run dev`. 
 
