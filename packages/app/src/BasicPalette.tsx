@@ -32,7 +32,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
     const itemColor = canvas.getPaletteItemColor(pi);
     const borderText =
       canvas.currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
-    const itemClasses = `relative mx-1 sm:mx-4 my-6 p-1 sm:p-4 border-8 ${borderText}`;
+    const itemClasses = `relative mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
     const labelText = pi > 0 ? `Color ${pi}` : `Background`;
     const label = (
       <div className="absolute -bottom-10 w-24">
@@ -62,7 +62,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
   }
 
   return (
-    <div className="my-12 flex justify-left flex-wrap">
+    <div className="my-4 flex justify-left flex-wrap">
       {PaletteItems}
       <div className="mx-2 p-0 flex flex-col justify-center">
         <button

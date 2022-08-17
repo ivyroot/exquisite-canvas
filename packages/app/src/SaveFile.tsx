@@ -33,12 +33,15 @@ export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {
     useDownload(pb, format, filename);
   };
 
+  const display =
+    format == "binary" ? "Save" : `Export ${format.toUpperCase()}`;
+
   return (
     <button
       className="my-2 ml-4 sm:ml-12"
       onClick={(event) => didClickSave(event)}
     >
-      <span className="bg-slate-600 py-2 px-2 sm:px-4">Save</span>
+      <span className="bg-slate-600 py-2 px-2 sm:px-4">{display}</span>
     </button>
   );
 };

@@ -1,7 +1,7 @@
 import { CanvasSkin } from "./CanvasSkin";
 import { CanvasStore } from "./xqcanvas/CanvasInterfaces";
 
-export const EyeDropper = (props: { canvas: CanvasStore; format: string }) => {
+export const EyeDropper = (props: { canvas: CanvasStore }) => {
   const canvas = props.canvas;
 
   const didClickDropper = () => {
