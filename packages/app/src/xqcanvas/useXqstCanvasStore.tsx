@@ -1,16 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
 import create from "zustand";
 
 import {
   CanvasStore,
   paletteItemCollection,
   paletteKey,
-  pixelArray,
   pixelCanvas,
   pixelKey,
-  pixelKeyVals,
 } from "./CanvasInterfaces";
-import { useXqstDisplay } from "./useXqstDisplay";
 
 const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
   String.fromCharCode("A".charCodeAt(0) + i)
@@ -63,7 +59,7 @@ const useCanvasStore = create((set) => ({
 
 export function useXqstCanvasStore(): CanvasStore {
   const store = useCanvasStore((state) => {
-    const getPaletteItem = (item: number) => {
+    const getPaletteItemColor = (item: number) => {
       const liveColor = state.palette[paletteKey(item)];
       if (liveColor) {
         return liveColor;
@@ -75,13 +71,13 @@ export function useXqstCanvasStore(): CanvasStore {
       }${colorCodeElements[item % 3]}`;
       return generativeColor;
     };
-    const getPaletteItems = () => {
+    const getPaletteItemColors = () => {
       return Array.from({ length: state.paletteSize }, (v, i) => {
-        return getPaletteItem(i);
+        return getPaletteItemColor(i);
       });
     };
-    const getPaletteItemsStr = () => {
-      return getPaletteItems().join("_");
+    const getPaletteItemColorsStr = () => {
+      return getPaletteItemColors().join("_");
     };
     const getPixelVal = (x: number, y: number) => {
       const storePixVal = state.pixels[pixelKey(x, y)];
@@ -94,13 +90,13 @@ export function useXqstCanvasStore(): CanvasStore {
       }
     };
     const getPixelColor = (x: number, y: number) => {
-      return getPaletteItem(getPixelVal(x, y));
+      return getPaletteItemColor(getPixelVal(x, y));
     };
     return {
       ...state,
-      getPaletteItem,
-      getPaletteItems,
-      getPaletteItemsStr,
+      getPaletteItemColor,
+      getPaletteItemColors,
+      getPaletteItemColorsStr,
       getPixelVal,
       getPixelColor,
     };

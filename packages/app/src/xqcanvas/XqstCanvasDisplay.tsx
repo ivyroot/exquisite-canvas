@@ -20,7 +20,7 @@ export const XqstCanvasDisplay = (props: {
   const zoom = canvas.zoom;
   const currPaletteItem = canvas.currPaletteItem;
   const paletteSize = canvas.paletteSize;
-  const paletteString = canvas.getPaletteItemsStr();
+  const paletteString = canvas.getPaletteItemColorsStr();
   const dropperActive = canvas.dropperActive;
   const svgCanvasRef = useRef<SVGSVGElement | null>(null);
   const lastPixelDownRef = useRef<boolean | null>(null);
@@ -55,8 +55,8 @@ export const XqstCanvasDisplay = (props: {
       const [x, y] = pixelKeyVals(element.id);
       return {
         element,
-        x: parseInt(x),
-        y: parseInt(y),
+        x: x,
+        y: y,
       };
     };
 

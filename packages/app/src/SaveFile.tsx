@@ -1,7 +1,7 @@
 import { useRef } from "react";
 
 import { useDownload } from "./useExquisiteFiles";
-import { ExquisiteBitmapHeader, PixelBuffer } from "./xgfx/ll_api";
+import { PixelBuffer } from "./xgfx/ll_api";
 import { CanvasStore, paletteKey, pixelKey } from "./xqcanvas/CanvasInterfaces";
 
 export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {
@@ -19,9 +19,8 @@ export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {
     backgroundIndex: 0,
   };
 
-  const didClickSave = (e: any) => {
-    e.preventDefault();
-    const pb = new PixelBuffer(header, canvas.getPaletteItems());
+  const didClickSave = () => {
+    const pb = new PixelBuffer(header, canvas.getPaletteItemColors());
     for (let iy = 0; iy < canvas.height; iy++) {
       for (let ix = 0; ix < canvas.width; ix++) {
         const palettePos = canvas.getPixelVal(ix, iy);
@@ -33,12 +32,12 @@ export const SaveFile = (props: { canvas: CanvasStore; format: string }) => {
     useDownload(pb, format, filename);
   };
 
+  const display =
+    format == "binary" ? "Save" : `Export ${format.toUpperCase()}`;
+
   return (
-    <button
-      className="my-2 ml-4 sm:ml-12"
-      onClick={(event) => didClickSave(event)}
-    >
-      <span className="bg-slate-600 py-2 px-2 sm:px-4">Save</span>
+    <button className="my-2 ml-4 sm:ml-12" onClick={didClickSave}>
+      <span className="bg-slate-600 py-2 px-2 sm:px-4">{display}</span>
     </button>
   );
 };

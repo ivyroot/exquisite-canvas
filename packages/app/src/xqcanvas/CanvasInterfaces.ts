@@ -11,9 +11,12 @@ export const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
 };
 
-export const pixelKeyVals = (pxKey: string) => {
+export const pixelKeyVals: (key: string) => number[] = (pxKey: string) => {
   if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
-  return pxKey.replace("px_", "").split("X");
+  return pxKey
+    .replace("px_", "")
+    .split("X")
+    .map((val) => parseInt(val));
 };
 
 export const paletteKey = (i: number) => {
@@ -28,11 +31,11 @@ interface CanvasStore {
   zoom: number;
   setZoom: (val: number) => void;
   palette: paletteItemCollection;
-  getPaletteItem: (item: number) => string;
-  getPaletteItems: () => string[];
+  getPaletteItemColor: (item: number) => string;
+  getPaletteItemColors: () => string[];
+  getPaletteItemColorsStr: () => string;
   setPalette: (vals: paletteItemCollection) => void;
   setPaletteItem: (item: number, val: string) => void;
-  getPaletteItemsStr: () => string;
   paletteSize: number;
   setPaletteSize: (val: number) => void;
   pixels: pixelCanvas;
@@ -40,6 +43,7 @@ interface CanvasStore {
   setPixels: (vals: pixelCanvas) => void;
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
+  // the following are UI state and would be better outside of CanvasStore
   currPaletteItem: 1;
   setCurrPaletteItem: (val: number) => void;
   dropperActive: boolean;
