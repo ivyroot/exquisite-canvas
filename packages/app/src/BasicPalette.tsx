@@ -29,12 +29,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
     const borderText =
       canvas.currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
-    const labelText = pi > 0 ? `Color ${pi}` : `Background`;
-    const label = (
-      <div className="absolute -bottom-10 w-24">
-        <h3 className="text-slate-500 text-center">{labelText}</h3>
-      </div>
-    );
+    const label = pi > 0 ? `Color ${pi}` : `Background`;
     PaletteItems.push(
       <div
         key={itemKey}
@@ -46,11 +41,12 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
           className="p-2 w-24"
           style={{ backgroundColor: itemColor }}
           type="text"
-          name="BACKGROUND_COLOR"
           value={itemColor}
           onChange={(event) => canvas.setPaletteItem(pi, event.target.value)}
         />
-        {label}
+        <div className="absolute -bottom-10 w-24">
+          <h3 className="text-slate-500 text-center">{label}</h3>
+        </div>
       </div>
     );
   }
