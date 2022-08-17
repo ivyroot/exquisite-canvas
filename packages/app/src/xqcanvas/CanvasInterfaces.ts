@@ -40,6 +40,7 @@ interface CanvasStore {
   setPixels: (vals: pixelCanvas) => void;
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
+  // the following are UI state and would be better outside of CanvasStore
   currPaletteItem: 1;
   setCurrPaletteItem: (val: number) => void;
   dropperActive: boolean;
