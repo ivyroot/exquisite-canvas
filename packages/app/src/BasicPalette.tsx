@@ -8,10 +8,6 @@ import {
 export const BasicPalette = (props: { canvas: CanvasStore }) => {
   const canvas = props.canvas;
 
-  const handleSetCurrPaletteItem = (newPaletteItem: number) => {
-    canvas.setCurrPaletteItem(newPaletteItem);
-  };
-
   const didClickAddPaletteItem = (e: any) => {
     canvas.setPaletteSize(canvas.paletteSize + 1);
     canvas.setCurrPaletteItem(canvas.paletteSize);
@@ -44,7 +40,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
         key={itemKey}
         className={itemClasses}
         style={{ backgroundColor: itemColor }}
-        onClick={(event) => handleSetCurrPaletteItem(pi)}
+        onClick={(event) => canvas.setCurrPaletteItem(pi)}
       >
         <input
           className="p-2 w-24"
