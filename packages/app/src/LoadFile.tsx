@@ -2,7 +2,13 @@ import { useRef } from "react";
 
 import { useLoadPixelBuffer } from "./useExquisiteFiles";
 import { PixelBuffer } from "./xgfx/ll_api";
-import { CanvasStore, paletteKey, pixelKey } from "./xqcanvas/CanvasInterfaces";
+import {
+  CanvasStore,
+  paletteItemCollection,
+  paletteKey,
+  pixelCanvas,
+  pixelKey,
+} from "./xqcanvas/CanvasInterfaces";
 
 export const LoadFile = (props: { canvas: CanvasStore }) => {
   const canvas = props.canvas;

@@ -23,7 +23,7 @@ export const paletteKey = (i: number) => {
   return `pal_${i}`;
 };
 
-interface CanvasStore {
+export interface CanvasStore {
   width: number;
   setWidth: (val: number) => void;
   height: number;

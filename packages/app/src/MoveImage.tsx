@@ -2,6 +2,7 @@ import { CanvasSkin } from "./CanvasSkin";
 import {
   CanvasStore,
   paletteKey,
+  pixelCanvas,
   pixelKey,
   pixelKeyVals,
 } from "./xqcanvas/CanvasInterfaces";
