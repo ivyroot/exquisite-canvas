@@ -19,7 +19,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title>Xqst Cnvs</title>
+        <title>Exquisite Canvas</title>
+        <meta
+          name="description"
+          content="Exquisite Canvas - A canvas app compatible with Exquisite Graphics"
+        />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
       <GraphProvider value={graphClient}>
         <EthereumProviders>
