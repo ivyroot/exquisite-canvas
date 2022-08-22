@@ -20,21 +20,20 @@ const HomePage: NextPage = () => {
             className="mx-4"
             target="_none"
           >
-            <img src="/twitter-logo-blue.png" width="60px"></img>
+            By @ivyrootcode
           </a>
           <a
             href="https://github.com/ivyroot/exquisite-canvas"
             className="mx-4"
             target="_none"
           >
-            <img src="/github-3.svg" width="60px"></img>
+            Github
           </a>
           <a href="https://twitter.com/xqstgfx" className="mx-4" target="_none">
-            <img
-              src="/xqst-gfx.jpeg"
-              className="rounded-full"
-              width="60px"
-            ></img>
+            Exquisite Graphics
+          </a>
+          <a href="/theme" className="mx-4" target="_none">
+            Theme
           </a>
         </div>
       </div>
