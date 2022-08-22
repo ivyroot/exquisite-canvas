@@ -8,6 +8,7 @@ module.exports = {
   ) {
     return {
       "/": { page: "/" },
+      "/theme": { page: "/theme" },
       "/about": { page: "/about" },
     };
   },
