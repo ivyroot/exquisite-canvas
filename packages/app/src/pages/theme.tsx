@@ -15,7 +15,7 @@ const ThemePage: NextPage = () => {
 
   const themeItems = itemNames.map((i) => {
     return (
-      <div className="m-8">
+      <div className="m-8" key={i}>
         <div className="my-4">{i}:</div>
         <CanvasSkin item={i}></CanvasSkin>
       </div>
@@ -43,7 +43,7 @@ const ThemePage: NextPage = () => {
       </div>
       <div className="h-screen bg-slate-800">
         <div className="flex justify-center mt-8">
-          By
+          Theme By
           <a
             href="https://twitter.com/michaelbelong"
             className="mx-1"
