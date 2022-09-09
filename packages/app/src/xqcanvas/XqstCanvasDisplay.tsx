@@ -102,7 +102,7 @@ export const XqstCanvasDisplay = (props: {
   }, [
     width,
     height,
-    currPaletteItem,
+    props.didClickPixel,
     dropperActive,
     paletteSize,
     paletteString,

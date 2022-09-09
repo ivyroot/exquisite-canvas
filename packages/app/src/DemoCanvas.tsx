@@ -1,6 +1,7 @@
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
+import { usePaletteControls } from "./usePaletteControls";
 import { CanvasSkin } from "./CanvasSkin";
 import { EyeDropper } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
@@ -12,12 +13,13 @@ import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
 export const DemoCanvas = () => {
   // core canvas state
   const DemoCanvasStore = useXqstCanvasStore();
+  const DemoPaletteControlStore = usePaletteControls();
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoCanvasStore.dropperActive) {
-      DemoCanvasStore.setPixel(x, y, DemoCanvasStore.currPaletteItem);
+      DemoCanvasStore.setPixel(x, y, DemoPaletteControlStore.currentItem);
     } else {
-      DemoCanvasStore.setCurrPaletteItem(DemoCanvasStore.getPixelVal(x, y));
+      DemoCanvasStore.setPaletteItem(DemoPaletteControlStore.currentItem, DemoCanvasStore.getPixelVal(x, y));
       DemoCanvasStore.setDropperActive(false);
     }
   };
@@ -103,7 +105,7 @@ export const DemoCanvas = () => {
       </div>
 
       <div className="mt-2">
-        <BasicPalette canvas={DemoCanvasStore}></BasicPalette>
+        <BasicPalette canvas={DemoCanvasStore} controls={DemoPaletteControlStore}></BasicPalette>
       </div>
 
       <div className="my-6 mx-24">
