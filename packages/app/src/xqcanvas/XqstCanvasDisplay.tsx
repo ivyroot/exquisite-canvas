@@ -18,7 +18,6 @@ export const XqstCanvasDisplay = (props: {
   const width = canvas.width;
   const height = canvas.height;
   const zoom = canvas.zoom;
-  const currPaletteItem = canvas.currPaletteItem;
   const paletteSize = canvas.paletteSize;
   const paletteString = canvas.getPaletteItemColorsStr();
   const dropperActive = canvas.dropperActive;

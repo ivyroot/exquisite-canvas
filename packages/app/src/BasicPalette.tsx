@@ -8,18 +8,17 @@ import { CanvasPaletteControls } from "/.usePaletteControls";
 
 export const BasicPalette = (props: { canvas: CanvasStore; controls: CanvasPaletteControls }) => {
   const canvas = props.canvas;
-  const controls = props.controls;
 
   const didClickAddPaletteItem = () => {
     canvas.setPaletteSize(canvas.paletteSize + 1);
-    controls.setCurrentItem(canvas.paletteSize);
+    props.controls.setCurrentItem(canvas.paletteSize);
   };
 
   const didClickRemovePaletteItem = () => {
     if (canvas.paletteSize > 2) {
       canvas.setPaletteSize(canvas.paletteSize - 1);
       if (canvas.currPaletteItem >= canvas.paletteSize - 1) {
-        controls.setCurrentItem(canvas.paletteSize - 2);
+        props.controls.setCurrentItem(canvas.paletteSize - 2);
       }
     }
   };
@@ -29,7 +28,7 @@ export const BasicPalette = (props: { canvas: CanvasStore; controls: CanvasPalet
     const itemKey = paletteKey(pi);
     const itemColor = canvas.getPaletteItemColor(pi);
     const borderText =
-    controls.currentItem == pi ? "border-indigo-300" : "border-slate-800";
+    props.controls.currentItem == pi ? "border-indigo-300" : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
     const label = pi > 0 ? `Color ${pi}` : `Background`;
     PaletteItems.push(

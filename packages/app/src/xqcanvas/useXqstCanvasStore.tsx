@@ -53,9 +53,6 @@ const useCanvasStore = create<CanvasCoreStore>((set) => ({
   setPixels: (vals: pixelCanvas) => set((state) => ({ pixels: vals })),
   dropperActive: false,
   setDropperActive: (val: boolean) => set({ dropperActive: val }),
-  currPaletteItem: 1,
-  setCurrPaletteItem: (val: number) =>
-    set((state) => ({ currPaletteItem: val })),
 }));
 
 export function useXqstCanvasStore(): CanvasStore {

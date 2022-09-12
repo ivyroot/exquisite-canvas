@@ -6,7 +6,7 @@ export interface CanvasPaletteControls {
 }
 
 export function usePaletteControls(): CanvasPaletteControls {
-    const [currItem, setCurrItem] = useState(0);
+    const [currItem, setCurrItem] = useState(1);
     const controls : CanvasPaletteControls = {
         currentItem: currItem,
         setCurrentItem: (var: number) => {
