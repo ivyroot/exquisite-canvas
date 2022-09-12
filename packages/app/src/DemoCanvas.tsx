@@ -109,7 +109,7 @@ export const DemoCanvas = () => {
       </div>
 
       <div className="my-6 mx-24">
-        <BasicColorPicker canvas={DemoCanvasStore}></BasicColorPicker>
+        <BasicColorPicker canvas={DemoCanvasStore} currentPaletteItem={DemoPaletteControlStore.currentItem}></BasicColorPicker>
       </div>
     </div>
   );
