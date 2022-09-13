@@ -38,12 +38,6 @@ export interface CanvasCoreStore {
   pixels: pixelCanvas;
   setPixel: (x: number, y: number, val: number) => void;
   setPixels: (vals: pixelCanvas) => void;
-
-  // the following are UI state and would be better in their own stores
-  currPaletteItem: number;
-  setCurrPaletteItem: (val: number) => void;
-  dropperActive: boolean;
-  setDropperActive: (val: boolean) => void;
 }
 
 export interface CanvasStore extends CanvasCoreStore {

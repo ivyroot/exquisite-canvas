@@ -4,20 +4,21 @@ import {
   paletteItemCollection,
   paletteKey,
 } from "./xqcanvas/CanvasInterfaces";
+import { CanvasPaletteControls } from "/.usePaletteControls";
 
-export const BasicPalette = (props: { canvas: CanvasStore }) => {
+export const BasicPalette = (props: { canvas: CanvasStore; controls: CanvasPaletteControls }) => {
   const canvas = props.canvas;
 
   const didClickAddPaletteItem = () => {
     canvas.setPaletteSize(canvas.paletteSize + 1);
-    canvas.setCurrPaletteItem(canvas.paletteSize);
+    props.controls.setCurrentItem(canvas.paletteSize);
   };
 
   const didClickRemovePaletteItem = () => {
     if (canvas.paletteSize > 2) {
       canvas.setPaletteSize(canvas.paletteSize - 1);
-      if (canvas.currPaletteItem >= canvas.paletteSize - 1) {
-        canvas.setCurrPaletteItem(canvas.paletteSize - 2);
+      if (props.controls.currentItem >= canvas.paletteSize - 1) {
+        props.controls.setCurrentItem(canvas.paletteSize - 2);
       }
     }
   };
@@ -27,7 +28,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
     const itemKey = paletteKey(pi);
     const itemColor = canvas.getPaletteItemColor(pi);
     const borderText =
-      canvas.currPaletteItem == pi ? "border-indigo-300" : "border-slate-800";
+    props.controls.currentItem == pi ? "border-indigo-300" : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
     const label = pi > 0 ? `Color ${pi}` : `Background`;
     PaletteItems.push(
@@ -35,7 +36,7 @@ export const BasicPalette = (props: { canvas: CanvasStore }) => {
         key={itemKey}
         className={itemClasses}
         style={{ backgroundColor: itemColor }}
-        onClick={(event) => canvas.setCurrPaletteItem(pi)}
+        onClick={(event) => props.controls.setCurrentItem(pi)}
       >
         <input
           className="p-2 w-24"
