@@ -3,7 +3,7 @@ import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
 import { usePaletteControls } from "./usePaletteControls";
 import { CanvasSkin } from "./CanvasSkin";
-import { EyeDropper } from "./EyeDropper";
+import { EyeDropper, useEyeDropperStore } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
 import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
@@ -14,13 +14,14 @@ export const DemoCanvas = () => {
   // core canvas state
   const DemoCanvasStore = useXqstCanvasStore();
   const DemoPaletteControlStore = usePaletteControls();
+  const DemoDropperStore = useEyeDropperStore();
 
   const didClickPixel = (x: number, y: number) => {
-    if (!DemoCanvasStore.dropperActive) {
+    if (!DemoDropperStore.active) {
       DemoCanvasStore.setPixel(x, y, DemoPaletteControlStore.currentItem);
     } else {
-      DemoCanvasStore.setPaletteItem(DemoPaletteControlStore.currentItem, DemoCanvasStore.getPixelVal(x, y));
-      DemoCanvasStore.setDropperActive(false);
+      DemoPaletteControlStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
+      DemoDropperStore.setActive(false);
     }
   };
 
@@ -81,7 +82,7 @@ export const DemoCanvas = () => {
           />
         </fieldset>
         <div className="bg-white mt-2 mx-2">
-          <EyeDropper canvas={DemoCanvasStore}></EyeDropper>
+          <EyeDropper canvas={DemoCanvasStore} dropperStore={DemoDropperStore}></EyeDropper>
         </div>
         <div className="bg-white mt-2 mx-2">
           <MoveImage canvas={DemoCanvasStore} direction="up"></MoveImage>

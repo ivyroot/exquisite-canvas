@@ -17,7 +17,7 @@ export const BasicPalette = (props: { canvas: CanvasStore; controls: CanvasPalet
   const didClickRemovePaletteItem = () => {
     if (canvas.paletteSize > 2) {
       canvas.setPaletteSize(canvas.paletteSize - 1);
-      if (canvas.currPaletteItem >= canvas.paletteSize - 1) {
+      if (props.controls.currentItem >= canvas.paletteSize - 1) {
         props.controls.setCurrentItem(canvas.paletteSize - 2);
       }
     }
@@ -36,7 +36,7 @@ export const BasicPalette = (props: { canvas: CanvasStore; controls: CanvasPalet
         key={itemKey}
         className={itemClasses}
         style={{ backgroundColor: itemColor }}
-        onClick={(event) => controls.setCurrentItem(pi)}
+        onClick={(event) => props.controls.setCurrentItem(pi)}
       >
         <input
           className="p-2 w-24"
