@@ -16,14 +16,14 @@ import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
 
 export const DemoCanvas = () => {
   const DemoCanvasStore = useXqstCanvasStore();
-  const DemoPaletteControlStore = usePaletteStore();
+  const DemoPaletteStore = usePaletteStore();
   const DemoDropperStore = useEyeDropperStore();
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
-      DemoCanvasStore.setPixel(x, y, DemoPaletteControlStore.currentItem);
+      DemoCanvasStore.setPixel(x, y, DemoPaletteStore.currentItem);
     } else {
-      DemoPaletteControlStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
+      DemoPaletteStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
       DemoDropperStore.setActive(false);
     }
   };
@@ -109,11 +109,11 @@ export const DemoCanvas = () => {
       </div>
 
       <div className="mt-2">
-        <BasicPalette canvas={DemoCanvasStore} controls={DemoPaletteControlStore}></BasicPalette>
+        <BasicPalette canvas={DemoCanvasStore} palette={DemoPaletteStore}></BasicPalette>
       </div>
 
       <div className="my-6 mx-24">
-        <BasicColorPicker canvas={DemoCanvasStore} currentPaletteItem={DemoPaletteControlStore.currentItem}></BasicColorPicker>
+        <BasicColorPicker canvas={DemoCanvasStore} currentPaletteItem={DemoPaletteStore.currentItem}></BasicColorPicker>
       </div>
     </div>
   );
