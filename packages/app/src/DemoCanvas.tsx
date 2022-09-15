@@ -15,7 +15,7 @@ import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
-import { CanvasState } from "./xqcanvas/CanvasInterfaces";
+import { CanvasState, pixelKey, pixelCanvas } from "./xqcanvas/CanvasInterfaces";
 
 export const DemoCanvas = () => {
   const DemoCanvasStore = useXqstCanvasStore();
@@ -41,7 +41,7 @@ export const DemoCanvas = () => {
 
   const updateCanvas = (canvasUpdates: CanvasState) => {
     DemoCanvasStore.updateState(canvasUpdates);
-    addCanvasStateToHistory(newPixels);
+    addCanvasStateToHistory(DemoCanvasStore.getCurrentState());
   };
 
   const undo = () => {
@@ -55,7 +55,20 @@ export const DemoCanvas = () => {
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
-      DemoCanvasStore.setPixel(x, y, DemoPaletteStore.currentItem);
+      const keyName = pixelKey(x, y);
+      const palettePos = DemoPaletteStore.currentItem;
+      const wrappedPos = palettePos >= DemoCanvasStore.paletteSize ? DemoCanvasStore.paletteSize - 1 : palettePos;
+      const ChangeSet: pixelCanvas = {};
+      ChangeSet[keyName] = wrappedPos;
+      const canvasChange: CanvasState = {
+        width: DemoCanvasStore.width,
+        height: DemoCanvasStore.height,
+        zoom: DemoCanvasStore.zoom,
+        palette: DemoCanvasStore.palette,
+        pixels: ChangeSet,
+       };
+       updateCanvas(canvasChange);
+      // DemoCanvasStore.setPixel(x, y, DemoPaletteStore.currentItem);
     } else {
       DemoPaletteStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
       DemoDropperStore.setActive(false);

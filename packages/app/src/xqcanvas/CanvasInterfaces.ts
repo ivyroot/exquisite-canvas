@@ -46,6 +46,8 @@ export interface CanvasCoreStore {
   pixels: pixelCanvas;
   setPixel: (x: number, y: number, val: number) => void;
   setPixels: (vals: pixelCanvas) => void;
+  setFromCanvasState: (canvas: CanvasState) => void;
+  updateFromCanvasState: (canvasUpdates: CanvasState) => void;
 }
 
 export interface CanvasStore extends CanvasCoreStore {
@@ -55,6 +57,7 @@ export interface CanvasStore extends CanvasCoreStore {
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
   getBlankState: () => CanvasState;
+  getCurrentState: () => CanvasState;
   setState: (s: CanvasState) => void;
   updateState: (s: CanvasState) => void;
 }
