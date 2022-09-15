@@ -3,6 +3,7 @@ import create from "zustand";
 import {
   CanvasCoreStore,
   CanvasStore,
+  CanvasState,
   paletteItemCollection,
   paletteKey,
   pixelCanvas,
@@ -88,6 +89,16 @@ export function useXqstCanvasStore(): CanvasStore {
     const getPixelColor = (x: number, y: number) => {
       return getPaletteItemColor(getPixelVal(x, y));
     };
+    const getBlankState = () => {
+      return {
+        width: 8,
+        height: 8,
+        zoom: 200,
+        paletteSize: 2,
+        palette: DefaultPalette,
+        pixels: EmptyPixels,
+      };
+    }
     return {
       ...state,
       getPaletteItemColor,
@@ -95,6 +106,7 @@ export function useXqstCanvasStore(): CanvasStore {
       getPaletteItemColorsStr,
       getPixelVal,
       getPixelColor,
+      getBlankState,
     };
   });
 

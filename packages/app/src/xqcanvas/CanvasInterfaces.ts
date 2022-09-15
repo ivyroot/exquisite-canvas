@@ -23,6 +23,14 @@ export const paletteKey = (i: number) => {
   return `pal_${i}`;
 };
 
+export interface CanvasState {
+  width: number;
+  height: number;
+  zoom: number;
+  pallete: paletteItemCollection;
+  pixels: pixelCanvas;
+}
+
 export interface CanvasCoreStore {
   width: number;
   setWidth: (val: number) => void;
@@ -46,4 +54,5 @@ export interface CanvasStore extends CanvasCoreStore {
   getPaletteItemColorsStr: () => string;
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
+  getBlankState: () => CanvasState;
 }

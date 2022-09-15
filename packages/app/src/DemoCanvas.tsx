@@ -2,6 +2,7 @@
 // Note that some canvas components have their own state:
 //  BasicPalette uses a separate state handler, usePaletteStore
 //  EyeDropper defines a state handler, useEyeDropperStore, directly in the component
+import { useLocalStorage } from 'usehooks-ts'
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
@@ -13,11 +14,19 @@ import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
+import { CanvasState } from "./xqcanvas/CanvasInterfaces";
 
 export const DemoCanvas = () => {
+
   const DemoCanvasStore = useXqstCanvasStore();
+  const BlankCanvas = DemoCanvasStore.getBlankState();
   const DemoPaletteStore = usePaletteStore();
   const DemoDropperStore = useEyeDropperStore();
+  const key = `exquisite-canvas:square-canvas-8X8`;
+  const [canvasHistory, setCanvasHistory] = useLocalStorage<CanvasState[]>(
+    key,
+    [BlankCanvas]
+  );
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
