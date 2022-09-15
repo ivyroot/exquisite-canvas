@@ -3,6 +3,7 @@
 //  BasicPalette uses a separate state handler, usePaletteStore
 //  EyeDropper defines a state handler, useEyeDropperStore, directly in the component
 import { useLocalStorage } from 'usehooks-ts'
+import { useDebouncedCallback } from "use-debounce";
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
