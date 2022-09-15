@@ -1,7 +1,11 @@
+// Demo of importing various canvas components as UI elements
+// Note that some canvas components have their own state:
+//  BasicPalette uses a separate state handler, usePaletteStore
+//  EyeDropper defines a state handler, useEyeDropperStore, directly in the component
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
-import { usePaletteControls } from "./usePaletteControls";
+import { usePaletteStore } from "./usePaletteStore";
 import { CanvasSkin } from "./CanvasSkin";
 import { EyeDropper, useEyeDropperStore } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
@@ -11,9 +15,8 @@ import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
 
 export const DemoCanvas = () => {
-  // core canvas state
   const DemoCanvasStore = useXqstCanvasStore();
-  const DemoPaletteControlStore = usePaletteControls();
+  const DemoPaletteControlStore = usePaletteStore();
   const DemoDropperStore = useEyeDropperStore();
 
   const didClickPixel = (x: number, y: number) => {

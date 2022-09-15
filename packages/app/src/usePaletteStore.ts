@@ -1,17 +1,17 @@
 import { useState } from 'react';
 
-export interface CanvasPaletteControls {
+export interface PaletteStore {
     currentItem: number;
     setCurrentItem: (val: number) => void;
 }
 
-export function usePaletteControls(): CanvasPaletteControls {
+export function usePaletteStore(): PaletteStore {
     const [currItem, setCurrItem] = useState(1);
-    const controls : CanvasPaletteControls = {
+    const store : PaletteStore = {
         currentItem: currItem,
         setCurrentItem: (var: number) => {
             setCurrItem(var);
-        },
+        }
     };
-    return controls;
+    return store;
 }
