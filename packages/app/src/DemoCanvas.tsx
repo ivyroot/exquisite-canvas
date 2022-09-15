@@ -18,15 +18,16 @@ import { CanvasState } from "./xqcanvas/CanvasInterfaces";
 
 export const DemoCanvas = () => {
 
-  const DemoCanvasStore = useXqstCanvasStore();
-  const BlankCanvas = DemoCanvasStore.getBlankState();
-  const DemoPaletteStore = usePaletteStore();
-  const DemoDropperStore = useEyeDropperStore();
   const key = `exquisite-canvas:square-canvas-8X8`;
   const [canvasHistory, setCanvasHistory] = useLocalStorage<CanvasState[]>(
     key,
     [BlankCanvas]
   );
+
+  const DemoCanvasStore = useXqstCanvasStore();
+  const BlankCanvas = DemoCanvasStore.getBlankState();
+  const DemoPaletteStore = usePaletteStore();
+  const DemoDropperStore = useEyeDropperStore();
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
