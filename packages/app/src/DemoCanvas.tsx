@@ -28,6 +28,31 @@ export const DemoCanvas = () => {
     [BlankCanvas]
   );
 
+  // big thanks for the history implementation to Daily Canvas!!!
+  // https://www.dailycanvas.com/
+  const addCanvasStateToHistory = useDebouncedCallback((newCanvas: CanvasState) => {
+    setCanvasHistory([newCanvas, ...(canvasHistory || [BlankCanvas])]);
+  }, 500);
+
+  const resetCanvas = () => {
+    global?.localStorage?.removeItem(key);
+    // TODO reset canvas state
+  };
+
+  const updateCanvas = (canvasUpdates: CanvasState) => {
+    // TODO upsert canvas state using updates
+    addCanvasStateToHistory(newPixels);
+  };
+
+  const undo = () => {
+    // eslint-disable-next-line
+    const [_canvas, ...prevCanvasHistory] = canvasHistory || [BlankCanvas];
+    setCanvasHistory(prevCanvasHistory);
+    // TODO revert canvas state to previous
+  };
+
+  const canUndo = canvasHistory && canvasHistory.length > 0;
+
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
       DemoCanvasStore.setPixel(x, y, DemoPaletteStore.currentItem);
