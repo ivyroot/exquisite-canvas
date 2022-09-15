@@ -55,4 +55,6 @@ export interface CanvasStore extends CanvasCoreStore {
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
   getBlankState: () => CanvasState;
+  setState: (s: CanvasState) => void;
+  updateState: (s: CanvasState) => void;
 }

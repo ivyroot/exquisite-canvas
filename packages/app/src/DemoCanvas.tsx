@@ -36,11 +36,11 @@ export const DemoCanvas = () => {
 
   const resetCanvas = () => {
     global?.localStorage?.removeItem(key);
-    // TODO reset canvas state
+    DemoCanvasStore.setState(BlankCanvas);
   };
 
   const updateCanvas = (canvasUpdates: CanvasState) => {
-    // TODO upsert canvas state using updates
+    DemoCanvasStore.updateState(canvasUpdates);
     addCanvasStateToHistory(newPixels);
   };
 
@@ -48,7 +48,7 @@ export const DemoCanvas = () => {
     // eslint-disable-next-line
     const [_canvas, ...prevCanvasHistory] = canvasHistory || [BlankCanvas];
     setCanvasHistory(prevCanvasHistory);
-    // TODO revert canvas state to previous
+    DemoCanvasStore.setState(prevCanvasHistory[0] || BlankCanvas);
   };
 
   const canUndo = canvasHistory && canvasHistory.length > 0;

@@ -98,7 +98,13 @@ export function useXqstCanvasStore(): CanvasStore {
         palette: DefaultPalette,
         pixels: EmptyPixels,
       };
-    }
+    };
+    const setState = (newCanvasState: CanvasState) => {
+      const x = 3;
+    };
+    const updateState = (newCanvasState: CanvasState) => {
+      y = 2;
+    };
     return {
       ...state,
       getPaletteItemColor,
@@ -107,6 +113,8 @@ export function useXqstCanvasStore(): CanvasStore {
       getPixelVal,
       getPixelColor,
       getBlankState,
+      setState,
+      updateState,
     };
   });
 
