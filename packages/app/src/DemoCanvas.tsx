@@ -44,7 +44,7 @@ export const DemoCanvas = () => {
     addCanvasStateToHistory(DemoCanvasStore.getCurrentState());
   };
 
-  const undo = () => {
+  const didClickUndo = () => {
     // eslint-disable-next-line
     const [_canvas, ...prevCanvasHistory] = canvasHistory || [BlankCanvas];
     setCanvasHistory(prevCanvasHistory);
@@ -145,6 +145,11 @@ export const DemoCanvas = () => {
         </div>
         <div className="bg-white mt-2 mx-2">
           <MoveImage canvas={DemoCanvasStore} direction="right"></MoveImage>
+        </div>
+        <div className="bg-white mt-2 mx-2">
+          <button onClick={didClickUndo} className="pt-1 px-1">
+            <CanvasSkin item={`move-left`}></CanvasSkin>
+          </button>
         </div>
       </div>
 
