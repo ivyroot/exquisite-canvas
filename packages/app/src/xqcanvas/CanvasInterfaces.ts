@@ -27,7 +27,7 @@ export interface CanvasState {
   width: number;
   height: number;
   zoom: number;
-  pallete: paletteItemCollection;
+  palette: paletteItemCollection;
   pixels: pixelCanvas;
 }
 
@@ -56,8 +56,15 @@ export interface CanvasStore extends CanvasCoreStore {
   getPaletteItemColorsStr: () => string;
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
-  getBlankState: () => CanvasState;
   getCurrentState: () => CanvasState;
   setState: (s: CanvasState) => void;
   updateState: (s: CanvasState) => void;
+  resetState: (s: CanvasState) => void;
+}
+
+export interface CanvasHistory {
+  addCanvasStateToHistory: (state: CanvasState) => void;
+  resetCanvasHistory: (state: CanvasState) => void;
+  canUndo: () => boolean;
+  undoLastCanvasUpdate: () => CanvasState;
 }

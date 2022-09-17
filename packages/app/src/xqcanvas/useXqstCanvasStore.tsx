@@ -2,8 +2,9 @@ import create from "zustand";
 
 import {
   CanvasCoreStore,
-  CanvasStore,
+  CanvasHistory,
   CanvasState,
+  CanvasStore,
   paletteItemCollection,
   paletteKey,
   pixelCanvas,
@@ -52,23 +53,25 @@ const useCanvasStore = create<CanvasCoreStore>((set) => ({
       return { pixels: newPixels };
     }),
   setPixels: (vals: pixelCanvas) => set((state) => ({ pixels: vals })),
-  setFromCanvasState: (canvas: CanvasState) => set((state) => ({
-    height: canvas.height,
-    width: canvas.width,
-    zoom: canvas.zoom,
-    palette: canvas.palette,
-    pixels: canvas.pixels,
-  })),
-  updateFromCanvasState: (canvasUpdates: CanvasState) => set((state) => ({
-    height: canvasUpdates.height,
-    width: canvasUpdates.width,
-    zoom: canvasUpdates.zoom,
-    palette: {...state.palette, ...canvasUpdates.palette},
-    pixels: {...state.pixels, ...canvasUpdates.pixels},
-  })),
+  setFromCanvasState: (canvas: CanvasState) =>
+    set((state) => ({
+      height: canvas.height,
+      width: canvas.width,
+      zoom: canvas.zoom,
+      palette: canvas.palette,
+      pixels: canvas.pixels,
+    })),
+  updateFromCanvasState: (canvasUpdates: CanvasState) =>
+    set((state) => ({
+      height: canvasUpdates.height,
+      width: canvasUpdates.width,
+      zoom: canvasUpdates.zoom,
+      palette: { ...state.palette, ...canvasUpdates.palette },
+      pixels: { ...state.pixels, ...canvasUpdates.pixels },
+    })),
 }));
 
-export function useXqstCanvasStore(): CanvasStore {
+export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
   const store = useCanvasStore((state) => {
     const getPaletteItemColor = (item: number) => {
       const liveColor = state.palette[paletteKey(item)];
@@ -103,16 +106,6 @@ export function useXqstCanvasStore(): CanvasStore {
     const getPixelColor = (x: number, y: number) => {
       return getPaletteItemColor(getPixelVal(x, y));
     };
-    const getBlankState = () => {
-      return {
-        width: 8,
-        height: 8,
-        zoom: 200,
-        paletteSize: 2,
-        palette: DefaultPalette,
-        pixels: EmptyPixels,
-      };
-    };
     const getCurrentState = () => {
       return {
         width: state.width,
@@ -121,12 +114,21 @@ export function useXqstCanvasStore(): CanvasStore {
         palette: state.palette,
         pixels: state.pixels,
       };
-    }
+    };
     const setState = (newCanvasState: CanvasState) => {
       state.setFromCanvasState(newCanvasState);
     };
     const updateState = (canvasUpdates: CanvasState) => {
       state.updateFromCanvasState(canvasUpdates);
+      if (history) {
+        history.addCanvasStateToHistory(getCurrentState());
+      }
+    };
+    const resetState = (newCanvasState: CanvasState) => {
+      if (history) {
+        history.resetCanvasHistory(newCanvasState);
+      }
+      setState(newCanvasState);
     };
     return {
       ...state,
@@ -135,10 +137,10 @@ export function useXqstCanvasStore(): CanvasStore {
       getPaletteItemColorsStr,
       getPixelVal,
       getPixelColor,
-      getBlankState,
       getCurrentState,
       setState,
       updateState,
+      resetState,
     };
   });
 

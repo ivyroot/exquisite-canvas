@@ -2,62 +2,53 @@
 // Note that some canvas components have their own state:
 //  BasicPalette uses a separate state handler, usePaletteStore
 //  EyeDropper defines a state handler, useEyeDropperStore, directly in the component
-import { useLocalStorage } from 'usehooks-ts'
-import { useDebouncedCallback } from "use-debounce";
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
-import { usePaletteStore } from "./usePaletteStore";
-import { CanvasSkin } from "./CanvasSkin";
 import { EyeDropper, useEyeDropperStore } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
 import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
+import { UndoButton } from "./UndoButton";
+import { usePaletteStore } from "./usePaletteStore";
+import {
+  CanvasState,
+  pixelCanvas,
+  pixelKey,
+} from "./xqcanvas/CanvasInterfaces";
+import { useCanvasHistory } from "./xqcanvas/useCanvasHistory";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
-import { CanvasState, pixelKey, pixelCanvas } from "./xqcanvas/CanvasInterfaces";
 
 export const DemoCanvas = () => {
-  const DemoCanvasStore = useXqstCanvasStore();
-  const BlankCanvas = DemoCanvasStore.getBlankState();
+  const name = `exquisite-canvas:square-8X8`;
+  const BlankCanvas: CanvasState = {
+    width: 8,
+    height: 8,
+    zoom: 200,
+    // paletteSize: 2, // TODO fixme
+    palette: {
+      pal_0: "#2FFAFF",
+      pal_1: "#0EA5E9",
+    },
+    pixels: {},
+  };
+  const DemoCanvasHistory = useCanvasHistory({
+    canvasName: name,
+    blankState: BlankCanvas,
+  });
+  const DemoCanvasStore = useXqstCanvasStore(DemoCanvasHistory);
   const DemoPaletteStore = usePaletteStore();
   const DemoDropperStore = useEyeDropperStore();
-  const key = `exquisite-canvas:square-canvas-8X8`;
-  const [canvasHistory, setCanvasHistory] = useLocalStorage<CanvasState[]>(
-    key,
-    [BlankCanvas]
-  );
-
-  // big thanks for the history implementation to Daily Canvas!!!
-  // https://www.dailycanvas.com/
-  const addCanvasStateToHistory = useDebouncedCallback((newCanvas: CanvasState) => {
-    setCanvasHistory([newCanvas, ...(canvasHistory || [BlankCanvas])]);
-  }, 500);
-
-  const resetCanvas = () => {
-    global?.localStorage?.removeItem(key);
-    DemoCanvasStore.setState(BlankCanvas);
-  };
-
-  const updateCanvas = (canvasUpdates: CanvasState) => {
-    DemoCanvasStore.updateState(canvasUpdates);
-    addCanvasStateToHistory(DemoCanvasStore.getCurrentState());
-  };
-
-  const didClickUndo = () => {
-    // eslint-disable-next-line
-    const [_canvas, ...prevCanvasHistory] = canvasHistory || [BlankCanvas];
-    setCanvasHistory(prevCanvasHistory);
-    DemoCanvasStore.setState(prevCanvasHistory[0] || BlankCanvas);
-  };
-
-  const canUndo = canvasHistory && canvasHistory.length > 0;
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
       const keyName = pixelKey(x, y);
       const palettePos = DemoPaletteStore.currentItem;
-      const wrappedPos = palettePos >= DemoCanvasStore.paletteSize ? DemoCanvasStore.paletteSize - 1 : palettePos;
+      const wrappedPos =
+        palettePos >= DemoCanvasStore.paletteSize
+          ? DemoCanvasStore.paletteSize - 1
+          : palettePos;
       const ChangeSet: pixelCanvas = {};
       ChangeSet[keyName] = wrappedPos;
       const canvasChange: CanvasState = {
@@ -66,9 +57,8 @@ export const DemoCanvas = () => {
         zoom: DemoCanvasStore.zoom,
         palette: DemoCanvasStore.palette,
         pixels: ChangeSet,
-       };
-       updateCanvas(canvasChange);
-      // DemoCanvasStore.setPixel(x, y, DemoPaletteStore.currentItem);
+      };
+      DemoCanvasStore.updateState(canvasChange);
     } else {
       DemoPaletteStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
       DemoDropperStore.setActive(false);
@@ -132,7 +122,10 @@ export const DemoCanvas = () => {
           />
         </fieldset>
         <div className="bg-white mt-2 mx-2">
-          <EyeDropper canvas={DemoCanvasStore} dropperStore={DemoDropperStore}></EyeDropper>
+          <EyeDropper
+            canvas={DemoCanvasStore}
+            dropperStore={DemoDropperStore}
+          ></EyeDropper>
         </div>
         <div className="bg-white mt-2 mx-2">
           <MoveImage canvas={DemoCanvasStore} direction="up"></MoveImage>
@@ -147,9 +140,10 @@ export const DemoCanvas = () => {
           <MoveImage canvas={DemoCanvasStore} direction="right"></MoveImage>
         </div>
         <div className="bg-white mt-2 mx-2">
-          <button onClick={didClickUndo} className="pt-1 px-1">
-            <CanvasSkin item={`move-left`}></CanvasSkin>
-          </button>
+          <UndoButton
+            canvas={DemoCanvasStore}
+            history={DemoCanvasHistory}
+          ></UndoButton>
         </div>
       </div>
 
@@ -161,11 +155,17 @@ export const DemoCanvas = () => {
       </div>
 
       <div className="mt-2">
-        <BasicPalette canvas={DemoCanvasStore} palette={DemoPaletteStore}></BasicPalette>
+        <BasicPalette
+          canvas={DemoCanvasStore}
+          palette={DemoPaletteStore}
+        ></BasicPalette>
       </div>
 
       <div className="my-6 mx-24">
-        <BasicColorPicker canvas={DemoCanvasStore} currentPaletteItem={DemoPaletteStore.currentItem}></BasicColorPicker>
+        <BasicColorPicker
+          canvas={DemoCanvasStore}
+          currentPaletteItem={DemoPaletteStore.currentItem}
+        ></BasicColorPicker>
       </div>
     </div>
   );
