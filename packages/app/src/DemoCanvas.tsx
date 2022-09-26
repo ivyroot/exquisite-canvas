@@ -43,22 +43,7 @@ export const DemoCanvas = () => {
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
-      const keyName = pixelKey(x, y);
-      const palettePos = DemoPaletteStore.currentItem;
-      const wrappedPos =
-        palettePos >= DemoCanvasStore.paletteSize
-          ? DemoCanvasStore.paletteSize - 1
-          : palettePos;
-      const ChangeSet: pixelCanvas = {};
-      ChangeSet[keyName] = wrappedPos;
-      const canvasChange: CanvasState = {
-        width: DemoCanvasStore.width,
-        height: DemoCanvasStore.height,
-        zoom: DemoCanvasStore.zoom,
-        palette: DemoCanvasStore.palette,
-        pixels: ChangeSet,
-      };
-      DemoCanvasStore.updateState(canvasChange);
+      DemoCanvasStore.setPixel(x, y, DemoPaletteStore.currentItem);
     } else {
       DemoPaletteStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
       DemoDropperStore.setActive(false);

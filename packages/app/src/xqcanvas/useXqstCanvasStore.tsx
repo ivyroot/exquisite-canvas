@@ -61,7 +61,7 @@ const useCanvasStore = create<CanvasCoreStore>((set) => ({
       palette: canvas.palette,
       pixels: canvas.pixels,
     })),
-  updateFromCanvasState: (canvasUpdates: CanvasState) =>
+  updateFromCanvasState: (canvasUpdates: CanvasState): void =>
     set((state) => ({
       height: canvasUpdates.height,
       width: canvasUpdates.width,
@@ -115,14 +115,17 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
         pixels: state.pixels,
       };
     };
+    const addToHistory = () => {
+      if (history) {
+        history.addCanvasStateToHistory(getCurrentState());
+      }
+    };
     const setState = (newCanvasState: CanvasState) => {
       state.setFromCanvasState(newCanvasState);
     };
     const updateState = (canvasUpdates: CanvasState) => {
       state.updateFromCanvasState(canvasUpdates);
-      if (history) {
-        history.addCanvasStateToHistory(getCurrentState());
-      }
+      addToHistory();
     };
     const resetState = (newCanvasState: CanvasState) => {
       if (history) {
@@ -130,11 +133,22 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
       }
       setState(newCanvasState);
     };
+    const setPixel = (x: number, y: number, val: number): void => {
+      state.setPixel(x, y, val);
+      addToHistory();
+    };
+    const setPixels = (vals: pixelCanvas) => {
+      state.setPixels(vals);
+      addToHistory();
+    };
+
     return {
       ...state,
       getPaletteItemColor,
       getPaletteItemColors,
       getPaletteItemColorsStr,
+      setPixel,
+      setPixels,
       getPixelVal,
       getPixelColor,
       getCurrentState,
