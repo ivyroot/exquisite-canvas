@@ -1,8 +1,7 @@
 import { CanvasSkin } from "./CanvasSkin";
 import {
+  canvasPixels,
   CanvasStore,
-  paletteKey,
-  pixelCanvas,
   pixelKey,
   pixelKeyVals,
 } from "./xqcanvas/CanvasInterfaces";
@@ -27,7 +26,7 @@ export const MoveImage = (props: {
     } else {
       return;
     }
-    const movedPixels: pixelCanvas = {};
+    const movedPixels: canvasPixels = {};
     for (const key in canvas.pixels) {
       const [x, y] = pixelKeyVals(key);
       const newKey = pixelKey(x + deltas.x, y + deltas.y);

@@ -11,11 +11,7 @@ import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
 import { UndoButton } from "./UndoButton";
 import { usePaletteStore } from "./usePaletteStore";
-import {
-  CanvasState,
-  pixelCanvas,
-  pixelKey,
-} from "./xqcanvas/CanvasInterfaces";
+import { CanvasState } from "./xqcanvas/CanvasInterfaces";
 import { useCanvasHistory } from "./xqcanvas/useCanvasHistory";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";

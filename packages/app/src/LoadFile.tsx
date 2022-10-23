@@ -4,9 +4,9 @@ import { useLoadPixelBuffer } from "./useExquisiteFiles";
 import { PixelBuffer } from "./xgfx/ll_api";
 import {
   canvasPalette,
+  canvasPixels,
   CanvasStore,
   paletteKey,
-  pixelCanvas,
   pixelKey,
 } from "./xqcanvas/CanvasInterfaces";
 
@@ -29,7 +29,7 @@ export const LoadFile = (props: { canvas: CanvasStore }) => {
     }
     canvas.setPalette(htmlPalette);
     canvas.setPaletteSize(pixBuffer.palette.length);
-    const pixelMap: pixelCanvas = {};
+    const pixelMap: canvasPixels = {};
     for (let y = 0; y < pixBuffer.header.height; y++) {
       for (let x = 0; x < pixBuffer.header.width; x++) {
         const keyName = pixelKey(x, y);

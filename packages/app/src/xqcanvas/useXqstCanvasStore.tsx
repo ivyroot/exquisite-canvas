@@ -4,10 +4,10 @@ import {
   CanvasCoreStore,
   CanvasHistory,
   canvasPalette,
+  canvasPixels,
   CanvasState,
   CanvasStore,
   paletteKey,
-  pixelCanvas,
   pixelKey,
 } from "./CanvasInterfaces";
 
@@ -19,7 +19,7 @@ const DefaultPalette: canvasPalette = {
   pal_0: "#2FFAFF",
   pal_1: "#0EA5E9",
 };
-const EmptyPixels: pixelCanvas = {};
+const EmptyPixels: canvasPixels = {};
 
 const useCanvasStore = create<CanvasCoreStore>((set) => ({
   width: 8,
@@ -46,12 +46,12 @@ const useCanvasStore = create<CanvasCoreStore>((set) => ({
       const keyName = pixelKey(x, y);
       const wrappedPos =
         palettePos >= state.paletteSize ? state.paletteSize - 1 : palettePos;
-      const ChangeSet: pixelCanvas = {};
+      const ChangeSet: canvasPixels = {};
       ChangeSet[keyName] = wrappedPos;
       const newPixels = { ...state.pixels, ...ChangeSet };
       return { pixels: newPixels };
     }),
-  setPixels: (vals: pixelCanvas) => set((state) => ({ pixels: vals })),
+  setPixels: (vals: canvasPixels) => set((state) => ({ pixels: vals })),
   setFromCanvasState: (canvas: CanvasState) =>
     set((state) => ({
       height: canvas.height,
@@ -136,7 +136,7 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
       state.setPixel(x, y, val);
       addToHistory();
     };
-    const setPixels = (vals: pixelCanvas) => {
+    const setPixels = (vals: canvasPixels) => {
       state.setPixels(vals);
       addToHistory();
     };

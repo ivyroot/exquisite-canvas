@@ -1,7 +1,7 @@
 export interface canvasPalette {
   [index: string]: string;
 }
-export interface pixelCanvas {
+export interface canvasPixels {
   [index: string]: number;
 }
 export const pixelKey = (x: number, y: number) => {
@@ -25,7 +25,7 @@ export interface CanvasState {
   height: number;
   zoom: number;
   palette: canvasPalette;
-  pixels: pixelCanvas;
+  pixels: canvasPixels;
 }
 
 export interface CanvasCoreStore {
@@ -40,9 +40,9 @@ export interface CanvasCoreStore {
   setPaletteItem: (item: number, val: string) => void;
   paletteSize: number;
   setPaletteSize: (val: number) => void;
-  pixels: pixelCanvas;
+  pixels: canvasPixels;
   setPixel: (x: number, y: number, val: number) => void;
-  setPixels: (vals: pixelCanvas) => void;
+  setPixels: (vals: canvasPixels) => void;
   setFromCanvasState: (canvas: CanvasState) => void;
   updateFromCanvasState: (canvasUpdates: CanvasState) => void;
 }
