@@ -4,7 +4,6 @@ import {
   CanvasStore,
   paletteItemCollection,
   paletteKey,
-  pixelArray,
   pixelCanvas,
   pixelKey,
   pixelKeyVals,
@@ -97,13 +96,7 @@ export const XqstCanvasDisplay = (props: {
       window.removeEventListener("pointerup", onPointerUp);
       svg.removeEventListener("touchmove", onTouchMove);
     };
-  }, [
-    width,
-    height,
-    props.didClickPixel,
-    paletteSize,
-    paletteString,
-  ]);
+  }, [width, height, props.didClickPixel, paletteSize, paletteString]);
 
   return (
     <div className="flex justify-center">

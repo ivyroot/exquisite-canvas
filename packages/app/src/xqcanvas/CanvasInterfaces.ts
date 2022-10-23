@@ -4,9 +4,6 @@ export interface paletteItemCollection {
 export interface pixelCanvas {
   [index: string]: number;
 }
-export interface pixelArray {
-  pixels: number[];
-}
 export const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
 };
