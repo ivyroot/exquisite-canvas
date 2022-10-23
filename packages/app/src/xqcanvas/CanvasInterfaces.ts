@@ -1,14 +1,16 @@
+export const paletteKey = (i: number) => {
+  return `pal_${i}`;
+};
+
 export interface canvasPalette {
   [index: string]: string;
 }
-export interface canvasPixels {
-  [index: string]: number;
-}
+
 export const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
 };
 
-export const pixelKeyVals: (key: string) => number[] = (pxKey: string) => {
+export const getPixelKeyXY: (key: string) => number[] = (pxKey: string) => {
   if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
   return pxKey
     .replace("px_", "")
@@ -16,9 +18,9 @@ export const pixelKeyVals: (key: string) => number[] = (pxKey: string) => {
     .map((val) => parseInt(val));
 };
 
-export const paletteKey = (i: number) => {
-  return `pal_${i}`;
-};
+export interface canvasPixels {
+  [index: string]: number;
+}
 
 export interface CanvasState {
   width: number;
