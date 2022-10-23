@@ -3,9 +3,9 @@ import create from "zustand";
 import {
   CanvasCoreStore,
   CanvasHistory,
+  canvasPalette,
   CanvasState,
   CanvasStore,
-  paletteItemCollection,
   paletteKey,
   pixelCanvas,
   pixelKey,
@@ -15,7 +15,7 @@ const colorCodeElements = Array.from({ length: 6 }, (_, i) =>
   String.fromCharCode("A".charCodeAt(0) + i)
 );
 
-const DefaultPalette: paletteItemCollection = {
+const DefaultPalette: canvasPalette = {
   pal_0: "#2FFAFF",
   pal_1: "#0EA5E9",
 };
@@ -31,13 +31,12 @@ const useCanvasStore = create<CanvasCoreStore>((set) => ({
   palette: DefaultPalette,
   paletteSize: 2,
   setPaletteSize: (val: number) => set((state) => ({ paletteSize: val })),
-  setPalette: (vals: paletteItemCollection) =>
-    set((state) => ({ palette: vals })),
+  setPalette: (vals: canvasPalette) => set((state) => ({ palette: vals })),
   setPaletteItem: (item: number, val: string) =>
     set((state) => {
       const itemKey = paletteKey(item);
       const fmtVal = (Array.from(val)[0] == "#" ? val : `#${val}`).slice(0, 7);
-      const ChangeSet: paletteItemCollection = {};
+      const ChangeSet: canvasPalette = {};
       ChangeSet[itemKey] = fmtVal;
       return { palette: { ...state.palette, ...ChangeSet } };
     }),

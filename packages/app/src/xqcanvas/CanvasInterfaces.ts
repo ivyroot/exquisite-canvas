@@ -1,4 +1,4 @@
-export interface paletteItemCollection {
+export interface canvasPalette {
   [index: string]: string;
 }
 export interface pixelCanvas {
@@ -24,7 +24,7 @@ export interface CanvasState {
   width: number;
   height: number;
   zoom: number;
-  palette: paletteItemCollection;
+  palette: canvasPalette;
   pixels: pixelCanvas;
 }
 
@@ -35,8 +35,8 @@ export interface CanvasCoreStore {
   setHeight: (val: number) => void;
   zoom: number;
   setZoom: (val: number) => void;
-  palette: paletteItemCollection;
-  setPalette: (vals: paletteItemCollection) => void;
+  palette: canvasPalette;
+  setPalette: (vals: canvasPalette) => void;
   setPaletteItem: (item: number, val: string) => void;
   paletteSize: number;
   setPaletteSize: (val: number) => void;

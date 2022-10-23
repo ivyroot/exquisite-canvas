@@ -3,8 +3,8 @@ import { useRef } from "react";
 import { useLoadPixelBuffer } from "./useExquisiteFiles";
 import { PixelBuffer } from "./xgfx/ll_api";
 import {
+  canvasPalette,
   CanvasStore,
-  paletteItemCollection,
   paletteKey,
   pixelCanvas,
   pixelKey,
@@ -18,7 +18,7 @@ export const LoadFile = (props: { canvas: CanvasStore }) => {
   const loadFromPixBuffer = (pixBuffer: PixelBuffer) => {
     canvas.setWidth(pixBuffer.header.width);
     canvas.setHeight(pixBuffer.header.height);
-    const htmlPalette: paletteItemCollection = {};
+    const htmlPalette: canvasPalette = {};
     for (let pi = 0; pi < pixBuffer.palette.length; pi++) {
       const palColor = pixBuffer.palette[pi];
       const palKey = paletteKey(pi);
