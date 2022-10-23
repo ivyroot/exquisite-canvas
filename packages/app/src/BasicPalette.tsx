@@ -1,12 +1,12 @@
-import { CanvasSkin } from "./CanvasSkin";
-import {
-  CanvasStore,
-  paletteItemCollection,
-  paletteKey,
-} from "./xqcanvas/CanvasInterfaces";
 import { PaletteStore } from "/.usePaletteStore";
 
-export const BasicPalette = (props: { canvas: CanvasStore; palette: PaletteStore }) => {
+import { CanvasSkin } from "./CanvasSkin";
+import { CanvasStore, paletteKey } from "./xqcanvas/CanvasInterfaces";
+
+export const BasicPalette = (props: {
+  canvas: CanvasStore;
+  palette: PaletteStore;
+}) => {
   const canvas = props.canvas;
 
   const didClickAddPaletteItem = () => {
@@ -28,7 +28,9 @@ export const BasicPalette = (props: { canvas: CanvasStore; palette: PaletteStore
     const itemKey = paletteKey(pi);
     const itemColor = canvas.getPaletteItemColor(pi);
     const borderText =
-    props.palette.currentItem == pi ? "border-indigo-300" : "border-slate-800";
+      props.palette.currentItem == pi
+        ? "border-indigo-300"
+        : "border-slate-800";
     const itemClasses = `relative mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
     const label = pi > 0 ? `Color ${pi}` : `Background`;
     PaletteItems.push(

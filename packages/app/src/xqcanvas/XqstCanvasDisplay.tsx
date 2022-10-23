@@ -1,13 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-import {
-  CanvasStore,
-  paletteItemCollection,
-  paletteKey,
-  pixelCanvas,
-  pixelKey,
-  pixelKeyVals,
-} from "./CanvasInterfaces";
+import { CanvasStore, pixelKey, pixelKeyVals } from "./CanvasInterfaces";
 
 export const XqstCanvasDisplay = (props: {
   canvas: CanvasStore;
