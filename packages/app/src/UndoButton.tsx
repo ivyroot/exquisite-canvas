@@ -13,7 +13,7 @@ export const UndoButton = (props: {
   };
   return (
     <button onClick={didClickUndo} className="pt-1 px-1">
-      <CanvasSkin item={`move-left`}></CanvasSkin>
+      <CanvasSkin item={`undo`}></CanvasSkin>
     </button>
   );
 };
