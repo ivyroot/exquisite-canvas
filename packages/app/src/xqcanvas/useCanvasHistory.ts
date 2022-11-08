@@ -3,7 +3,7 @@ import { useLocalStorage } from "usehooks-ts";
 
 import { CanvasHistory, CanvasState } from "./CanvasInterfaces";
 
-// history & undo using local storage, inspired by Daily Canvas -- https://www.dailycanvasStore.com/
+// history & undo using local storage, inspired by Daily Canvas -- https://www.dailycanvas.com/
 export const useCanvasHistory = (props: {
   canvasName: string;
   blankState: CanvasState;
@@ -12,6 +12,10 @@ export const useCanvasHistory = (props: {
     props.canvasName,
     [props.blankState]
   );
+
+  const getCanvasHistory = () => {
+    return canvasHistory;
+  };
 
   const addCanvasStateToHistory = useDebouncedCallback(
     (newState: CanvasState) => {
@@ -36,6 +40,7 @@ export const useCanvasHistory = (props: {
   };
 
   return {
+    getCanvasHistory,
     addCanvasStateToHistory,
     resetCanvasHistory,
     canUndo,

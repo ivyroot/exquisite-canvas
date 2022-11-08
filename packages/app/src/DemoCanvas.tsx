@@ -2,6 +2,8 @@
 // Note that some canvas components have their own state:
 //  BasicPalette uses a separate state handler, usePaletteStore
 //  EyeDropper defines a state handler, useEyeDropperStore, directly in the component
+import { useEffect } from "react";
+
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
@@ -34,6 +36,14 @@ export const DemoCanvas = () => {
     blankState: BlankCanvas,
   });
   const DemoCanvasStore = useXqstCanvasStore(DemoCanvasHistory);
+  useEffect(() => {
+    const history = DemoCanvasHistory.getCanvasHistory();
+    if (history && history.length > 0) {
+      // show last state in history when loading canvas
+      DemoCanvasStore.setState(history[0]);
+    }
+  }, []);
+
   const DemoPaletteStore = usePaletteStore();
   const DemoDropperStore = useEyeDropperStore();
 
