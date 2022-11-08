@@ -1,14 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-import {
-  CanvasStore,
-  paletteItemCollection,
-  paletteKey,
-  pixelArray,
-  pixelCanvas,
-  pixelKey,
-  pixelKeyVals,
-} from "./CanvasInterfaces";
+import { CanvasStore, getPixelKeyXY, pixelKey } from "./CanvasInterfaces";
 
 export const XqstCanvasDisplay = (props: {
   canvas: CanvasStore;
@@ -50,7 +42,7 @@ export const XqstCanvasDisplay = (props: {
       const element = document.elementFromPoint(event.clientX, event.clientY);
       if (!(element instanceof SVGRectElement)) return;
       if (!element.getAttribute("data-is-pixel")) return;
-      const [x, y] = pixelKeyVals(element.id);
+      const [x, y] = getPixelKeyXY(element.id);
       return {
         element,
         x: x,
@@ -97,13 +89,7 @@ export const XqstCanvasDisplay = (props: {
       window.removeEventListener("pointerup", onPointerUp);
       svg.removeEventListener("touchmove", onTouchMove);
     };
-  }, [
-    width,
-    height,
-    props.didClickPixel,
-    paletteSize,
-    paletteString,
-  ]);
+  }, [width, height, props.didClickPixel, paletteSize, paletteString]);
 
   return (
     <div className="flex justify-center">

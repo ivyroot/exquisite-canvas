@@ -1,9 +1,12 @@
+import { useState } from "react";
+
 import { CanvasSkin } from "./CanvasSkin";
 import { CanvasStore } from "./xqcanvas/CanvasInterfaces";
-import { useState } from 'react';
 
-export const EyeDropper = (props: { canvas: CanvasStore, dropperStore: EyeDropperStore }) => {
-
+export const EyeDropper = (props: {
+  canvas: CanvasStore;
+  dropperStore: EyeDropperStore;
+}) => {
   function didClickDropper() {
     props.dropperStore.setActive(!props.dropperStore.active);
   }
@@ -20,15 +23,15 @@ export const EyeDropper = (props: { canvas: CanvasStore, dropperStore: EyeDroppe
 export interface EyeDropperStore {
   active: boolean;
   setActive: (val: boolean) => void;
-};
+}
 
 export function useEyeDropperStore(): EyeDropperStore {
   const [active, setActive] = useState(false);
-  const dropStore : EyeDropperStore = {
-      active,
-      setActive: (var: boolean) => {
-        setActive(var);
-      }
+  const dropStore: EyeDropperStore = {
+    active,
+    setActive: (val: boolean) => {
+      setActive(val);
+    },
   };
   return dropStore;
-};
+}

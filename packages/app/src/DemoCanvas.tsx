@@ -1,26 +1,58 @@
+// Demo of importing various canvas components as UI elements
+// Note that some canvas components have their own state:
+//  BasicPalette uses a separate state handler, usePaletteStore
+//  EyeDropper defines a state handler, useEyeDropperStore, directly in the component
+import { useEffect } from "react";
+
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
-import { usePaletteControls } from "./usePaletteControls";
-import { CanvasSkin } from "./CanvasSkin";
+import { ClearButton } from "./ClearButton";
 import { EyeDropper, useEyeDropperStore } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
 import { MoveImage } from "./MoveImage";
 import { SaveFile } from "./SaveFile";
+import { UndoButton } from "./UndoButton";
+import { usePaletteStore } from "./usePaletteStore";
+import { CanvasState } from "./xqcanvas/CanvasInterfaces";
+import { useCanvasHistory } from "./xqcanvas/useCanvasHistory";
 import { useXqstCanvasStore } from "./xqcanvas/useXqstCanvasStore";
 import { XqstCanvasDisplay } from "./xqcanvas/XqstCanvasDisplay";
 
 export const DemoCanvas = () => {
-  // core canvas state
-  const DemoCanvasStore = useXqstCanvasStore();
-  const DemoPaletteControlStore = usePaletteControls();
+  const name = `exquisite-canvas:square-8X8`;
+  const BlankCanvas: CanvasState = {
+    width: 8,
+    height: 8,
+    zoom: 200,
+    paletteSize: 2,
+    palette: {
+      pal_0: "#2FFAFF",
+      pal_1: "#0EA5E9",
+    },
+    pixels: {},
+  };
+  const DemoCanvasHistory = useCanvasHistory({
+    canvasName: name,
+    blankState: BlankCanvas,
+  });
+  const DemoCanvasStore = useXqstCanvasStore(DemoCanvasHistory);
+  useEffect(() => {
+    const history = DemoCanvasHistory.getCanvasHistory();
+    if (history && history.length > 0) {
+      // show last state in history when loading canvas
+      DemoCanvasStore.setState(history[0]);
+    }
+  }, []);
+
+  const DemoPaletteStore = usePaletteStore();
   const DemoDropperStore = useEyeDropperStore();
 
   const didClickPixel = (x: number, y: number) => {
     if (!DemoDropperStore.active) {
-      DemoCanvasStore.setPixel(x, y, DemoPaletteControlStore.currentItem);
+      DemoCanvasStore.setPixel(x, y, DemoPaletteStore.currentItem);
     } else {
-      DemoPaletteControlStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
+      DemoPaletteStore.setCurrentItem(DemoCanvasStore.getPixelVal(x, y));
       DemoDropperStore.setActive(false);
     }
   };
@@ -82,7 +114,10 @@ export const DemoCanvas = () => {
           />
         </fieldset>
         <div className="bg-white mt-2 mx-2">
-          <EyeDropper canvas={DemoCanvasStore} dropperStore={DemoDropperStore}></EyeDropper>
+          <EyeDropper
+            canvas={DemoCanvasStore}
+            dropperStore={DemoDropperStore}
+          ></EyeDropper>
         </div>
         <div className="bg-white mt-2 mx-2">
           <MoveImage canvas={DemoCanvasStore} direction="up"></MoveImage>
@@ -96,6 +131,15 @@ export const DemoCanvas = () => {
         <div className="bg-white mt-2 mx-2">
           <MoveImage canvas={DemoCanvasStore} direction="right"></MoveImage>
         </div>
+        <div className="bg-white mt-2 mx-2">
+          <UndoButton
+            canvas={DemoCanvasStore}
+            history={DemoCanvasHistory}
+          ></UndoButton>
+        </div>
+        <div className="bg-white mt-2 mx-2">
+          <ClearButton canvas={DemoCanvasStore}></ClearButton>
+        </div>
       </div>
 
       <div className="mt-6">
@@ -106,11 +150,17 @@ export const DemoCanvas = () => {
       </div>
 
       <div className="mt-2">
-        <BasicPalette canvas={DemoCanvasStore} controls={DemoPaletteControlStore}></BasicPalette>
+        <BasicPalette
+          canvas={DemoCanvasStore}
+          palette={DemoPaletteStore}
+        ></BasicPalette>
       </div>
 
       <div className="my-6 mx-24">
-        <BasicColorPicker canvas={DemoCanvasStore} currentPaletteItem={DemoPaletteControlStore.currentItem}></BasicColorPicker>
+        <BasicColorPicker
+          canvas={DemoCanvasStore}
+          currentPaletteItem={DemoPaletteStore.currentItem}
+        ></BasicColorPicker>
       </div>
     </div>
   );

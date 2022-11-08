@@ -54,6 +54,8 @@ importers:
       tailwindcss: ^3.0.5
       typescript: ^4.5.5
       urql: ^2.0.6
+      use-debounce: ^8.0.4
+      usehooks-ts: ^2.6.0
       wagmi: ^0.5.5
       zustand: ^3.6.7
     dependencies:
@@ -71,6 +73,8 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-toastify: 9.0.4_sfoxds7t5ydpegc3knd667wn6m
       urql: 2.0.6_idcs52lku4c45q42wkfxnvdmwq
+      use-debounce: 8.0.4_react@17.0.2
+      usehooks-ts: 2.6.0_react@17.0.2
       wagmi: 0.5.5_vf76qo6xcbq7orpx3zvcn2tuay
       zustand: 3.6.9_react@17.0.2
     devDependencies:
@@ -9267,6 +9271,15 @@ packages:
       tslib: 2.3.1
     dev: false
 
+  /use-debounce/8.0.4_react@17.0.2:
+    resolution: {integrity: sha512-fGqsYQzl8kLHF2QpQSgIwgOgJmnh6j5L6SIzQiHdLfwp3q1egUL3btq5Bg2SJysH6A0ILLgT2IqXZKoNJr0nFw==}
+    engines: {node: '>= 10.0.0'}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 17.0.2
+    dev: false
+
   /use-sidecar/1.1.2_z7w6vgz62d5pbxpnoxayoqdmly:
     resolution: {integrity: sha512-epTbsLuzZ7lPClpz2TyryBfztm7m+28DlEv2ZCQ3MDr5ssiwyOwGH/e5F9CkfWjJ1t4clvI58yF822/GUkjjhw==}
     engines: {node: '>=10'}
@@ -9295,6 +9308,14 @@ packages:
     resolution: {integrity: sha512-SEnieB2FPKEVne66NpXPd1Np4R1lTNKfjuy3XdIoPQKYBAFdzbzSZlSn1KJZUiihQLQC5Znot4SBz1EOTBwQAQ==}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 17.0.2
+    dev: false
+
+  /usehooks-ts/2.6.0_react@17.0.2:
+    resolution: {integrity: sha512-Kj/4oc2nOxRDGTDb2v1ZulF7+tpeXFuqI6cUesM0Vic7TPPDlFORxKh4ivsYg+NTvX/YbM+lhqqkfFTiIt23eg==}
+    peerDependencies:
+      react: '>=16.9.0'
     dependencies:
       react: 17.0.2
     dev: false

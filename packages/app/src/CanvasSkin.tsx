@@ -590,6 +590,55 @@ export const CanvasSkin = (params: { item: string }) => {
     </svg>
   );
 
+  const UndoIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      shapeRendering="crispEdges"
+      version="1.1"
+      viewBox="0 0 90 90"
+      className="h-8"
+    >
+      <defs>
+        <style>.cls-1&#123;fill:#0274fe;&#125;</style>
+      </defs>
+      <polygon
+        className="cls-1"
+        points="48.34 70 38.34 70 28.34 70 28.34 80 38.34 80 48.34 80 58.34 80 68.34 80 68.34 70 58.34 70 48.34 70"
+      />
+      <polygon
+        className="cls-1"
+        points="68.34 40 68.34 50 68.34 50 68.34 60 68.34 70 78.34 70 78.34 60 78.34 50 78.34 50 78.34 40 68.34 40"
+      />
+      <polygon
+        className="cls-1"
+        points="28.34 50 28.34 60 38.34 60 38.34 50 38.34 40 48.34 40 58.34 40 68.34 40 68.34 30 58.34 30 48.34 30 38.34 30 38.34 20 38.34 10 28.34 10 28.34 20 18.34 20 18.34 30 8.34 30 8.34 40 18.34 40 18.34 50 28.34 50"
+      />
+    </svg>
+  );
+
+  const ClearIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      shapeRendering="crispEdges"
+      version="1.1"
+      viewBox="0 0 90 90"
+      className="h-8"
+    >
+      <defs>
+        <style>.cls-1&#123;fill:#0274fe;&#125;</style>
+      </defs>
+      <rect className="cls-1" x="50" y="40" width="10" height="10" />
+      <rect className="cls-1" x="60" y="30" width="10" height="10" />
+      <rect className="cls-1" x="40" y="50" width="10" height="10" />
+      <rect className="cls-1" x="50" y="60" width="10" height="10" />
+      <rect className="cls-1" x="60" y="70" width="10" height="10" />
+      <rect className="cls-1" x="20" y="30" width="10" height="10" />
+      <rect className="cls-1" x="20" y="70" width="10" height="10" />
+      <rect className="cls-1" x="30" y="40" width="10" height="10" />
+      <rect className="cls-1" x="30" y="60" width="10" height="10" />
+    </svg>
+  );
+
   if (skinItem == "dropper") {
     return DropperIcon;
   } else if (skinItem == "dropper-active") {
@@ -606,6 +655,10 @@ export const CanvasSkin = (params: { item: string }) => {
     return AddPaletteItemIcon;
   } else if (skinItem == "remove-palette-item") {
     return RemovePaletteItemIcon;
+  } else if (skinItem == "undo") {
+    return UndoIcon;
+  } else if (skinItem == "clear") {
+    return ClearIcon;
   }
   return null;
 };

@@ -1,17 +1,16 @@
-export interface paletteItemCollection {
+export const paletteKey = (i: number) => {
+  return `pal_${i}`;
+};
+
+export interface canvasPalette {
   [index: string]: string;
 }
-export interface pixelCanvas {
-  [index: string]: number;
-}
-export interface pixelArray {
-  pixels: number[];
-}
+
 export const pixelKey = (x: number, y: number) => {
   return `px_${x}X${y}`;
 };
 
-export const pixelKeyVals: (key: string) => number[] = (pxKey: string) => {
+export const getPixelKeyXY: (key: string) => number[] = (pxKey: string) => {
   if (!pxKey || pxKey.slice(0, 3) != "px_") return [];
   return pxKey
     .replace("px_", "")
@@ -19,9 +18,18 @@ export const pixelKeyVals: (key: string) => number[] = (pxKey: string) => {
     .map((val) => parseInt(val));
 };
 
-export const paletteKey = (i: number) => {
-  return `pal_${i}`;
-};
+export interface canvasPixels {
+  [index: string]: number;
+}
+
+export interface CanvasState {
+  width: number;
+  height: number;
+  zoom: number;
+  palette: canvasPalette;
+  paletteSize: number;
+  pixels: canvasPixels;
+}
 
 export interface CanvasCoreStore {
   width: number;
@@ -30,14 +38,16 @@ export interface CanvasCoreStore {
   setHeight: (val: number) => void;
   zoom: number;
   setZoom: (val: number) => void;
-  palette: paletteItemCollection;
-  setPalette: (vals: paletteItemCollection) => void;
+  palette: canvasPalette;
+  setPalette: (vals: canvasPalette) => void;
   setPaletteItem: (item: number, val: string) => void;
   paletteSize: number;
   setPaletteSize: (val: number) => void;
-  pixels: pixelCanvas;
+  pixels: canvasPixels;
   setPixel: (x: number, y: number, val: number) => void;
-  setPixels: (vals: pixelCanvas) => void;
+  setPixels: (vals: canvasPixels) => void;
+  setFromCanvasState: (canvas: CanvasState) => void;
+  updateFromCanvasState: (canvasUpdates: CanvasState) => void;
 }
 
 export interface CanvasStore extends CanvasCoreStore {
@@ -46,4 +56,16 @@ export interface CanvasStore extends CanvasCoreStore {
   getPaletteItemColorsStr: () => string;
   getPixelVal: (x: number, y: number) => number;
   getPixelColor: (x: number, y: number) => string;
+  getCurrentState: () => CanvasState;
+  setState: (s: CanvasState) => void;
+  updateState: (s: CanvasState) => void;
+  clear: () => void;
+}
+
+export interface CanvasHistory {
+  getCanvasHistory: () => CanvasState[];
+  addCanvasStateToHistory: (state: CanvasState) => void;
+  resetCanvasHistory: (state: CanvasState) => void;
+  canUndo: () => boolean;
+  undoLastCanvasUpdate: () => CanvasState;
 }

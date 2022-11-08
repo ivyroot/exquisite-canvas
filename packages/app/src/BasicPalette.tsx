@@ -1,24 +1,23 @@
 import { CanvasSkin } from "./CanvasSkin";
-import {
-  CanvasStore,
-  paletteItemCollection,
-  paletteKey,
-} from "./xqcanvas/CanvasInterfaces";
-import { CanvasPaletteControls } from "/.usePaletteControls";
+import { PaletteStore } from "./usePaletteStore";
+import { CanvasStore, paletteKey } from "./xqcanvas/CanvasInterfaces";
 
-export const BasicPalette = (props: { canvas: CanvasStore; controls: CanvasPaletteControls }) => {
+export const BasicPalette = (props: {
+  canvas: CanvasStore;
+  palette: PaletteStore;
+}) => {
   const canvas = props.canvas;
 
   const didClickAddPaletteItem = () => {
     canvas.setPaletteSize(canvas.paletteSize + 1);
-    props.controls.setCurrentItem(canvas.paletteSize);
+    props.palette.setCurrentItem(canvas.paletteSize);
   };
 
   const didClickRemovePaletteItem = () => {
     if (canvas.paletteSize > 2) {
       canvas.setPaletteSize(canvas.paletteSize - 1);
-      if (props.controls.currentItem >= canvas.paletteSize - 1) {
-        props.controls.setCurrentItem(canvas.paletteSize - 2);
+      if (props.palette.currentItem >= canvas.paletteSize - 1) {
+        props.palette.setCurrentItem(canvas.paletteSize - 2);
       }
     }
   };
@@ -28,25 +27,20 @@ export const BasicPalette = (props: { canvas: CanvasStore; controls: CanvasPalet
     const itemKey = paletteKey(pi);
     const itemColor = canvas.getPaletteItemColor(pi);
     const borderText =
-    props.controls.currentItem == pi ? "border-indigo-300" : "border-slate-800";
-    const itemClasses = `relative mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
-    const label = pi > 0 ? `Color ${pi}` : `Background`;
+      props.palette.currentItem == pi
+        ? "border-indigo-300"
+        : "border-slate-800";
+    const itemClasses = `relative w-24 h-24 mx-1 sm:mx-4 mt-2 mb-8 p-1 sm:p-4 border-8 ${borderText}`;
+    const label = pi > 0 ? `Color ${pi}` : `BG Color`;
     PaletteItems.push(
       <div
         key={itemKey}
         className={itemClasses}
         style={{ backgroundColor: itemColor }}
-        onClick={(event) => props.controls.setCurrentItem(pi)}
+        onClick={(event) => props.palette.setCurrentItem(pi)}
       >
-        <input
-          className="p-2 w-24"
-          style={{ backgroundColor: itemColor }}
-          type="text"
-          value={itemColor}
-          onChange={(event) => canvas.setPaletteItem(pi, event.target.value)}
-        />
-        <div className="absolute -bottom-10 w-24">
-          <h3 className="text-slate-500 text-center">{label}</h3>
+        <div className="absolute -bottom-10 left-2 w-24">
+          <h3 className="text-slate-500 text-left">{label}</h3>
         </div>
       </div>
     );
