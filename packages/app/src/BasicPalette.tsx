@@ -1,6 +1,5 @@
-import { PaletteStore } from "/.usePaletteStore";
-
 import { CanvasSkin } from "./CanvasSkin";
+import { PaletteStore } from "./usePaletteStore";
 import { CanvasStore, paletteKey } from "./xqcanvas/CanvasInterfaces";
 
 export const BasicPalette = (props: {
