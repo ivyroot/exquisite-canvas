@@ -31,7 +31,7 @@ export const BasicPalette = (props: {
       props.palette.currentItem == pi
         ? "border-indigo-300"
         : "border-slate-800";
-    const itemClasses = `relative w-24 h-24 mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
+    const itemClasses = `relative w-24 h-24 mx-1 sm:mx-4 mt-2 mb-8 p-1 sm:p-4 border-8 ${borderText}`;
     const label = pi > 0 ? `Color ${pi}` : `BG Color`;
     PaletteItems.push(
       <div
