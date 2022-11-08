@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import { BasicColorPicker } from "./BasicColorPicker";
 import { BasicPalette } from "./BasicPalette";
 import { CanvasLogo } from "./CanvasLogo";
+import { ClearButton } from "./ClearButton";
 import { EyeDropper, useEyeDropperStore } from "./EyeDropper";
 import { LoadFile } from "./LoadFile";
 import { MoveImage } from "./MoveImage";
@@ -135,6 +136,9 @@ export const DemoCanvas = () => {
             canvas={DemoCanvasStore}
             history={DemoCanvasHistory}
           ></UndoButton>
+        </div>
+        <div className="bg-white mt-2 mx-2">
+          <ClearButton canvas={DemoCanvasStore}></ClearButton>
         </div>
       </div>
 

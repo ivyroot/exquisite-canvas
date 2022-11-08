@@ -126,11 +126,15 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
       state.updateFromCanvasState(canvasUpdates);
       addToHistory();
     };
-    const resetState = (newCanvasState: CanvasState) => {
+    const clear = () => {
+      const clearedState: CanvasState = {
+        ...state,
+        pixels: EmptyPixels,
+      };
       if (history) {
-        history.resetCanvasHistory(newCanvasState);
+        history.resetCanvasHistory(clearedState);
       }
-      setState(newCanvasState);
+      setState(clearedState);
     };
     const setPixel = (x: number, y: number, val: number): void => {
       state.setPixel(x, y, val);
@@ -153,7 +157,7 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
       getCurrentState,
       setState,
       updateState,
-      resetState,
+      clear,
     };
   });
 

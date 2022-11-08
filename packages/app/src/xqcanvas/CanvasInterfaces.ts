@@ -58,7 +58,7 @@ export interface CanvasStore extends CanvasCoreStore {
   getCurrentState: () => CanvasState;
   setState: (s: CanvasState) => void;
   updateState: (s: CanvasState) => void;
-  resetState: (s: CanvasState) => void;
+  clear: () => void;
 }
 
 export interface CanvasHistory {
