@@ -31,8 +31,8 @@ export const BasicPalette = (props: {
       props.palette.currentItem == pi
         ? "border-indigo-300"
         : "border-slate-800";
-    const itemClasses = `relative mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
-    const label = pi > 0 ? `Color ${pi}` : `Background`;
+    const itemClasses = `relative w-24 h-24 mx-1 sm:mx-4 my-2 p-1 sm:p-4 border-8 ${borderText}`;
+    const label = pi > 0 ? `Color ${pi}` : `BG Color`;
     PaletteItems.push(
       <div
         key={itemKey}
@@ -40,15 +40,8 @@ export const BasicPalette = (props: {
         style={{ backgroundColor: itemColor }}
         onClick={(event) => props.palette.setCurrentItem(pi)}
       >
-        <input
-          className="p-2 w-24"
-          style={{ backgroundColor: itemColor }}
-          type="text"
-          value={itemColor}
-          onChange={(event) => canvas.setPaletteItem(pi, event.target.value)}
-        />
-        <div className="absolute -bottom-10 w-24">
-          <h3 className="text-slate-500 text-center">{label}</h3>
+        <div className="absolute -bottom-10 left-2 w-24">
+          <h3 className="text-slate-500 text-left">{label}</h3>
         </div>
       </div>
     );
