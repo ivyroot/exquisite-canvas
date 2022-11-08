@@ -616,6 +616,29 @@ export const CanvasSkin = (params: { item: string }) => {
     </svg>
   );
 
+  const ClearIcon = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      shapeRendering="crispEdges"
+      version="1.1"
+      viewBox="0 0 90 90"
+      className="h-8"
+    >
+      <defs>
+        <style>.cls-1&#123;fill:#0274fe;&#125;</style>
+      </defs>
+      <rect className="cls-1" x="50" y="40" width="10" height="10" />
+      <rect className="cls-1" x="60" y="30" width="10" height="10" />
+      <rect className="cls-1" x="40" y="50" width="10" height="10" />
+      <rect className="cls-1" x="50" y="60" width="10" height="10" />
+      <rect className="cls-1" x="60" y="70" width="10" height="10" />
+      <rect className="cls-1" x="20" y="30" width="10" height="10" />
+      <rect className="cls-1" x="20" y="70" width="10" height="10" />
+      <rect className="cls-1" x="30" y="40" width="10" height="10" />
+      <rect className="cls-1" x="30" y="60" width="10" height="10" />
+    </svg>
+  );
+
   if (skinItem == "dropper") {
     return DropperIcon;
   } else if (skinItem == "dropper-active") {
@@ -634,6 +657,8 @@ export const CanvasSkin = (params: { item: string }) => {
     return RemovePaletteItemIcon;
   } else if (skinItem == "undo") {
     return UndoIcon;
+  } else if (skinItem == "clear") {
+    return ClearIcon;
   }
   return null;
 };
