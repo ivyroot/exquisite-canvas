@@ -25,7 +25,7 @@ export const DemoCanvas = () => {
     width: 8,
     height: 8,
     zoom: 200,
-    // paletteSize: 2, // TODO fixme
+    paletteSize: 2,
     palette: {
       pal_0: "#2FFAFF",
       pal_1: "#0EA5E9",

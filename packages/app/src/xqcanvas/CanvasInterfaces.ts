@@ -27,6 +27,7 @@ export interface CanvasState {
   height: number;
   zoom: number;
   palette: canvasPalette;
+  paletteSize: number;
   pixels: canvasPixels;
 }
 

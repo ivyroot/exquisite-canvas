@@ -58,6 +58,7 @@ const useCanvasStore = create<CanvasCoreStore>((set) => ({
       width: canvas.width,
       zoom: canvas.zoom,
       palette: canvas.palette,
+      paletteSize: canvas.paletteSize,
       pixels: canvas.pixels,
     })),
   updateFromCanvasState: (canvasUpdates: CanvasState): void =>
@@ -66,6 +67,7 @@ const useCanvasStore = create<CanvasCoreStore>((set) => ({
       width: canvasUpdates.width,
       zoom: canvasUpdates.zoom,
       palette: { ...state.palette, ...canvasUpdates.palette },
+      paletteSize: canvasUpdates.paletteSize,
       pixels: { ...state.pixels, ...canvasUpdates.pixels },
     })),
 }));
@@ -111,6 +113,7 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
         height: state.height,
         zoom: state.zoom,
         palette: state.palette,
+        paletteSize: state.paletteSize,
         pixels: state.pixels,
       };
     };
@@ -144,6 +147,10 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
       state.setPixels(vals);
       addToHistory();
     };
+    const setPaletteSize = (val: number) => {
+      state.setPaletteSize(val);
+      addToHistory();
+    };
 
     return {
       ...state,
@@ -158,6 +165,7 @@ export function useXqstCanvasStore(history: CanvasHistory | null): CanvasStore {
       setState,
       updateState,
       clear,
+      setPaletteSize,
     };
   });
 
