@@ -1,5 +1,5 @@
 {
-  "name": "@web3-scaffold/app",
+  "name": "@exquisite-canvas/demo-app",
   "private": true,
   "engines": {
     "node": "16",
